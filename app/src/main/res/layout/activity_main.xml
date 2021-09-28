@@ -7,6 +7,36 @@
     android:background="@color/black"
     tools:context=".MainActivity">
 
+        androidapp-eric
+        
+    <TextView
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:fontFamily="sans-serif-black"
+        android:text="EeveeSG"
+        android:textAlignment="center"
+        android:textColor="#53E88B"
+        android:textSize="60sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/bannerDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="charging"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:textStyle="italic"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/banner" />
+        androidapp
 
     <EditText
         android:id="@+id/email"
@@ -14,6 +44,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/roundstyle"
         android:backgroundTint="#B1ADAD"
+        
+        android:layout_marginTop="272dp"
         android:ems="10"
         android:hint="  Email"
         android:inputType="textEmailAddress"
@@ -100,6 +132,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/banner"
         app:srcCompat="@drawable/logo" />
 
 

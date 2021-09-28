@@ -21,7 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class ProfileActivity extends AppCompatActivity {
     private Button logout, navigate;
-    private String userID;
+    private String userID, userEmail;
     private FirebaseUser user;
     private DatabaseReference reference;
 
@@ -51,6 +51,7 @@ public class ProfileActivity extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Users");
         userID = user.getUid();
+        userEmail = user.getEmail();
 
         final TextView greetingTextView = (TextView) findViewById(R.id.greeting);
         final TextView fullNameTextView = (TextView) findViewById(R.id.fullName);
@@ -58,15 +59,15 @@ public class ProfileActivity extends AppCompatActivity {
         final TextView ageTextView = (TextView) findViewById(R.id.age);
 
 
-        reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+        reference.child(userID).child("Profile").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User userProfile = snapshot.getValue(User.class);
 
                 if(userProfile != null){
-                    String fullName = userProfile.fullName;
-                    String email = userProfile.email;
-                    String age = userProfile.age;
+                    String fullName = userProfile.Name;
+                    String email = userEmail;
+                    String age = userProfile.Age;
                     greetingTextView.setText("Welcome " + fullName +" !");
                     fullNameTextView.setText(fullName);
                     emailTextView.setText(email);
