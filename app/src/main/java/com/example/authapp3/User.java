@@ -1,16 +1,16 @@
 package com.example.authapp3;
 
 public class User {
-    public String email, age, fullName;
+    public String Email, Age, Name;
 
     public User(){
 
     }
 
     public User(String fullName, String age, String email){
-        this.fullName = fullName;
-        this.email = email;
-        this.age = age;
+        this.Name = fullName;
+        this.Email = email;
+        this.Age = age;
     }
 }
 
