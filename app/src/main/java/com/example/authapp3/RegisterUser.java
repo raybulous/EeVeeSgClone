@@ -59,28 +59,28 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     }
 
     private void registerUser(){
-        String email = editTextEmail.getText().toString().trim();
+        String Email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
-        String fullName = editTextFullName.getText().toString().trim();
-        String age = editTextAge.getText().toString().trim();
+        String Name = editTextFullName.getText().toString().trim();
+        String Age = editTextAge.getText().toString().trim();
 
-        if(fullName.isEmpty()){
+        if(Name.isEmpty()){
             editTextFullName.setError("Full Name is required!");
             editTextFullName.requestFocus();
             return;
         }
 
-        if(age.isEmpty()){
+        if(Age.isEmpty()){
             editTextAge.setError("Age is required!");
             editTextAge.requestFocus();
             return;
         }
-        if(email.isEmpty()){
+        if(Email.isEmpty()){
             editTextEmail.setError("Email is required!");
             editTextEmail.requestFocus();
             return;
         }
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        if(!Patterns.EMAIL_ADDRESS.matcher(Email).matches()){
             editTextEmail.setError("Please provide valid email!");
             editTextEmail.requestFocus();
             return;
@@ -97,15 +97,15 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
         }
 
         progressBar.setVisibility(View.VISIBLE);
-        mAuth.createUserWithEmailAndPassword(email, password)
+        mAuth.createUserWithEmailAndPassword(Email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            User user = new User(fullName, age, email);
+                            User user = new User(Name, Age, Email);
 
                             FirebaseDatabase.getInstance().getReference("Users")
-                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Profile")
                                     .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
