@@ -7,6 +7,8 @@
     android:background="@color/black"
     tools:context=".MainActivity">
 
+        androidapp-eric
+        
     <TextView
         android:id="@+id/banner"
         android:layout_width="match_parent"
@@ -34,30 +36,47 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/banner" />
+        androidapp
 
     <EditText
         android:id="@+id/email"
-        android:layout_width="380dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
+        androidapp-eric
+        android:background="@drawable/roundstyle"
+        android:backgroundTint="#B1ADAD"
+        
         android:layout_marginTop="272dp"
         android:background="@color/browser_actions_bg_grey"
+        androidapp
         android:ems="10"
-        android:hint="Email"
+        android:hint="  Email"
         android:inputType="textEmailAddress"
         android:textSize="24sp"
+        androidapp-eric
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+
         app:layout_constraintHorizontal_bias="0.483"
+        androidapp
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bannerDescription" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/password"
-        android:layout_width="380dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:background="@drawable/roundstyle"
+        android:backgroundTint="#FFB1ADAD"
         android:ems="10"
+        androidapp-eric
+        android:hint="  Password"
+
         android:hint="Password"
         android:background="@color/browser_actions_bg_grey"
+        androidapp
         android:inputType="textPassword"
         android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -66,7 +85,7 @@
 
     <Button
         android:id="@+id/signIn"
-        android:layout_width="380dp"
+        android:layout_width="250dp"
         android:layout_height="70dp"
         android:layout_marginTop="24dp"
         android:backgroundTint="#0ED689"
@@ -74,6 +93,7 @@
         android:textColor="#ffffff"
         android:textSize="26sp"
         android:textStyle="bold"
+        app:cornerRadius="12dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password" />
@@ -117,13 +137,22 @@
         tools:ignore="MissingConstraints" />
 
     <ImageView
+        androidapp-eric
+        android:id="@+id/imageView2"
+
         android:id="@+id/imageView"
+        androidapp
+  
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        androidapp-eric
+        app:layout_constraintTop_toTopOf="parent"
+
         app:layout_constraintTop_toBottomOf="@+id/banner"
+        androidapp
         app:srcCompat="@drawable/logo" />
 
 
