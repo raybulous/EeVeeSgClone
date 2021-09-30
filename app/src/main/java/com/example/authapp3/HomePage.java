@@ -20,6 +20,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarItemView;
@@ -27,10 +28,14 @@ import com.google.android.material.navigation.NavigationBarView;
 
 public class HomePage extends AppCompatActivity {
 
+    int minteger = 0;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
+
 
 
         /*Transition*/
@@ -42,7 +47,6 @@ public class HomePage extends AppCompatActivity {
         Transition reenterTrans = new Fade();
         reenterTrans.excludeTarget("@+id/BottomNavigationView",true);
         getWindow().setReenterTransition(reenterTrans);
-
 
 
 
@@ -92,4 +96,28 @@ public class HomePage extends AppCompatActivity {
         super.onBackPressed();
         overridePendingTransition(R.anim.nav_default_enter_anim,R.anim.nav_default_exit_anim);
     }
+
+    public void increaseInteger(View view)
+    {
+        minteger = minteger + 1;
+        display(minteger);
+    }
+
+    public void decreaseInteger(View view)
+    {
+        if (minteger > 0) {
+            minteger = minteger - 1;
+            display(minteger);
+        }
+    }
+
+    private void display(int number)
+    {
+        TextView displayInteger = (TextView) findViewById(R.id.counter);
+        displayInteger.setText("" + number + "%");
+    }
+
+
+
+
 }
