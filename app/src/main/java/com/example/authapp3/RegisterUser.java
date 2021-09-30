@@ -102,6 +102,9 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
+                                        FirebaseDatabase.getInstance().getReference("Users")
+                                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Rewards")
+                                                .child("Points").setValue(0);
                                         Toast.makeText(RegisterUser.this, "User has been successfully registered", Toast.LENGTH_LONG).show();
                                         progressBar.setVisibility(View.GONE);
 
@@ -112,9 +115,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                                 }
                             });
 
-                            FirebaseDatabase.getInstance().getReference("Users")
-                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Rewards")
-                                    .child("Points").setValue(0);
+
 
                         }else{
                             Toast.makeText(RegisterUser.this, "Failed to Register!", Toast.LENGTH_LONG).show();
