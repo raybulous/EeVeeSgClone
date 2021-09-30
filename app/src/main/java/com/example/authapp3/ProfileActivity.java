@@ -3,7 +3,13 @@ package com.example.authapp3;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.transition.Explode;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.transition.Transition;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -98,7 +104,18 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
 
+        /*Transition*/
+        Transition exitTrans = new Fade();
+        exitTrans.excludeTarget("@+id/BottomNavigationView",true);
+        getWindow().setExitTransition(exitTrans);
+
+        Transition reenterTrans = new Fade();
+        reenterTrans.excludeTarget("@+id/BottomNavigationView",true);
+        getWindow().setReenterTransition(reenterTrans);
+
         /*BOTTOM NAVIGATION BAR*/
+
+
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.BottomNavigationView);
         Menu menu = bottomNavigationView.getMenu();
@@ -110,18 +127,20 @@ public class ProfileActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.ic_home:
                         Intent intent = new Intent(ProfileActivity.this, HomePage.class);
-                        startActivity(intent);
+                        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(ProfileActivity.this,bottomNavigationView ,"BottomBar");
+                        startActivity(intent, options.toBundle());
                         break;
                     case R.id.ic_navigate:
                         Intent intent1 = new Intent(ProfileActivity.this, Navigate.class);
-                        startActivity(intent1);
+                        ActivityOptions options1 = ActivityOptions.makeSceneTransitionAnimation(ProfileActivity.this,bottomNavigationView ,"BottomBar");
+                        startActivity(intent1, options1.toBundle());
                         break;
                     case R.id.ic_ProfileActivity:
-
                         break;
                     case R.id.ic_Rewards:
                         Intent intent2 = new Intent(ProfileActivity.this, Rewards.class);
-                        startActivity(intent2);
+                        ActivityOptions options2 = ActivityOptions.makeSceneTransitionAnimation(ProfileActivity.this,bottomNavigationView ,"BottomBar");
+                        startActivity(intent2, options2.toBundle());
                         break;
                 }
 
@@ -131,7 +150,8 @@ public class ProfileActivity extends AppCompatActivity {
 
         /*BOTTOM NAV BAR END*/
 
-//Changes started here
+
+
         reference.child(userID).child("EV").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -156,5 +176,11 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+    }
+    /*Backbutton Transition Animation*/
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.nav_default_enter_anim,R.anim.nav_default_exit_anim);
     }
 }

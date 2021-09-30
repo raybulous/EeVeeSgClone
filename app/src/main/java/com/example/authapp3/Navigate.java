@@ -1,11 +1,17 @@
 package com.example.authapp3;
 
 import android.Manifest;
+import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.transition.Explode;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.transition.Transition;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,6 +52,8 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
     private List<Polyline> polylinePaths = new ArrayList<>();
     private ProgressDialog progressDialog;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +75,18 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
             }
         });
 
+        /*Transition*/
+        Transition exitTrans = new Fade();
+        exitTrans.excludeTarget("@+id/BottomNavigationView",true);
+        getWindow().setExitTransition(exitTrans);
+
+        Transition reenterTrans = new Fade();
+        reenterTrans.excludeTarget("@+id/BottomNavigationView",true);
+        getWindow().setReenterTransition(reenterTrans);
+
+
+
+
         /*BOTTOM NAVIGATION BAR*/
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.BottomNavigationView);
@@ -79,17 +99,27 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
                 switch (item.getItemId()) {
                     case R.id.ic_home:
                         Intent intent = new Intent(Navigate.this, HomePage.class);
-                        startActivity(intent);
+                        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(Navigate.this,bottomNavigationView ,"BottomBar");
+                        startActivity(intent, options.toBundle());
+
+                        //overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                         break;
                     case R.id.ic_navigate:
                         break;
                     case R.id.ic_ProfileActivity:
                         Intent intent1 = new Intent(Navigate.this, ProfileActivity.class);
-                        startActivity(intent1);
+                        ActivityOptions options1 = ActivityOptions.makeSceneTransitionAnimation(Navigate.this,bottomNavigationView ,"BottomBar");
+                        startActivity(intent1, options1.toBundle());
+                        //startActivity(intent1);
+                        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         break;
                     case R.id.ic_Rewards:
                         Intent intent2 = new Intent(Navigate.this, Rewards.class);
-                        startActivity(intent2);
+                        ActivityOptions options2 = ActivityOptions.makeSceneTransitionAnimation(Navigate.this,bottomNavigationView ,"BottomBar");
+                        startActivity(intent2, options2.toBundle());
+
+                        //startActivity(intent2);
+                        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         break;
                 }
 
@@ -98,6 +128,14 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
         });
 
         /*BOTTOM NAV BAR END*/
+
+
+    }
+    /*Backbutton Transition Animation*/
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.nav_default_enter_anim,R.anim.nav_default_exit_anim);
     }
 
     private void sendRequest() {
