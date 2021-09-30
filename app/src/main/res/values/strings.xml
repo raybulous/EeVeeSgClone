@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">authapp3</string>
     <string name="map_key" translatable="false">AIzaSyB4jNfDzwogpxS5Q3lZKNdVlGzA_ipiOCQ</string>
+    <string name="profile_header">Personal Profile</string>
+    <string name="member_code">Member Code</string>
+    <string name="member_desc">Scan your Member QR code to start earning points!</string>
+    <string name="personal_details">Personal Details</string>
+    <string name="personal_desc">View and update your personal details</string>
+    <string name="no_ev">No EV linked</string>
+    <string name="unavailable">Unavailable</string>
 </resources>
