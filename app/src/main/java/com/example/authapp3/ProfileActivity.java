@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -11,6 +13,8 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -63,10 +67,10 @@ public class ProfileActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User userProfile = snapshot.getValue(User.class);
 
-                if(userProfile != null){
+                if (userProfile != null) {
                     String fullName = userProfile.Name;
                     String email = userEmail;
-                    greetingTextView.setText("Welcome " + fullName +" !");
+                    greetingTextView.setText("Welcome " + fullName + " !");
                     fullNameTextView.setText(fullName);
                     emailTextView.setText(email);
                 }
@@ -77,5 +81,39 @@ public class ProfileActivity extends AppCompatActivity {
                 Toast.makeText(ProfileActivity.this, "Something wrong happened", Toast.LENGTH_LONG).show();
             }
         });
+
+        /*BOTTOM NAVIGATION BAR*/
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.BottomNavigationView);
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.getItem(2);
+        menuItem.setChecked(true);
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.ic_home:
+                        Intent intent = new Intent(ProfileActivity.this, HomePage.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.ic_navigate:
+                        Intent intent1 = new Intent(ProfileActivity.this, Navigate.class);
+                        startActivity(intent1);
+                        break;
+                    case R.id.ic_ProfileActivity:
+
+                        break;
+                    case R.id.ic_Rewards:
+                        Intent intent2 = new Intent(ProfileActivity.this, Rewards.class);
+                        startActivity(intent2);
+                        break;
+                }
+
+                return false;
+            }
+        });
+
+        /*BOTTOM NAV BAR END*/
+
     }
 }

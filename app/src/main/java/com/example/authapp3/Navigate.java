@@ -2,9 +2,12 @@ package com.example.authapp3;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +28,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -61,6 +66,38 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
                 sendRequest();
             }
         });
+
+        /*BOTTOM NAVIGATION BAR*/
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.BottomNavigationView);
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.getItem(1);
+        menuItem.setChecked(true);
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.ic_home:
+                        Intent intent = new Intent(Navigate.this, HomePage.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.ic_navigate:
+                        break;
+                    case R.id.ic_ProfileActivity:
+                        Intent intent1 = new Intent(Navigate.this, ProfileActivity.class);
+                        startActivity(intent1);
+                        break;
+                    case R.id.ic_Rewards:
+                        Intent intent2 = new Intent(Navigate.this, Rewards.class);
+                        startActivity(intent2);
+                        break;
+                }
+
+                return false;
+            }
+        });
+
+        /*BOTTOM NAV BAR END*/
     }
 
     private void sendRequest() {
