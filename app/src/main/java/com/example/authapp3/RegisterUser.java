@@ -38,7 +38,6 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
         registerUser.setOnClickListener(this);
 
         editTextFullName = (EditText) findViewById(R.id.fullName);
-        editTextAge = (EditText) findViewById(R.id.age);
         editTextEmail = (EditText) findViewById(R.id.email);
         editTextPassword = (EditText) findViewById(R.id.password);
 
@@ -62,17 +61,10 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
         String Email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
         String Name = editTextFullName.getText().toString().trim();
-        String Age = editTextAge.getText().toString().trim();
 
         if(Name.isEmpty()){
             editTextFullName.setError("Full Name is required!");
             editTextFullName.requestFocus();
-            return;
-        }
-
-        if(Age.isEmpty()){
-            editTextAge.setError("Age is required!");
-            editTextAge.requestFocus();
             return;
         }
         if(Email.isEmpty()){
@@ -102,7 +94,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            User user = new User(Name, Age, Email);
+                            User user = new User(Name, Email);
 
                             FirebaseDatabase.getInstance().getReference("Users")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Profile")
