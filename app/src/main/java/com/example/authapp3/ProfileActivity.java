@@ -69,6 +69,10 @@ public class ProfileActivity extends AppCompatActivity {
         memberDescTextView.setText(R.string.member_desc);
         personalDetailsTextView.setText(R.string.personal_details);
         personalDescTextView.setText(R.string.personal_desc);
+        evModelTextView.setText(R.string.no_ev);
+        evColourTextView.setText(R.string.unavailable);
+        fullNameTextView.setText(R.string.name);
+        emailTextView.setText(R.string.email);
 
         reference.child(userID).child("Profile").addValueEventListener(new ValueEventListener() {
             @Override
@@ -90,6 +94,26 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        reference.child(userID).child("EV").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                EV evProfile = snapshot.getValue(EV.class);
+
+                if(evProfile != null) {
+                    String evModel = evProfile.Model;
+                    String evColour = evProfile.Colour;
+                    String batteryStatus = evProfile.BatteryStatus+"%";
+                    evModelTextView.setText(evModel);
+                    evColourTextView.setText(evColour);
+                    batteryStatusTextView.setText(batteryStatus);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(ProfileActivity.this, "Something wrong happened", Toast.LENGTH_LONG).show();
+            }
+        });
 
         /*Transition*/
         Transition exitTrans = new Fade();
@@ -136,32 +160,6 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         /*BOTTOM NAV BAR END*/
-
-
-
-        reference.child(userID).child("EV").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                EV evProfile = snapshot.getValue(EV.class);
-
-                if(evProfile != null) {
-                    String evModel = evProfile.Model;
-                    String evColour = evProfile.Colour;
-                    String batteryStatus = evProfile.BatteryStatus+"%";
-                    evModelTextView.setText(evModel);
-                    evColourTextView.setText(evColour);
-                    batteryStatusTextView.setText(batteryStatus);
-                } else {
-                    evModelTextView.setText(R.string.no_ev);
-                    evColourTextView.setText(R.string.unavailable);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(ProfileActivity.this, "Something wrong happened", Toast.LENGTH_LONG).show();
-            }
-        });
 
     }
     /*Backbutton Transition Animation*/
