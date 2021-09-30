@@ -10,7 +10,7 @@
 
     <EditText
         android:id="@+id/email"
-        android:layout_width="250dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="272dp"
         android:background="@drawable/roundstyle"
@@ -18,21 +18,20 @@
         android:ems="10"
         android:hint="  Email"
         android:inputType="textEmailAddress"
+        android:text="dummy2006proj@gmail.com"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.18"
 
 
-        android:text="dummy2006proj@gmail.com"
-        /><!-- TODO to remove -->
+        app:layout_constraintVertical_bias="0.18" /><!-- TODO to remove -->
 
     <EditText
         android:id="@+id/password"
-        android:layout_width="250dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:background="@drawable/roundstyle"
@@ -40,13 +39,12 @@
         android:ems="10"
         android:hint="  Password"
         android:inputType="textPassword"
+        android:text="Qweasd123!"
         android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email"
 
-        android:text="Qweasd123!"
-        /><!-- TODO to remove -->
+        app:layout_constraintTop_toBottomOf="@+id/email" /><!-- TODO to remove -->
 
     <Button
         android:id="@+id/signIn"
