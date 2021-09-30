@@ -56,26 +56,6 @@
         app:layout_constraintLeft_toLeftOf="@id/emailAddressTitle"
         app:layout_constraintTop_toBottomOf="@id/fullNameTitle" />
 
-    <TextView
-        android:id="@+id/ageTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Age: "
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintLeft_toLeftOf="@id/fullNameTitle"
-        app:layout_constraintTop_toBottomOf="@id/fullName" />
-
-    <TextView
-        android:id="@+id/age"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:layout_marginLeft="30dp"
-        app:layout_constraintLeft_toLeftOf="@id/fullNameTitle"
-        app:layout_constraintTop_toBottomOf="@id/ageTitle" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -85,7 +65,7 @@
         android:textSize="26sp"
         android:textStyle="bold"
         android:text="Navigate"
-        app:layout_constraintTop_toBottomOf="@id/age"
+        app:layout_constraintTop_toBottomOf="@id/fullName"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="16dp"/>
