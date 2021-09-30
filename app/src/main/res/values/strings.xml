@@ -8,4 +8,7 @@
     <string name="personal_desc">View and update your personal details</string>
     <string name="no_ev">No EV linked</string>
     <string name="unavailable">Unavailable</string>
+    <string name="name">Name</string>
+    <string name="email">email@email.com</string>
+    <string name="exit_toast">Pressing back again will exit the app</string>
 </resources>
