@@ -22,7 +22,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
 
     private FirebaseAuth mAuth;
     private TextView banner, registerUser;
-    private EditText editTextFullName, editTextAge, editTextEmail, editTextPassword;
+    private EditText editTextFullName, editTextEmail, editTextPassword;
     private ProgressBar progressBar;
 
     @Override
@@ -58,21 +58,21 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     }
 
     private void registerUser(){
-        String Email = editTextEmail.getText().toString().trim();
+        String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
-        String Name = editTextFullName.getText().toString().trim();
+        String name = editTextFullName.getText().toString().trim();
 
-        if(Name.isEmpty()){
+        if(name.isEmpty()){
             editTextFullName.setError("Full Name is required!");
             editTextFullName.requestFocus();
             return;
         }
-        if(Email.isEmpty()){
+        if(email.isEmpty()){
             editTextEmail.setError("Email is required!");
             editTextEmail.requestFocus();
             return;
         }
-        if(!Patterns.EMAIL_ADDRESS.matcher(Email).matches()){
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             editTextEmail.setError("Please provide valid email!");
             editTextEmail.requestFocus();
             return;
@@ -89,12 +89,12 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
         }
 
         progressBar.setVisibility(View.VISIBLE);
-        mAuth.createUserWithEmailAndPassword(Email, password)
+        mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            User user = new User(Name, Email);
+                            User user = new User(name);
 
                             FirebaseDatabase.getInstance().getReference("Users")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Profile")
@@ -111,6 +111,11 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                                     }
                                 }
                             });
+
+                            FirebaseDatabase.getInstance().getReference("Users")
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Rewards")
+                                    .child("Points").setValue(0);
+
                         }else{
                             Toast.makeText(RegisterUser.this, "Failed to Register!", Toast.LENGTH_LONG).show();
                             progressBar.setVisibility(View.GONE);
