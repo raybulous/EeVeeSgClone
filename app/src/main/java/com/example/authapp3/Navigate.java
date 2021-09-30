@@ -44,7 +44,7 @@ import java.util.List;
 public class Navigate extends FragmentActivity implements OnMapReadyCallback, DirectionFinderListener {
 
     private GoogleMap mMap;
-    private Button btnFindPath;
+    private Button btnFindPath, btnNearby;
     private EditText etOrigin;
     private EditText etDestination;
     private List<Marker> originMarkers = new ArrayList<>();
@@ -64,6 +64,7 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
 
+        btnNearby = (Button) findViewById(R.id.btnNearby);
         btnFindPath = (Button) findViewById(R.id.btnFindPath);
         etOrigin = (EditText) findViewById(R.id.etOrigin);
         etDestination = (EditText) findViewById(R.id.etDestination);
@@ -72,6 +73,13 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
             @Override
             public void onClick(View v) {
                 sendRequest();
+            }
+        });
+
+        btnNearby.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Navigate.this, NearbyPlaces.class));
             }
         });
 

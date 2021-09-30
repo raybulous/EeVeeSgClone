@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Authapp3">
         <activity
+            android:name=".NearbyPlaces"
+            android:exported="true" />
+        <activity
             android:name=".Rewards"
             android:exported="true" />
 
