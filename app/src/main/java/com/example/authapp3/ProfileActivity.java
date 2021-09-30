@@ -56,7 +56,6 @@ public class ProfileActivity extends AppCompatActivity {
         final TextView greetingTextView = (TextView) findViewById(R.id.greeting);
         final TextView fullNameTextView = (TextView) findViewById(R.id.fullName);
         final TextView emailTextView = (TextView) findViewById(R.id.emailAddress);
-        final TextView ageTextView = (TextView) findViewById(R.id.age);
 
 
         reference.child(userID).child("Profile").addValueEventListener(new ValueEventListener() {
