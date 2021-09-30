@@ -3,7 +3,7 @@ package com.example.authapp3;
 public class User {
     public String Name, Address, Contact;
 
-    public User(){
+    public User() {
     }
 
     public User(String name){
