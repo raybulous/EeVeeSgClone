@@ -20,6 +20,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -28,14 +29,38 @@ import com.google.android.material.navigation.NavigationBarView;
 
 public class HomePage extends AppCompatActivity {
 
-    int minteger = 0;
-
+    private Button buttonIncrease, buttonDecrease;
+    private TextView count;
+    private int minteger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
+        // Save Counter State
+        count = findViewById(R.id.counter);
+        buttonIncrease = findViewById(R.id.buttonIncrease);
+        buttonDecrease = findViewById(R.id.buttonDecrease);
+        minteger = prefConfig.loadTotalFromPref(this);
+        count.setText("" + minteger + "%");
+        buttonIncrease.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                minteger++;
+                prefConfig.saveTotalInPref(getApplicationContext(),minteger);
+                count.setText("" + minteger + "%");
+            }
+        });
+
+        buttonDecrease.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                minteger--;
+                prefConfig.saveTotalInPref(getApplicationContext(),minteger);
+                count.setText("" + minteger + "%");
+            }
+        });
 
 
         /*Transition*/
@@ -97,7 +122,8 @@ public class HomePage extends AppCompatActivity {
         overridePendingTransition(R.anim.nav_default_enter_anim,R.anim.nav_default_exit_anim);
     }
 
-    public void increaseInteger(View view)
+    // Creating Battery Alert Setting
+    /*public void increaseInteger(View view)
     {
         minteger = minteger + 1;
         display(minteger);
@@ -116,6 +142,7 @@ public class HomePage extends AppCompatActivity {
         TextView displayInteger = (TextView) findViewById(R.id.counter);
         displayInteger.setText("" + number + "%");
     }
+*/
 
 
 
