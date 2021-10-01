@@ -29,7 +29,7 @@ import com.google.android.material.navigation.NavigationBarView;
 
 public class HomePage extends AppCompatActivity {
 
-    private Button buttonIncrease, buttonDecrease;
+    private Button buttonIncrease, buttonDecrease, tempbutton;
     private TextView count;
     private int minteger;
 
@@ -61,6 +61,19 @@ public class HomePage extends AppCompatActivity {
                 count.setText("" + minteger + "%");
             }
         });
+
+        /*will be removed DO NOT REMOVE-ray*/
+      tempbutton = findViewById(R.id.tempbutton);
+        tempbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomePage.this, SearchLocation.class);
+                startActivity(intent);
+            }
+        });
+
+
+
 
 
         /*Transition*/

@@ -3,19 +3,31 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/cheng/StudioProjects/EeVeeSG/app/src/main/res/layout/activity_home_page.xml" value="0.22327898550724637" />
-        <entry key="..\:/Users/cheng/StudioProjects/EeVeeSG/app/src/main/res/layout/activity_navigate.xml" value="0.11296296296296296" />
-        <entry key="..\:/Users/cheng/StudioProjects/EeVeeSG/app/src/main/res/layout/activity_nearby_places.xml" value="0.19114583333333332" />
+        <entry key="..\:/Ray/EeVeeSG/app/src/main/res/drawable/circleedittext.xml" value="0.22447916666666667" />
+        <entry key="..\:/Ray/EeVeeSG/app/src/main/res/drawable/edittextcustom.xml" value="0.22037037037037038" />
+        <entry key="..\:/Ray/EeVeeSG/app/src/main/res/drawable/ic_location.xml" value="0.22135416666666666" />
+        <entry key="..\:/Ray/EeVeeSG/app/src/main/res/drawable/ic_lock.xml" value="0.22135416666666666" />
+        <entry key="..\:/Ray/EeVeeSG/app/src/main/res/drawable/ic_lock_green.xml" value="0.22135416666666666" />
+        <entry key="..\:/Ray/EeVeeSG/app/src/main/res/drawable/ic_magnifying_glass.xml" value="0.22135416666666666" />
+        <entry key="..\:/Ray/EeVeeSG/app/src/main/res/drawable/ic_mail.xml" value="0.2169230769230769" />
+        <entry key="..\:/Ray/EeVeeSG/app/src/main/res/drawable/ic_mail_green.xml" value="0.22135416666666666" />
+        <entry key="..\:/Ray/EeVeeSG/app/src/main/res/drawable/login_mail.xml" value="0.22135416666666666" />
+        <entry key="..\:/Ray/EeVeeSG/app/src/main/res/drawable/login_password.xml" value="0.22135416666666666" />
+        <entry key="..\:/Ray/EeVeeSG/app/src/main/res/drawable/loginpageedittextcustom.xml" value="0.22135416666666666" />
+        <entry key="..\:/Ray/EeVeeSG/app/src/main/res/drawable/mapsearchedittextcustom.xml" value="0.22037037037037038" />
+        <entry key="..\:/Ray/EeVeeSG/app/src/main/res/drawable/mapsearchedittextcustomcursor.xml" value="0.22135416666666666" />
+        <entry key="..\:/Ray/EeVeeSG/app/src/main/res/drawable/roundstyle.xml" value="0.22135416666666666" />
+        <entry key="..\:/Ray/EeVeeSG/app/src/main/res/layout/activity_forgot_password.xml" value="0.20833333333333334" />
+        <entry key="..\:/Ray/EeVeeSG/app/src/main/res/layout/activity_home_page.xml" value="0.2015625" />
+        <entry key="..\:/Ray/EeVeeSG/app/src/main/res/layout/activity_main.xml" value="0.67" />
+        <entry key="..\:/Ray/EeVeeSG/app/src/main/res/layout/activity_search_location.xml" value="0.22" />
         <entry key="..\:/Users/eric2/AndroidStudioProjects/EeVeeSG/app/src/main/res/drawable/ic_home_page.xml" value="0.14635416666666667" />
         <entry key="..\:/Users/eric2/AndroidStudioProjects/EeVeeSG/app/src/main/res/drawable/ic_launcher_background.xml" value="0.14635416666666667" />
         <entry key="..\:/Users/eric2/AndroidStudioProjects/EeVeeSG/app/src/main/res/drawable/round.xml" value="0.14635416666666667" />
         <entry key="..\:/Users/eric2/AndroidStudioProjects/EeVeeSG/app/src/main/res/drawable/roundstyle.xml" value="0.14635416666666667" />
         <entry key="..\:/Users/eric2/AndroidStudioProjects/EeVeeSG/app/src/main/res/drawable/shape.xml" value="0.2703125" />
-        <entry key="..\:/Users/eric2/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/activity_home_page.xml" value="0.1" />
+        <entry key="..\:/Users/eric2/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/activity_home_page.xml" value="0.264" />
         <entry key="..\:/Users/eric2/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/activity_main.xml" value="0.264" />
-        <entry key="..\:/Users/eric2/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/activity_maps.xml" value="0.13020833333333334" />
-        <entry key="..\:/Users/eric2/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/activity_navigate.xml" value="0.13020833333333334" />
-        <entry key="..\:/Users/eric2/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/activity_profile.xml" value="0.13020833333333334" />
       </map>
     </option>
   </component>
