@@ -1,19 +1,15 @@
 package com.example.authapp3;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
-import android.transition.Explode;
 import android.transition.Fade;
-import android.transition.Slide;
 import android.transition.Transition;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -48,17 +44,20 @@ public class Rewards extends AppCompatActivity {
                     case R.id.ic_home:
                         Intent intent = new Intent(Rewards.this, HomePage.class);
                         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(Rewards.this,bottomNavigationView ,"BottomBar");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(intent, options.toBundle());
                         break;
                     case R.id.ic_navigate:
-                        Intent intent2 = new Intent(Rewards.this, Navigate.class);
+                        Intent intent1 = new Intent(Rewards.this, Navigate.class);
                         ActivityOptions options1 = ActivityOptions.makeSceneTransitionAnimation(Rewards.this,bottomNavigationView ,"BottomBar");
-                        startActivity(intent2, options1.toBundle());
+                        intent1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        startActivity(intent1, options1.toBundle());
                         break;
                     case R.id.ic_ProfileActivity:
-                        Intent intent1 = new Intent(Rewards.this, ProfileActivity.class);
+                        Intent intent2 = new Intent(Rewards.this, ProfileActivity.class);
                         ActivityOptions options2 = ActivityOptions.makeSceneTransitionAnimation(Rewards.this,bottomNavigationView ,"BottomBar");
-                        startActivity(intent1, options2.toBundle());
+                        intent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        startActivity(intent2, options2.toBundle());
                         break;
                     case R.id.ic_Rewards:
                         break;
@@ -70,6 +69,13 @@ public class Rewards extends AppCompatActivity {
 
         /*BOTTOM NAV BAR END*/
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        overridePendingTransition(R.anim.nav_default_enter_anim,R.anim.nav_default_exit_anim);
+    }
+
     /*Backbutton Transition Animation*/
     @Override
     public void onBackPressed() {

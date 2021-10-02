@@ -7,11 +7,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.transition.Explode;
 import android.transition.Fade;
-import android.transition.Slide;
 import android.transition.Transition;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -108,26 +105,22 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
                     case R.id.ic_home:
                         Intent intent = new Intent(Navigate.this, HomePage.class);
                         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(Navigate.this,bottomNavigationView ,"BottomBar");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(intent, options.toBundle());
-
-                        //overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                         break;
                     case R.id.ic_navigate:
                         break;
                     case R.id.ic_ProfileActivity:
                         Intent intent1 = new Intent(Navigate.this, ProfileActivity.class);
                         ActivityOptions options1 = ActivityOptions.makeSceneTransitionAnimation(Navigate.this,bottomNavigationView ,"BottomBar");
+                        intent1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(intent1, options1.toBundle());
-                        //startActivity(intent1);
-                        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         break;
                     case R.id.ic_Rewards:
                         Intent intent2 = new Intent(Navigate.this, Rewards.class);
                         ActivityOptions options2 = ActivityOptions.makeSceneTransitionAnimation(Navigate.this,bottomNavigationView ,"BottomBar");
+                        intent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(intent2, options2.toBundle());
-
-                        //startActivity(intent2);
-                        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         break;
                 }
 
@@ -139,6 +132,13 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
 
 
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        overridePendingTransition(R.anim.nav_default_enter_anim,R.anim.nav_default_exit_anim);
+    }
+
     /*Backbutton Transition Animation*/
     @Override
     public void onBackPressed() {

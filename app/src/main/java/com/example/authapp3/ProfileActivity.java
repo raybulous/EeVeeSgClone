@@ -138,11 +138,13 @@ public class ProfileActivity extends AppCompatActivity {
                     case R.id.ic_home:
                         Intent intent = new Intent(ProfileActivity.this, HomePage.class);
                         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(ProfileActivity.this,bottomNavigationView ,"BottomBar");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(intent, options.toBundle());
                         break;
                     case R.id.ic_navigate:
                         Intent intent1 = new Intent(ProfileActivity.this, Navigate.class);
                         ActivityOptions options1 = ActivityOptions.makeSceneTransitionAnimation(ProfileActivity.this,bottomNavigationView ,"BottomBar");
+                        intent1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(intent1, options1.toBundle());
                         break;
                     case R.id.ic_ProfileActivity:
@@ -150,6 +152,7 @@ public class ProfileActivity extends AppCompatActivity {
                     case R.id.ic_Rewards:
                         Intent intent2 = new Intent(ProfileActivity.this, Rewards.class);
                         ActivityOptions options2 = ActivityOptions.makeSceneTransitionAnimation(ProfileActivity.this,bottomNavigationView ,"BottomBar");
+                        intent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(intent2, options2.toBundle());
                         break;
                 }
@@ -161,6 +164,13 @@ public class ProfileActivity extends AppCompatActivity {
         /*BOTTOM NAV BAR END*/
 
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        overridePendingTransition(R.anim.nav_default_enter_anim,R.anim.nav_default_exit_anim);
+    }
+
     /*Backbutton Transition Animation*/
     @Override
     public void onBackPressed() {
