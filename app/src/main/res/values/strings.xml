@@ -17,4 +17,6 @@
     <string name="qr_description">Scan to Earn Rewards</string>
     <string name="logout">Logout</string>
     <string name="ev_car">EV Car</string>
+    <string name="electric_vehicle">Electric Vehicle</string>
+    <string name="can_add_ev">Your Electric Vehicle Can Be Synchronised To This Application</string>
 </resources>
