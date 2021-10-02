@@ -13,4 +13,8 @@
     <string name="exit_toast">Pressing back again will exit the app</string>
     <string name="title_activity_search_location">SearchLocation</string>
     <string name="logout_toast">Pressing back again will logout</string>
+    <string name="back">BACK</string>
+    <string name="qr_description">Scan to Earn Rewards</string>
+    <string name="logout">Logout</string>
+    <string name="ev_car">EV Car</string>
 </resources>

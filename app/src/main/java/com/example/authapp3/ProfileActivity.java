@@ -7,7 +7,6 @@ import android.transition.Fade;
 import android.transition.Transition;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -25,62 +24,38 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class ProfileActivity extends AppCompatActivity {
-    private Button logout, navigate, ev, qr, profile;
-    private String userID, userEmail;
-    private FirebaseUser user;
-    private DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        ev = (Button) findViewById(R.id.evButton);
-        qr = (Button) findViewById(R.id.qrButton);
-        profile = (Button) findViewById(R.id.profileButton);
-        logout = (Button) findViewById(R.id.signOut);
-        qr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ProfileActivity.this, MemberQR.class);
-                startActivity(intent);
-            }
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+        String userID = user.getUid();
+        String userEmail = user.getEmail();
+
+        Button ev = (Button) findViewById(R.id.evButton);
+        Button qr = (Button) findViewById(R.id.qrButton);
+        Button profile = (Button) findViewById(R.id.profileButton);
+        Button logout = (Button) findViewById(R.id.signOut);
+        qr.setOnClickListener(view -> {
+            Intent intent = new Intent(ProfileActivity.this, MemberQR.class);
+            intent.putExtra("userID", userID);
+            startActivity(intent);
         });
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
+        logout.setOnClickListener(view -> {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         });
 
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("Users");
-        userID = user.getUid();
-        userEmail = user.getEmail();
-
-        final TextView profileHeaderTextView = (TextView) findViewById(R.id.profileHeader);
         final TextView fullNameTextView = (TextView) findViewById(R.id.fullName);
         final TextView emailTextView = (TextView) findViewById(R.id.emailAddress);
         final TextView evModelTextView = (TextView) findViewById(R.id.evModel);
         final TextView evColourTextView = (TextView) findViewById(R.id.evColour);
         final TextView batteryStatusTextView = (TextView) findViewById(R.id.batteryStatus);
-        final TextView memberCodeTextView = (TextView) findViewById(R.id.memberCode);
-        final TextView memberDescTextView = (TextView) findViewById(R.id.memberDesc);
-        final TextView personalDetailsTextView = (TextView) findViewById(R.id.personalDetails);
-        final TextView personalDescTextView = (TextView) findViewById(R.id.personalDesc);
-
-        profileHeaderTextView.setText(R.string.profile_header);
-        memberCodeTextView.setText(R.string.member_code);
-        memberDescTextView.setText(R.string.member_desc);
-        personalDetailsTextView.setText(R.string.personal_details);
-        personalDescTextView.setText(R.string.personal_desc);
-        evModelTextView.setText(R.string.no_ev);
-        evColourTextView.setText(R.string.unavailable);
-        fullNameTextView.setText(R.string.name);
-        emailTextView.setText(R.string.email);
 
         reference.child(userID).child("Profile").addValueEventListener(new ValueEventListener() {
             @Override
@@ -90,9 +65,8 @@ public class ProfileActivity extends AppCompatActivity {
 
                 if(userProfile != null) {
                     String fullName = userProfile.Name;
-                    String email = userEmail;
                     fullNameTextView.setText(fullName);
-                    emailTextView.setText(email);
+                    emailTextView.setText(userEmail);
                 }
             }
 
