@@ -1,30 +1,20 @@
 package com.example.authapp3;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
 import android.app.ActivityOptions;
-import android.transition.Explode;
-import android.transition.Fade;
-import android.transition.Slide;
-import android.transition.Transition;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.transition.Fade;
+import android.transition.Transition;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarItemView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class HomePage extends AppCompatActivity {
@@ -111,18 +101,21 @@ public class HomePage extends AppCompatActivity {
                     case R.id.ic_navigate:
                         Intent intent = new Intent(HomePage.this,Navigate.class);
                         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(HomePage.this,bottomNavigationView ,"BottomBar");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(intent, options.toBundle());
                         break;
 
                     case R.id.ic_ProfileActivity:
                         Intent intent1 = new Intent(HomePage.this,ProfileActivity.class);
                         ActivityOptions options1 = ActivityOptions.makeSceneTransitionAnimation(HomePage.this,bottomNavigationView ,"BottomBar");
+                        intent1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(intent1, options1.toBundle());
                         break;
 
                     case R.id.ic_Rewards:
                         Intent intent2 = new Intent(HomePage.this,Rewards.class);
                         ActivityOptions options2 = ActivityOptions.makeSceneTransitionAnimation(HomePage.this,bottomNavigationView ,"BottomBar");
+                        intent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(intent2, options2.toBundle());
                         break;
                 }
@@ -137,6 +130,13 @@ public class HomePage extends AppCompatActivity {
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(R.id.home,R.id.navigate,R.id.profileActivity,R.id.rewards).build();*/
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        overridePendingTransition(R.anim.nav_default_enter_anim,R.anim.nav_default_exit_anim);
+    }
+
     /*Backbutton Transition Animation*/
     @Override
     public void onBackPressed() {
