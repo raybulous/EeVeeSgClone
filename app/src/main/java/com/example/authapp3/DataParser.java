@@ -1,4 +1,4 @@
-package com.example.mapsnearbyplaces;
+package com.example.authapp3;
 
 import android.util.Log;
 

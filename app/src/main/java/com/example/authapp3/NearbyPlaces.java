@@ -99,7 +99,7 @@ public class NearbyPlaces extends FragmentActivity implements OnMapReadyCallback
                 DataTransfer[0] = mMap;
                 DataTransfer[1] = url;
                 Log.d("onClick", url);
-                com.example.mapsnearbyplaces.GetNearbyPlacesData getNearbyPlacesData = new com.example.mapsnearbyplaces.GetNearbyPlacesData();
+                com.example.authapp3.GetNearbyPlacesData getNearbyPlacesData = new com.example.authapp3.GetNearbyPlacesData();
                 getNearbyPlacesData.execute(DataTransfer);
                 Toast.makeText(NearbyPlaces.this,"Nearby Restaurants", Toast.LENGTH_LONG).show();
 //                Toast.makeText(MapsActivity.this,"lat: "+lati+" , long"+longi , Toast.LENGTH_LONG).show();
@@ -118,7 +118,7 @@ public class NearbyPlaces extends FragmentActivity implements OnMapReadyCallback
                 DataTransfer[0] = mMap;
                 DataTransfer[1] = url;
                 Log.d("onClick", url);
-                com.example.mapsnearbyplaces.GetNearbyPlacesData getNearbyPlacesData = new com.example.mapsnearbyplaces.GetNearbyPlacesData();
+                com.example.authapp3.GetNearbyPlacesData getNearbyPlacesData = new com.example.authapp3.GetNearbyPlacesData();
                 getNearbyPlacesData.execute(DataTransfer);
                 Toast.makeText(NearbyPlaces.this,"Nearby Hospitals", Toast.LENGTH_LONG).show();
             }
@@ -139,7 +139,7 @@ public class NearbyPlaces extends FragmentActivity implements OnMapReadyCallback
                 DataTransfer[0] = mMap;
                 DataTransfer[1] = url;
                 Log.d("onClick", url);
-                com.example.mapsnearbyplaces.GetNearbyPlacesData getNearbyPlacesData = new com.example.mapsnearbyplaces.GetNearbyPlacesData();
+                com.example.authapp3.GetNearbyPlacesData getNearbyPlacesData = new com.example.authapp3.GetNearbyPlacesData();
                 getNearbyPlacesData.execute(DataTransfer);
                 Toast.makeText(NearbyPlaces.this,"Nearby Schools", Toast.LENGTH_LONG).show();
             }

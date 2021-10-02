@@ -1,4 +1,4 @@
-package com.example.mapsnearbyplaces;
+package com.example.authapp3;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -11,10 +11,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.HashMap;
 import java.util.List;
-
-/**
- * Created by chellin on 14/11/16.
- */
 
 public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
 
