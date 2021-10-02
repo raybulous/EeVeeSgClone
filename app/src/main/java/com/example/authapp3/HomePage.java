@@ -3,23 +3,24 @@ package com.example.authapp3;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.transition.Fade;
 import android.transition.Transition;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class HomePage extends AppCompatActivity {
 
-    private Button buttonIncrease, buttonDecrease, tempbutton;
     private TextView count;
     private int minteger;
 
@@ -30,45 +31,39 @@ public class HomePage extends AppCompatActivity {
 
         // Save Counter State
         count = findViewById(R.id.counter);
-        buttonIncrease = findViewById(R.id.buttonIncrease);
-        buttonDecrease = findViewById(R.id.buttonDecrease);
+        Button buttonIncrease = findViewById(R.id.buttonIncrease);
+        Button buttonDecrease = findViewById(R.id.buttonDecrease);
         minteger = prefConfig.loadTotalFromPref(this);
-        count.setText("" + minteger + "%");
-        buttonIncrease.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                minteger++;
-                if (minteger > 100)
-                {
-                    minteger = 100;
-                }
-                prefConfig.saveTotalInPref(getApplicationContext(),minteger);
-                count.setText("" + minteger + "%");
+        String alertThreshold = minteger+"%";
+        count.setText(alertThreshold);
+        buttonIncrease.setOnClickListener(view -> {
+            minteger += 5;
+            if (minteger > 50)
+            {
+                minteger = 50;
             }
+            prefConfig.saveTotalInPref(getApplicationContext(),minteger);
+            String alertThreshold1 = minteger+"%";
+            count.setText(alertThreshold1);
         });
 
-        buttonDecrease.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                minteger--;
-                if (minteger < 0)
-                {
-                    minteger = 0;
-                }
-
-                prefConfig.saveTotalInPref(getApplicationContext(), minteger);
-                count.setText("" + minteger + "%");
+        buttonDecrease.setOnClickListener(view -> {
+            minteger -= 5;
+            if (minteger < 0)
+            {
+                minteger = 0;
             }
+
+            prefConfig.saveTotalInPref(getApplicationContext(), minteger);
+            String alertThreshold12 = minteger+"%";
+            count.setText(alertThreshold12);
         });
 
         /*will be removed DO NOT REMOVE-ray*/
-      tempbutton = findViewById(R.id.tempbutton);
-        tempbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(HomePage.this, SearchLocation.class);
-                startActivity(intent);
-            }
+        Button tempbutton = findViewById(R.id.tempbutton);
+        tempbutton.setOnClickListener(view -> {
+            Intent intent = new Intent(HomePage.this, SearchLocation.class);
+            startActivity(intent);
         });
 
 
@@ -138,9 +133,23 @@ public class HomePage extends AppCompatActivity {
     }
 
     /*Backbutton Transition Animation*/
+    private boolean doubleBackToLogoutPressedOnce = false, showWarningToast = true;
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (doubleBackToLogoutPressedOnce) {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(HomePage.this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        } else if (showWarningToast) {
+            Toast.makeText(this, this.getResources().getString(R.string.logout_toast), Toast.LENGTH_SHORT).show();
+            showWarningToast = false;
+            new Handler().postDelayed(() -> doubleBackToLogoutPressedOnce = true, 1500);
+            new Handler().postDelayed(() -> {
+                doubleBackToLogoutPressedOnce = false;
+                showWarningToast = true;
+            }, 4000);
+        }
         overridePendingTransition(R.anim.nav_default_enter_anim,R.anim.nav_default_exit_anim);
     }
 

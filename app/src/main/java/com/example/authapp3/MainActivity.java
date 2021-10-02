@@ -11,19 +11,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 // hello world
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private TextView register, forgotPassword;
     private EditText editTextEmail, editTextPassword;
-    private Button signIn;
 
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
@@ -33,10 +27,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        register = (TextView) findViewById(R.id.register);
+        TextView register = (TextView) findViewById(R.id.register);
         register.setOnClickListener(this);
 
-        signIn = (Button) findViewById(R.id.signIn);
+        Button signIn = (Button) findViewById(R.id.signIn);
         signIn.setOnClickListener(this);
 
         editTextEmail = (EditText) findViewById(R.id.email);
@@ -46,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mAuth = FirebaseAuth.getInstance();
 
-        forgotPassword = (TextView) findViewById(R.id.forgotPassword);
+        TextView forgotPassword = (TextView) findViewById(R.id.forgotPassword);
         forgotPassword.setOnClickListener(this);
 
 
@@ -101,43 +95,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             progressBar.setVisibility(View.GONE);
 
-            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()){
-                        //redirect user profile
-                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                        if(user.isEmailVerified()){
-                            startActivity(new Intent(MainActivity.this, HomePage.class));
-                        }else{
-                            user.sendEmailVerification();
-                            Toast.makeText(MainActivity.this, "Check your email to verify account", Toast.LENGTH_LONG).show();
-                        }
+            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
+                    //redirect user profile
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    if(user.isEmailVerified()){
+                        startActivity(new Intent(MainActivity.this, HomePage.class));
+                    }else{
+                        user.sendEmailVerification();
+                        Toast.makeText(MainActivity.this, "Check your email to verify account", Toast.LENGTH_LONG).show();
+                    }
 
-                    }
-                    else{
-                        Toast.makeText(MainActivity.this, "Failed to login, please check credentials!", Toast.LENGTH_LONG).show();
-                    }
+                }
+                else{
+                    Toast.makeText(MainActivity.this, "Failed to login, please check credentials!", Toast.LENGTH_LONG).show();
                 }
             });
     }
 
-    private boolean doubleBackToExitPressedOnce = false;
+    private boolean doubleBackToExitPressedOnce = false, showWarningToast = true;
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
             super.onBackPressed();
-        }
-
-        this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, this.getResources().getString(R.string.exit_toast), Toast.LENGTH_SHORT).show();
-
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
+        } else if (showWarningToast) {
+            Toast.makeText(this, this.getResources().getString(R.string.exit_toast), Toast.LENGTH_SHORT).show();
+            showWarningToast = false;
+            new Handler().postDelayed(() -> doubleBackToExitPressedOnce = true, 1500);
+            new Handler().postDelayed(() -> {
                 doubleBackToExitPressedOnce = false;
-            }
-        }, 2000);
+                showWarningToast = true;
+            }, 4000);
+        }
     }
 }
