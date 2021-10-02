@@ -1,28 +1,32 @@
 package com.example.authapp3;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 public class MemberQR extends AppCompatActivity {
-    private WebView qrCode;
-    private String userID;
-    private String memberCode;
-    private TextView testttt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member_qr);
 
-        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Button qrBackTextView = (Button) findViewById(R.id.qrBack);
+        qrBackTextView.setOnClickListener(view -> MemberQR.this.finish());
 
-        qrCode = (WebView) findViewById(R.id.qrCodeDisplay);
-        String URL = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=EeVeeSG"+userID;
+        final TextView qrAccountNumberTextView = (TextView) findViewById(R.id.qrAccountNumber);
+
+        Intent intent = getIntent();
+        String userid = intent.getStringExtra("userID");
+        String displayAccountNumber = "Account: "+userid;
+        qrAccountNumberTextView.setText(displayAccountNumber);
+
+        WebView qrCode = (WebView) findViewById(R.id.qrCodeDisplay);
+        String URL = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=EeVeeSG"+userid;
         qrCode.loadUrl(URL);
     }
 
