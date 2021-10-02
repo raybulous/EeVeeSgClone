@@ -39,6 +39,13 @@ public class ProfileActivity extends AppCompatActivity {
         qr = (Button) findViewById(R.id.qrButton);
         profile = (Button) findViewById(R.id.profileButton);
         logout = (Button) findViewById(R.id.signOut);
+        qr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProfileActivity.this, MemberQR.class);
+                startActivity(intent);
+            }
+        });
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
