@@ -18,6 +18,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Authapp3">
         <activity
+            android:name=".ProfileDetails"
+            android:exported="true" />
+        <activity
+            android:name=".EVPage"
+            android:exported="true" />
+        <activity
             android:name=".MemberQR"
             android:exported="true" />
         <!--

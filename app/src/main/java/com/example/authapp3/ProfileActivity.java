@@ -35,13 +35,21 @@ public class ProfileActivity extends AppCompatActivity {
         String userID = user.getUid();
         String userEmail = user.getEmail();
 
-        Button ev = (Button) findViewById(R.id.evButton);
-        Button qr = (Button) findViewById(R.id.qrButton);
-        Button profile = (Button) findViewById(R.id.profileButton);
-        Button logout = (Button) findViewById(R.id.signOut);
+        Button ev = findViewById(R.id.evButton);
+        Button qr = findViewById(R.id.qrButton);
+        Button profile = findViewById(R.id.profileButton);
+        Button logout = findViewById(R.id.signOut);
+        ev.setOnClickListener(view -> {
+            Intent intent = new Intent(ProfileActivity.this, EVPage.class);
+            startActivity(intent);
+        });
         qr.setOnClickListener(view -> {
             Intent intent = new Intent(ProfileActivity.this, MemberQR.class);
             intent.putExtra("userID", userID);
+            startActivity(intent);
+        });
+        profile.setOnClickListener(view -> {
+            Intent intent = new Intent(ProfileActivity.this, ProfileDetails.class);
             startActivity(intent);
         });
         logout.setOnClickListener(view -> {
@@ -51,11 +59,11 @@ public class ProfileActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        final TextView fullNameTextView = (TextView) findViewById(R.id.fullName);
-        final TextView emailTextView = (TextView) findViewById(R.id.emailAddress);
-        final TextView evModelTextView = (TextView) findViewById(R.id.evModel);
-        final TextView evColourTextView = (TextView) findViewById(R.id.evColour);
-        final TextView batteryStatusTextView = (TextView) findViewById(R.id.batteryStatus);
+        final TextView fullNameTextView = findViewById(R.id.fullName);
+        final TextView emailTextView = findViewById(R.id.emailAddress);
+        final TextView evModelTextView = findViewById(R.id.evModel);
+        final TextView evColourTextView = findViewById(R.id.evColour);
+        final TextView batteryStatusTextView = findViewById(R.id.batteryStatus);
 
         reference.child(userID).child("Profile").addValueEventListener(new ValueEventListener() {
             @Override

@@ -15,18 +15,18 @@ public class MemberQR extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member_qr);
 
-        Button qrBackTextView = (Button) findViewById(R.id.qrBack);
-        qrBackTextView.setOnClickListener(view -> MemberQR.this.finish());
+        Button backTextView = findViewById(R.id.Back);
+        backTextView.setOnClickListener(view -> MemberQR.this.finish());
 
-        final TextView qrAccountNumberTextView = (TextView) findViewById(R.id.qrAccountNumber);
+        final TextView qrAccountNumberTextView = findViewById(R.id.qrAccountNumber);
 
         Intent intent = getIntent();
         String userid = intent.getStringExtra("userID");
-        String displayAccountNumber = "Account: "+userid;
+        String displayAccountNumber = "EVSG"+userid;
         qrAccountNumberTextView.setText(displayAccountNumber);
 
-        WebView qrCode = (WebView) findViewById(R.id.qrCodeDisplay);
-        String URL = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=EeVeeSG"+userid;
+        WebView qrCode = findViewById(R.id.qrCodeDisplay);
+        String URL = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=EVSG"+userid;
         qrCode.loadUrl(URL);
     }
 
