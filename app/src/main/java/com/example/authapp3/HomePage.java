@@ -48,6 +48,10 @@ public class HomePage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 minteger++;
+                if (minteger > 100)
+                {
+                    minteger = 100;
+                }
                 prefConfig.saveTotalInPref(getApplicationContext(),minteger);
                 count.setText("" + minteger + "%");
             }
@@ -57,7 +61,12 @@ public class HomePage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 minteger--;
-                prefConfig.saveTotalInPref(getApplicationContext(),minteger);
+                if (minteger < 0)
+                {
+                    minteger = 0;
+                }
+
+                prefConfig.saveTotalInPref(getApplicationContext(), minteger);
                 count.setText("" + minteger + "%");
             }
         });
