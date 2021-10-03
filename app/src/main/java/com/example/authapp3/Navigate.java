@@ -76,7 +76,7 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
         btnNearby.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Navigate.this, NearbyPlaces.class));
+                startActivity(new Intent(Navigate.this, com.example.authapp3.nearby.nearby.class));
             }
         });
 
