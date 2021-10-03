@@ -15,8 +15,8 @@ public class MemberQR extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member_qr);
 
-        Button backTextView = findViewById(R.id.Back);
-        backTextView.setOnClickListener(view -> MemberQR.this.finish());
+        Button backButton = findViewById(R.id.Back);
+        backButton.setOnClickListener(view -> MemberQR.this.finish());
 
         final TextView qrAccountNumberTextView = findViewById(R.id.qrAccountNumber);
 

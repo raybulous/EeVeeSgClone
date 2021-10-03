@@ -41,6 +41,7 @@ public class ProfileActivity extends AppCompatActivity {
         Button logout = findViewById(R.id.signOut);
         ev.setOnClickListener(view -> {
             Intent intent = new Intent(ProfileActivity.this, EVPage.class);
+            intent.putExtra("userID", userID);
             startActivity(intent);
         });
         qr.setOnClickListener(view -> {
@@ -59,17 +60,16 @@ public class ProfileActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        final TextView fullNameTextView = findViewById(R.id.fullName);
-        final TextView emailTextView = findViewById(R.id.emailAddress);
-        final TextView evModelTextView = findViewById(R.id.evModel);
-        final TextView evColourTextView = findViewById(R.id.evColour);
-        final TextView batteryStatusTextView = findViewById(R.id.batteryStatus);
+        TextView fullNameTextView = findViewById(R.id.fullName);
+        TextView emailTextView = findViewById(R.id.emailAddress);
+        TextView evModelTextView = findViewById(R.id.evModel);
+        TextView evColourTextView = findViewById(R.id.evColour);
+        TextView batteryStatusTextView = findViewById(R.id.batteryStatus);
 
         reference.child(userID).child("Profile").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User userProfile = snapshot.getValue(User.class);
-
 
                 if(userProfile != null) {
                     String fullName = userProfile.Name;

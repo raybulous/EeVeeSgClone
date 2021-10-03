@@ -12,7 +12,7 @@ public class ProfileDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_details);
 
-        Button backTextView = findViewById(R.id.Back);
-        backTextView.setOnClickListener(view -> ProfileDetails.this.finish());
+        Button backButton = findViewById(R.id.Back);
+        backButton.setOnClickListener(view -> ProfileDetails.this.finish());
     }
 }

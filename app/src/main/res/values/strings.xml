@@ -1,22 +1,33 @@
 <resources>
     <string name="app_name">authapp3</string>
+    <string name="back">BACK</string>
+    <string name="battery_level">Battery Level:</string>
+    <string name="can_add_ev">Your Electric Vehicle Can Be Synchronised To This Application</string>
+    <string name="cancel">Cancel</string>
+    <string name="dash_percent">- %</string>
+    <string name="email">email@email.com</string>
+    <string name="electric_vehicle">Electric Vehicle</string>
+    <string name="ev_car">EV Car</string>
+    <string name="ev_colour">EV Colour</string>
+    <string name="ev_model">EV Model</string>
+    <string name="exit_toast">Pressing back again will exit the app</string>
+    <string name="input_ev">Input EV Details</string>
+    <string name="link_ev">Link EV</string>
+    <string name="logout_toast">Pressing back again will logout</string>
+    <string name="logout">Logout</string>
     <string name="map_key" translatable="false">AIzaSyB4jNfDzwogpxS5Q3lZKNdVlGzA_ipiOCQ</string>
-    <string name="profile_header">Personal Profile</string>
     <string name="member_code">Member Code</string>
     <string name="member_desc">Scan your Member QR code to start earning points!</string>
-    <string name="personal_details">Personal Details</string>
-    <string name="personal_desc">View and update your personal details</string>
-    <string name="no_ev">No EV linked</string>
-    <string name="unavailable">Unavailable</string>
+    <string name="model">Model:</string>
     <string name="name">Name</string>
-    <string name="email">email@email.com</string>
-    <string name="exit_toast">Pressing back again will exit the app</string>
+    <string name="no_ev">No EV linked</string>
+    <string name="personal_desc">View and update your personal details</string>
+    <string name="personal_details">Personal Details</string>
+    <string name="profile_header">Personal Profile</string>
+    <string name="relink_ev">Relink EV</string>
+    <string name="save">Save</string>
+    <string name="synchronisation">Synchronisation:</string>
     <string name="title_activity_search_location">SearchLocation</string>
-    <string name="logout_toast">Pressing back again will logout</string>
-    <string name="back">BACK</string>
+    <string name="unavailable">Unavailable</string>
     <string name="qr_description">Scan to Earn Rewards</string>
-    <string name="logout">Logout</string>
-    <string name="ev_car">EV Car</string>
-    <string name="electric_vehicle">Electric Vehicle</string>
-    <string name="can_add_ev">Your Electric Vehicle Can Be Synchronised To This Application</string>
 </resources>
