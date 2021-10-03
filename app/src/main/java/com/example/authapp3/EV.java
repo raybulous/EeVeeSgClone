@@ -5,6 +5,7 @@ public class EV {
     public int BatteryStatus;
 
     public EV() {
+
     }
 
     public EV(String chargeStatus, String colour, String model, int batteryStatus) {
