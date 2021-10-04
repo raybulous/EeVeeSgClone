@@ -53,10 +53,10 @@ public class PlacesListAdapter extends ArrayAdapter<Result> {
             Result result = results.get(position);
             viewHolder.textViewName.setText(result.getName());
             viewHolder.textViewAddress.setText(result.getVicinity());
-            //Photo photoarray = result.getPhotos();
-            //String photourl = "https://maps.googleapis.com/maps/api/place/photo" +"?maxwidth=1600" +
-                    //"&photo_reference="+ photoarray.getPhotoReference() + "&key=" + "AIzaSyB4jNfDzwogpxS5Q3lZKNdVlGzA_ipiOCQ";
-            //photo = new ImageRequestAsk().execute(photourl).get();
+            Photo photoarray = result.getPhotos().get(0);
+            String photourl = "https://maps.googleapis.com/maps/api/place/photo" +"?maxwidth=400" +
+                    "&photo_reference="+ photoarray.getPhotoReference() + "&key=" + "AIzaSyB4jNfDzwogpxS5Q3lZKNdVlGzA_ipiOCQ";
+            photo = new ImageRequestAsk().execute(photourl).get();
             if(photo == null){
                 photo = new ImageRequestAsk().execute(result.getIcon()).get();
                 }
