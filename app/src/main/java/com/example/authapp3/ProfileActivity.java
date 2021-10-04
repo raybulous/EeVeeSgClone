@@ -51,6 +51,8 @@ public class ProfileActivity extends AppCompatActivity {
         });
         profile.setOnClickListener(view -> {
             Intent intent = new Intent(ProfileActivity.this, ProfileDetails.class);
+            intent.putExtra("userID", userID);
+            intent.putExtra("userEmail", userEmail);
             startActivity(intent);
         });
         logout.setOnClickListener(view -> {
@@ -66,15 +68,15 @@ public class ProfileActivity extends AppCompatActivity {
         TextView evColourTextView = findViewById(R.id.evColour);
         TextView batteryStatusTextView = findViewById(R.id.batteryStatus);
 
+        emailTextView.setText(userEmail);
+
         reference.child(userID).child("Profile").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User userProfile = snapshot.getValue(User.class);
 
                 if(userProfile != null) {
-                    String fullName = userProfile.Name;
-                    fullNameTextView.setText(fullName);
-                    emailTextView.setText(userEmail);
+                    fullNameTextView.setText(userProfile.Name);
                 }
             }
 
