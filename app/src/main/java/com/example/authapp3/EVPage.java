@@ -30,7 +30,7 @@ public class EVPage extends AppCompatActivity {
     private List<String> evModels, evColours;
     private AlertDialog dialog;
     private ProgressBar progressBarEV;
-    private String userid, selectedEVModel, selectedEVColour, evModel;
+    private String userid, selectedEVModel, selectedEVColour, evModel, chargingStatus = "Not Charging";
     private int batteryStatus = 100;
     private DatabaseReference userReference;
     private Spinner spinnerEVModel, spinnerEVColour;
@@ -53,7 +53,7 @@ public class EVPage extends AppCompatActivity {
         userid = intent.getStringExtra("userID");
 
         Button linkEV = findViewById(R.id.link_ev);
-        linkEV.setOnClickListener(view -> createNewContactDialog());
+        linkEV.setOnClickListener(view -> linkEVDialog());
 
         userReference.child(userid).child("EV").addValueEventListener(new ValueEventListener() {
             @Override
@@ -64,6 +64,7 @@ public class EVPage extends AppCompatActivity {
                     evModel = evProfile.Model;
                     batteryStatus = evProfile.BatteryStatus;
                     String batteryStatusDisplay = batteryStatus+"%";
+                    chargingStatus = evProfile.ChargeStatus;
                     evModelTextView.setText(evModel);
                     batteryPercentTextView.setText(batteryStatusDisplay);
                     linkEV.setText(R.string.relink_ev);
@@ -112,7 +113,7 @@ public class EVPage extends AppCompatActivity {
         });
     }
 
-    private void createNewContactDialog() {
+    private void linkEVDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         final View evPopupView = getLayoutInflater().inflate(R.layout.popup_linkev, null);
         Button save = evPopupView.findViewById(R.id.link_ev_save);
@@ -161,7 +162,7 @@ public class EVPage extends AppCompatActivity {
             return;
         }
         progressBarEV.setVisibility(View.VISIBLE);
-        EV ev = new EV("Not Charging", selectedEVColour, selectedEVModel, batteryStatus);
+        EV ev = new EV(chargingStatus, selectedEVColour, selectedEVModel, batteryStatus);
         userReference.child(userid).child("EV").setValue(ev);
         Toast.makeText(EVPage.this, "EV successfully linked", Toast.LENGTH_LONG).show();
         progressBarEV.setVisibility(View.GONE);
