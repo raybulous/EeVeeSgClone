@@ -25,9 +25,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class ProfileActivity extends AppCompatActivity {
-    private ImageButton profile;
-    private String userID, userEmail;
+
     private FirebaseUser user;
+    private String userID, userEmail;
     private TextView emailTextView;
 
     @Override
@@ -42,7 +42,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         ImageButton ev = findViewById(R.id.evButton);
         ImageButton qr = findViewById(R.id.qrButton);
-        profile = findViewById(R.id.profileButton);
+        ImageButton profile = findViewById(R.id.profileButton);
         Button logout = findViewById(R.id.signOut);
         ev.setOnClickListener(view -> {
             Intent intent = new Intent(ProfileActivity.this, EVPage.class);
@@ -57,7 +57,6 @@ public class ProfileActivity extends AppCompatActivity {
         profile.setOnClickListener(view -> {
             Intent intent = new Intent(ProfileActivity.this, ProfileDetails.class);
             intent.putExtra("userID", userID);
-            intent.putExtra("userEmail", userEmail);
             startActivity(intent);
         });
         logout.setOnClickListener(view -> {
@@ -168,12 +167,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         userEmail = user.getEmail();
         emailTextView.setText(userEmail);
-        profile.setOnClickListener(view -> {
-            Intent intent1 = new Intent(ProfileActivity.this, ProfileDetails.class);
-            intent1.putExtra("userID", userID);
-            intent1.putExtra("userEmail", userEmail);
-            startActivity(intent1);
-        });
     }
 
     /*Backbutton Transition Animation*/

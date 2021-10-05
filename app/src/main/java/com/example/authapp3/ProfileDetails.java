@@ -31,11 +31,11 @@ import java.util.regex.Pattern;
 public class ProfileDetails extends AppCompatActivity {
 
     private AlertDialog dialog;
-    private DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+    private final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
     private EditText editTextProfile, editTextSensitive, editTextSensitiveNew, editTextSensitiveConfirm;
-    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private ProgressBar progressBarProfile, progressBarSensitive;
-    private String editedValue, userID, sensitive1, sensitive2, sensitive3, userEmail;
+    private String editedValue, sensitive1, sensitive2, sensitive3, userID, userEmail;
     private TextView pdEmail;
 
     @Override
@@ -60,7 +60,7 @@ public class ProfileDetails extends AppCompatActivity {
 
         Intent intent = getIntent();
         userID = intent.getStringExtra("userID");
-        userEmail = intent.getStringExtra("userEmail");
+        userEmail = user.getEmail();
         pdEmail.setText(userEmail);
 
         reference.child(userID).child("Profile").addValueEventListener(new ValueEventListener() {
@@ -207,7 +207,7 @@ public class ProfileDetails extends AppCompatActivity {
             return;
         }
         try {
-            int intValue = Integer.parseInt(editedValue);
+            Integer.parseInt(editedValue);
         } catch (NumberFormatException e) {
             editTextProfile.setError("Must be contact number");
             editTextProfile.requestFocus();
