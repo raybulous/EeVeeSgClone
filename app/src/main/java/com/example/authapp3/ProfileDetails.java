@@ -26,6 +26,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.regex.Pattern;
+
 public class ProfileDetails extends AppCompatActivity {
 
     private AlertDialog dialog;
@@ -116,17 +118,15 @@ public class ProfileDetails extends AppCompatActivity {
         dialog.show();
 
         save.setOnClickListener(view -> {
+            editedValue = editTextProfile.getText().toString().trim();
             switch (option) {
                 case 0:
-                    editedValue = editTextProfile.getText().toString().trim();
                     editName(initialValue);
                     break;
                 case 1:
-                    editedValue = editTextProfile.getText().toString().trim();
                     editContact(initialValue);
                     break;
                 case 2:
-                    editedValue = editTextProfile.getText().toString().trim();
                     editAddress(initialValue);
                     break;
             }
@@ -147,21 +147,13 @@ public class ProfileDetails extends AppCompatActivity {
         editTextSensitiveConfirm = sensitivePopupView.findViewById(R.id.editTextSensitiveConfirm);
         progressBarSensitive = sensitivePopupView.findViewById(R.id.progressBarSensitive);
 
-        switch (option) {
-            case 0:
-                editSensitiveDetails.setText(R.string.change_email);
-                editTextSensitive.setHint(R.string.password);
-                editTextSensitiveNew.setHint(R.string.new_email);
-                editTextSensitiveNew.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-                editTextSensitiveConfirm.setHint(R.string.confirm_email);
-                editTextSensitiveConfirm.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-                break;
-            case 1:
-                editSensitiveDetails.setText(R.string.change_password);
-                editTextSensitive.setHint(R.string.old_password);
-                editTextSensitiveNew.setHint(R.string.new_password);
-                editTextSensitiveConfirm.setHint(R.string.confirm_password);
-                break;
+        if(option==0) {
+            editSensitiveDetails.setText(R.string.change_email);
+            editTextSensitive.setHint(R.string.password);
+            editTextSensitiveNew.setHint(R.string.new_email);
+            editTextSensitiveNew.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+            editTextSensitiveConfirm.setHint(R.string.confirm_email);
+            editTextSensitiveConfirm.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         }
 
         dialogBuilder.setView(sensitivePopupView);
@@ -169,17 +161,14 @@ public class ProfileDetails extends AppCompatActivity {
         dialog.show();
 
         save.setOnClickListener(view -> {
+            sensitive1 = editTextSensitive.getText().toString().trim();
+            sensitive2 = editTextSensitiveNew.getText().toString().trim();
+            sensitive3 = editTextSensitiveConfirm.getText().toString().trim();
             switch (option) {
                 case 0:
-                    sensitive1 = editTextSensitive.getText().toString().trim();
-                    sensitive2 = editTextSensitiveNew.getText().toString().trim();
-                    sensitive3 = editTextSensitiveConfirm.getText().toString().trim();
                     changeEmail(initialEmail);
                     break;
                 case 1:
-                    sensitive1 = editTextSensitive.getText().toString().trim();
-                    sensitive2 = editTextSensitiveNew.getText().toString().trim();
-                    sensitive3 = editTextSensitiveConfirm.getText().toString().trim();
                     changePassword(initialEmail);
                     break;
             }
@@ -260,6 +249,11 @@ public class ProfileDetails extends AppCompatActivity {
     }
 
     private void changeEmail(String initialEmail) {
+        if(sensitive1.isEmpty()){
+            editTextSensitive.setError("Password is required!");
+            editTextSensitive.requestFocus();
+            return;
+        }
         if(sensitive2.isEmpty()){
             editTextSensitiveNew.setError("Email is required!");
             editTextSensitiveNew.requestFocus();
@@ -314,6 +308,9 @@ public class ProfileDetails extends AppCompatActivity {
     }
 
     private void changePassword(String initialEmail) {
+        Pattern UpperCasePatten = Pattern.compile("[A-Z ]");
+        Pattern lowerCasePatten = Pattern.compile("[a-z ]");
+        Pattern digitCasePatten = Pattern.compile("[0-9 ]");
         if(sensitive1.isEmpty()){
             editTextSensitive.setError("Old password is required!");
             editTextSensitive.requestFocus();
@@ -329,13 +326,23 @@ public class ProfileDetails extends AppCompatActivity {
             editTextSensitiveConfirm.requestFocus();
             return;
         }
-        if (sensitive1.length() < 8){
-            editTextSensitive.setError("Password must be longer than 8 characters!");
-            editTextSensitive.requestFocus();
+        if (sensitive2.length() < 8){
+            editTextSensitiveNew.setError("Password must have minimum 8 characters!");
+            editTextSensitiveNew.requestFocus();
             return;
         }
-        if (sensitive2.length() < 8){
-            editTextSensitiveNew.setError("Password must be longer than 8 characters!");
+        if (!UpperCasePatten.matcher(sensitive2).find()) {
+            editTextSensitiveNew.setError("Password must have minimum 1 uppercase character!");
+            editTextSensitiveNew.requestFocus();
+            return;
+        }
+        if (!lowerCasePatten.matcher(sensitive2).find()) {
+            editTextSensitiveNew.setError("Password must have minimum 1 lowercase character!");
+            editTextSensitiveNew.requestFocus();
+            return;
+        }
+        if (!digitCasePatten.matcher(sensitive2).find()) {
+            editTextSensitiveNew.setError("Password must have minimum 1 digit character!");
             editTextSensitiveNew.requestFocus();
             return;
         }

@@ -27,20 +27,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TextView register = (TextView) findViewById(R.id.register);
+        TextView register = findViewById(R.id.register);
         register.setOnClickListener(this);
 
-        Button signIn = (Button) findViewById(R.id.signIn);
+        Button signIn = findViewById(R.id.signIn);
         signIn.setOnClickListener(this);
 
-        editTextEmail = (EditText) findViewById(R.id.email);
-        editTextPassword = (EditText) findViewById(R.id.password);
+        editTextEmail = findViewById(R.id.email);
+        editTextPassword = findViewById(R.id.password);
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progressBar);
 
         mAuth = FirebaseAuth.getInstance();
 
-        TextView forgotPassword = (TextView) findViewById(R.id.forgotPassword);
+        TextView forgotPassword = findViewById(R.id.forgotPassword);
         forgotPassword.setOnClickListener(this);
 
 
@@ -87,8 +87,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return;
             }
 
-            if(password.length()<6){
-                editTextPassword.setError("Password is minimum 6 characters!");
+            if(password.length()<8){
+                editTextPassword.setError("Password is minimum 8 characters!");
                 editTextPassword.requestFocus();
                 return;
             }
