@@ -8,6 +8,7 @@ import android.transition.Transition;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,20 +25,24 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class ProfileActivity extends AppCompatActivity {
+    private ImageButton profile;
+    private String userID, userEmail;
+    private FirebaseUser user;
+    private TextView emailTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
-        String userID = user.getUid();
-        String userEmail = user.getEmail();
+        userID = user.getUid();
+        userEmail = user.getEmail();
 
-        Button ev = findViewById(R.id.evButton);
-        Button qr = findViewById(R.id.qrButton);
-        Button profile = findViewById(R.id.profileButton);
+        ImageButton ev = findViewById(R.id.evButton);
+        ImageButton qr = findViewById(R.id.qrButton);
+        profile = findViewById(R.id.profileButton);
         Button logout = findViewById(R.id.signOut);
         ev.setOnClickListener(view -> {
             Intent intent = new Intent(ProfileActivity.this, EVPage.class);
@@ -63,11 +68,11 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         TextView fullNameTextView = findViewById(R.id.fullName);
-        TextView emailTextView = findViewById(R.id.emailAddress);
         TextView evModelTextView = findViewById(R.id.evModel);
         TextView evColourTextView = findViewById(R.id.evColour);
         TextView batteryStatusTextView = findViewById(R.id.batteryStatus);
 
+        emailTextView = findViewById(R.id.emailAddress);
         emailTextView.setText(userEmail);
 
         reference.child(userID).child("Profile").addValueEventListener(new ValueEventListener() {
@@ -118,7 +123,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.BottomNavigationView);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.BottomNavigationView);
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(2);
         menuItem.setChecked(true);
@@ -160,6 +165,15 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         overridePendingTransition(R.anim.nav_default_enter_anim,R.anim.nav_default_exit_anim);
+
+        userEmail = user.getEmail();
+        emailTextView.setText(userEmail);
+        profile.setOnClickListener(view -> {
+            Intent intent1 = new Intent(ProfileActivity.this, ProfileDetails.class);
+            intent1.putExtra("userID", userID);
+            intent1.putExtra("userEmail", userEmail);
+            startActivity(intent1);
+        });
     }
 
     /*Backbutton Transition Animation*/
