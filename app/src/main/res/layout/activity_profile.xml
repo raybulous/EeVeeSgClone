@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="@string/email"
+                android:text="@string/email_example"
                 android:textColor="#A6A6A6"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@id/profileHeader"
@@ -120,22 +120,43 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
+                        android:text="@string/dash_percent"
                         android:textColor="#0ED689"
                         android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@id/evModel" />
 
-                    <Button
-                        android:id="@+id/evButton"
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:layout_marginTop="8dp"
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/evButtonCard"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:backgroundTint="#0ED689"
+                        app:cardCornerRadius="16dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#0ED689"
+                            android:padding="4dp">
+
+                            <ImageButton
+                                android:id="@+id/evButton"
+                                android:layout_width="56dp"
+                                android:layout_height="56dp"
+                                android:background="@drawable/view"
+                                android:contentDescription="@string/edit"
+                                android:maxWidth="64dp"
+                                android:maxHeight="64dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.cardview.widget.CardView>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
@@ -194,23 +215,42 @@
                         android:textColor="#A6A6A6"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/qrButton"
-                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintEnd_toStartOf="@+id/qrButtonCard"
                         app:layout_constraintStart_toStartOf="@id/memberCode"
                         app:layout_constraintTop_toBottomOf="@id/memberCode"
                         app:layout_constraintVertical_bias="0.0" />
 
-                    <Button
-                        android:id="@+id/qrButton"
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:layout_marginTop="8dp"
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/qrButtonCard"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:backgroundTint="#0ED689"
+                        app:cardCornerRadius="16dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#0ED689"
+                            android:padding="4dp">
+
+                            <ImageButton
+                                android:id="@+id/qrButton"
+                                android:layout_width="56dp"
+                                android:layout_height="56dp"
+                                android:background="@drawable/view"
+                                android:contentDescription="@string/edit"
+                                android:maxWidth="64dp"
+                                android:maxHeight="64dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.cardview.widget.CardView>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
@@ -266,28 +306,47 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginEnd="24dp"
                         android:text="@string/personal_desc"
                         android:textColor="#A6A6A6"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/profileButton"
-                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintEnd_toStartOf="@+id/userButtonCard"
                         app:layout_constraintStart_toStartOf="@id/personalDetails"
                         app:layout_constraintTop_toBottomOf="@id/personalDetails"
                         app:layout_constraintVertical_bias="0.0" />
 
-                    <Button
-                        android:id="@+id/profileButton"
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:layout_marginTop="8dp"
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/userButtonCard"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:backgroundTint="#0ED689"
+                        app:cardCornerRadius="16dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#0ED689"
+                            android:padding="4dp">
+
+                            <ImageButton
+                                android:id="@+id/profileButton"
+                                android:layout_width="56dp"
+                                android:layout_height="56dp"
+                                android:background="@drawable/view"
+                                android:contentDescription="@string/edit"
+                                android:maxWidth="64dp"
+                                android:maxHeight="64dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.cardview.widget.CardView>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
