@@ -9,6 +9,7 @@ import android.transition.Transition;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,7 @@ public class HomePage extends AppCompatActivity {
 
         TextView evModelTextView = findViewById(R.id.carModel);
         TextView batteryStatusTextView = findViewById(R.id.homePageBatt);
+        ImageView batteryIconImageView = findViewById(R.id.homePageBattery_icon);
 
         reference.child(userID).child("EV").addValueEventListener(new ValueEventListener() {
             @Override
@@ -55,6 +57,7 @@ public class HomePage extends AppCompatActivity {
                     String batteryStatus = evProfile.getBatteryStatus()+"%";
                     evModelTextView.setText(evModel);
                     batteryStatusTextView.setText(batteryStatus);
+                    batteryIconImageView.setImageResource(evProfile.getBatteryImage());
                 }
             }
 

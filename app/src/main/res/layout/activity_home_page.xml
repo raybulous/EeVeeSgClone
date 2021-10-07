@@ -37,7 +37,7 @@
         android:id="@+id/carModel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Unspecified"
+        android:text="@string/no_ev"
         android:textColor="#FAF5F5"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/logo"
@@ -161,9 +161,10 @@
         android:id="@+id/homePageBatt"
         android:layout_width="30dp"
         android:layout_height="28dp"
-        android:text="%"
+        android:text="@string/dash_percent"
+        android:textAlignment="center"
         android:textColor="#F6F5F5"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintBottom_toBottomOf="@+id/homePageBattery_icon"
         app:layout_constraintEnd_toEndOf="@+id/roundBorder1"
         app:layout_constraintHorizontal_bias="0.45"
         app:layout_constraintStart_toEndOf="@+id/carModel"
@@ -171,7 +172,7 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/homePageBattery_icon"
         android:layout_width="82dp"
         android:layout_height="118dp"
         app:layout_constraintBottom_toBottomOf="@+id/roundBorder1"
@@ -180,6 +181,6 @@
         app:layout_constraintStart_toStartOf="@+id/roundBorder1"
         app:layout_constraintTop_toTopOf="@+id/roundBorder1"
         app:layout_constraintVertical_bias="0.558"
-        app:srcCompat="@drawable/b100" />
+        app:srcCompat="@drawable/battery_100" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
