@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/battLevel"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
@@ -36,7 +37,7 @@
         android:id="@+id/carModel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tesla Model 3"
+        android:text="Unspecified"
         android:textColor="#FAF5F5"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/logo"
@@ -59,20 +60,6 @@
         app:layout_constraintTop_toTopOf="@+id/roundBorder1"
         app:layout_constraintVertical_bias="0.25"
         app:srcCompat="@drawable/car_2" />
-
-    <ImageView
-        android:id="@+id/carBattery"
-        android:layout_width="117dp"
-        android:layout_height="95dp"
-        android:layout_marginTop="136dp"
-        android:layout_marginBottom="57dp"
-        app:layout_constraintBottom_toBottomOf="@+id/roundBorder1"
-        app:layout_constraintEnd_toEndOf="@+id/roundBorder1"
-        app:layout_constraintHorizontal_bias="0.471"
-        app:layout_constraintStart_toEndOf="@+id/carImage"
-        app:layout_constraintTop_toTopOf="@+id/roundBorder1"
-        app:layout_constraintVertical_bias="0.8"
-        app:srcCompat="@drawable/battery_charge" />
 
     <ImageView
         android:id="@+id/roundBorder2"
@@ -119,10 +106,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="42dp"
-        android:text="-"
         android:backgroundTint="@color/browser_actions_bg_grey"
-        android:textColor = "@color/black"
+        android:text="-"
         android:textAlignment="center"
+        android:textColor="@color/black"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/BottomNavigationView"
         app:layout_constraintEnd_toStartOf="@+id/buttonIncrease"
@@ -169,5 +156,30 @@
         app:layout_constraintEnd_toStartOf="@+id/logo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/homePageBatt"
+        android:layout_width="30dp"
+        android:layout_height="28dp"
+        android:text="%"
+        android:textColor="#F6F5F5"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="@+id/roundBorder1"
+        app:layout_constraintHorizontal_bias="0.45"
+        app:layout_constraintStart_toEndOf="@+id/carModel"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="82dp"
+        android:layout_height="118dp"
+        app:layout_constraintBottom_toBottomOf="@+id/roundBorder1"
+        app:layout_constraintEnd_toEndOf="@+id/roundBorder1"
+        app:layout_constraintHorizontal_bias="0.764"
+        app:layout_constraintStart_toStartOf="@+id/roundBorder1"
+        app:layout_constraintTop_toTopOf="@+id/roundBorder1"
+        app:layout_constraintVertical_bias="0.558"
+        app:srcCompat="@drawable/b100" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
