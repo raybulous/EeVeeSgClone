@@ -66,51 +66,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void userLogin() {
 
-            String email = editTextEmail.getText().toString().trim();
-            String password = editTextPassword.getText().toString().trim();
+        String email = editTextEmail.getText().toString().trim();
+        String password = editTextPassword.getText().toString().trim();
 
-            if(email.isEmpty()){
-                editTextEmail.setError("Email is required!");
-                editTextEmail.requestFocus();
-                return;
-            }
+        String emailCheck = Profile.checkEmail(email);
+        if(!emailCheck.equals("No Error")){
+            editTextEmail.setError(emailCheck);
+            editTextEmail.requestFocus();
+            return;
+        }
 
-            if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                editTextEmail.setError("Please enter a valid email!");
-                editTextEmail.requestFocus();
-                return;
-            }
+        String passwordCheck = Profile.checkPassword(password);
+        if(!passwordCheck.equals("No Error")){
+            editTextPassword.setError(passwordCheck);
+            editTextPassword.requestFocus();
+            return;
+        }
 
-            if(password.isEmpty()){
-                editTextPassword.setError("Password is required!");
-                editTextPassword.requestFocus();
-                return;
-            }
+        progressBar.setVisibility(View.GONE);
 
-            if(password.length()<8){
-                editTextPassword.setError("Password is minimum 8 characters!");
-                editTextPassword.requestFocus();
-                return;
-            }
-
-            progressBar.setVisibility(View.GONE);
-
-            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-                if(task.isSuccessful()){
-                    //redirect user profile
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                    if(user.isEmailVerified()){
-                        startActivity(new Intent(MainActivity.this, HomePage.class));
-                    }else{
-                        user.sendEmailVerification();
-                        Toast.makeText(MainActivity.this, "Check your email to verify account", Toast.LENGTH_LONG).show();
-                    }
-
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                //redirect user profile
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if(user.isEmailVerified()){
+                    startActivity(new Intent(MainActivity.this, HomePage.class));
+                }else{
+                    user.sendEmailVerification();
+                    Toast.makeText(MainActivity.this, "Check your email to verify account", Toast.LENGTH_LONG).show();
                 }
-                else{
-                    Toast.makeText(MainActivity.this, "Failed to login, please check credentials!", Toast.LENGTH_LONG).show();
-                }
-            });
+
+            }
+            else{
+                Toast.makeText(MainActivity.this, "Failed to login, please check credentials!", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private boolean doubleBackToExitPressedOnce = false, showWarningToast = true;

@@ -14,8 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.regex.Pattern;
-
 public class RegisterUser extends AppCompatActivity implements View.OnClickListener{
 
     private FirebaseAuth mAuth;
@@ -60,47 +58,20 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
         String password = editTextPassword.getText().toString().trim();
         String name = editTextFullName.getText().toString().trim();
 
-        Pattern UpperCasePatten = Pattern.compile("[A-Z ]");
-        Pattern lowerCasePatten = Pattern.compile("[a-z ]");
-        Pattern digitCasePatten = Pattern.compile("[0-9 ]");
-
         if(name.isEmpty()){
             editTextFullName.setError("Full Name is required!");
             editTextFullName.requestFocus();
             return;
         }
-        if(email.isEmpty()){
-            editTextEmail.setError("Email is required!");
+        String emailCheck = Profile.checkEmail(email);
+        if(!emailCheck.equals("No Error")){
+            editTextEmail.setError(emailCheck);
             editTextEmail.requestFocus();
             return;
         }
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            editTextEmail.setError("Please provide valid email!");
-            editTextEmail.requestFocus();
-            return;
-        }
-        if(password.isEmpty()){
-            editTextPassword.setError("Password is required!");
-            editTextPassword.requestFocus();
-            return;
-        }
-        if (password.length() < 8){
-            editTextPassword.setError("Password must have minimum 8 characters!");
-            editTextPassword.requestFocus();
-            return;
-        }
-        if (!UpperCasePatten.matcher(password).find()) {
-            editTextPassword.setError("Password must have minimum 1 uppercase character!");
-            editTextPassword.requestFocus();
-            return;
-        }
-        if (!lowerCasePatten.matcher(password).find()) {
-            editTextPassword.setError("Password must have minimum 1 lowercase character!");
-            editTextPassword.requestFocus();
-            return;
-        }
-        if (!digitCasePatten.matcher(password).find()) {
-            editTextPassword.setError("Password must have minimum 1 digit character!");
+        String passwordCheck = Profile.checkPassword(password);
+        if(!passwordCheck.equals("No Error")){
+            editTextPassword.setError(passwordCheck);
             editTextPassword.requestFocus();
             return;
         }

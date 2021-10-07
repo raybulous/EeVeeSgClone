@@ -3,7 +3,6 @@ package com.example.authapp3;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,8 +24,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.regex.Pattern;
 
 public class ProfileDetails extends AppCompatActivity {
 
@@ -119,17 +116,7 @@ public class ProfileDetails extends AppCompatActivity {
 
         save.setOnClickListener(view -> {
             editedValue = editTextProfile.getText().toString().trim();
-            switch (option) {
-                case 0:
-                    editName(initialValue);
-                    break;
-                case 1:
-                    editContact(initialValue);
-                    break;
-                case 2:
-                    editAddress(initialValue);
-                    break;
-            }
+            editProfile(option, initialValue);
         });
 
         cancel.setOnClickListener(view -> dialog.cancel());
@@ -177,91 +164,43 @@ public class ProfileDetails extends AppCompatActivity {
         cancel.setOnClickListener(view -> dialog.cancel());
     }
 
-    private void editName(String initialValue) {
-        if(editedValue.isEmpty()){
-            editTextProfile.setError("Full Name is required!");
+    private void editProfile(int option, String initialValue) {
+        String check, update, display;
+        switch (option) {
+            case 0:
+                check = Profile.checkName(editedValue, initialValue);
+                update = "Name";
+                break;
+            case 1:
+                check = Profile.checkContact(editedValue, initialValue);
+                update = "Contact";
+                break;
+            case 2:
+                check = Profile.checkAddress(editedValue, initialValue);
+                update = "Address";
+                break;
+            default:
+                check = "No Error";
+                update = "";
+        }
+        if(!check.equals("No Error")){
+            editTextProfile.setError(check);
             editTextProfile.requestFocus();
             return;
         }
-        if(editedValue.equals(initialValue)) {
-            editTextProfile.setError("Cannot be same as previous");
-            editTextProfile.requestFocus();
-            return;
-        }
+        display = update+" successfully updated";
         progressBarProfile.setVisibility(View.VISIBLE);
-        reference.child(userID).child("Profile").child("Name").setValue(editedValue);
-        Toast.makeText(ProfileDetails.this, "Name successfully updated", Toast.LENGTH_LONG).show();
-        progressBarProfile.setVisibility(View.GONE);
-        dialog.cancel();
-    }
-
-    private void editContact(String initialValue) {
-        if(editedValue.equals(initialValue)) {
-            editTextProfile.setError("Cannot be same as previous");
-            editTextProfile.requestFocus();
-            return;
-        }
-        if(editedValue.isEmpty()) {
-            editTextProfile.setError("Number is required");
-            editTextProfile.requestFocus();
-            return;
-        }
-        try {
-            Integer.parseInt(editedValue);
-        } catch (NumberFormatException e) {
-            editTextProfile.setError("Must be contact number");
-            editTextProfile.requestFocus();
-            return;
-        }
-        if(editedValue.length() != 8) {
-            editTextProfile.setError("Must be length 8");
-            editTextProfile.requestFocus();
-            return;
-        }
-        if(editedValue.charAt(0) != '6' & editedValue.charAt(0) != '8' & editedValue.charAt(0) != '9') {
-            editTextProfile.setError("Must start with 6, 8 or 9");
-            editTextProfile.requestFocus();
-            return;
-        }
-        progressBarProfile.setVisibility(View.VISIBLE);
-        reference.child(userID).child("Profile").child("Contact").setValue(editedValue);
-        Toast.makeText(ProfileDetails.this, "Contact successfully updated", Toast.LENGTH_LONG).show();
-        progressBarProfile.setVisibility(View.GONE);
-        dialog.cancel();
-    }
-
-    private void editAddress(String initialValue) {
-        if(editedValue.isEmpty()){
-            editTextProfile.setError("Address is required!");
-            editTextProfile.requestFocus();
-            return;
-        }
-        if(editedValue.equals(initialValue)) {
-            editTextProfile.setError("Cannot be same as previous");
-            editTextProfile.requestFocus();
-            return;
-        }
-        progressBarProfile.setVisibility(View.VISIBLE);
-        reference.child(userID).child("Profile").child("Address").setValue(editedValue);
-        Toast.makeText(ProfileDetails.this, "Address successfully updated", Toast.LENGTH_LONG).show();
+        reference.child(userID).child("Profile").child(update).setValue(editedValue);
+        Toast.makeText(ProfileDetails.this, display, Toast.LENGTH_LONG).show();
         progressBarProfile.setVisibility(View.GONE);
         dialog.cancel();
     }
 
     private void changeEmail(String initialEmail) {
-        if(sensitive1.isEmpty()){
-            editTextSensitive.setError("Password is required!");
+        String passwordCheck = Profile.checkPassword(sensitive1);
+        if(!passwordCheck.equals("No Error")){
+            editTextSensitive.setError(passwordCheck);
             editTextSensitive.requestFocus();
-            return;
-        }
-        if(sensitive2.isEmpty()){
-            editTextSensitiveNew.setError("Email is required!");
-            editTextSensitiveNew.requestFocus();
-            return;
-        }
-        if(sensitive3.isEmpty()){
-            editTextSensitiveConfirm.setError("Email is required!");
-            editTextSensitiveConfirm.requestFocus();
             return;
         }
         if(sensitive2.equals(initialEmail)){
@@ -269,8 +208,10 @@ public class ProfileDetails extends AppCompatActivity {
             editTextSensitiveNew.requestFocus();
             return;
         }
-        if(!Patterns.EMAIL_ADDRESS.matcher(sensitive2).matches()){
-            editTextSensitiveNew.setError("Please provide valid email!");
+        String emailCheck;
+        emailCheck = Profile.checkEmail(sensitive2);
+        if(!emailCheck.equals("No Error")){
+            editTextSensitiveNew.setError(emailCheck);
             editTextSensitiveNew.requestFocus();
             return;
         }
@@ -278,6 +219,12 @@ public class ProfileDetails extends AppCompatActivity {
             editTextSensitiveNew.setError("Emails do not match");
             editTextSensitiveConfirm.setError("Emails do not match");
             editTextSensitiveNew.requestFocus();
+            return;
+        }
+        emailCheck = Profile.checkEmail(sensitive3);
+        if(!emailCheck.equals("No Error")){
+            editTextSensitiveConfirm.setError(emailCheck);
+            editTextSensitiveConfirm.requestFocus();
             return;
         }
 
@@ -308,42 +255,11 @@ public class ProfileDetails extends AppCompatActivity {
     }
 
     private void changePassword(String initialEmail) {
-        Pattern UpperCasePatten = Pattern.compile("[A-Z ]");
-        Pattern lowerCasePatten = Pattern.compile("[a-z ]");
-        Pattern digitCasePatten = Pattern.compile("[0-9 ]");
-        if(sensitive1.isEmpty()){
-            editTextSensitive.setError("Old password is required!");
+        String passwordCheck;
+        passwordCheck = Profile.checkPassword(sensitive1);
+        if(!passwordCheck.equals("No Error")){
+            editTextSensitive.setError(passwordCheck);
             editTextSensitive.requestFocus();
-            return;
-        }
-        if(sensitive2.isEmpty()){
-            editTextSensitiveNew.setError("New password is required!");
-            editTextSensitiveNew.requestFocus();
-            return;
-        }
-        if(sensitive3.isEmpty()){
-            editTextSensitiveConfirm.setError("New password is required!");
-            editTextSensitiveConfirm.requestFocus();
-            return;
-        }
-        if (sensitive2.length() < 8){
-            editTextSensitiveNew.setError("Password must have minimum 8 characters!");
-            editTextSensitiveNew.requestFocus();
-            return;
-        }
-        if (!UpperCasePatten.matcher(sensitive2).find()) {
-            editTextSensitiveNew.setError("Password must have minimum 1 uppercase character!");
-            editTextSensitiveNew.requestFocus();
-            return;
-        }
-        if (!lowerCasePatten.matcher(sensitive2).find()) {
-            editTextSensitiveNew.setError("Password must have minimum 1 lowercase character!");
-            editTextSensitiveNew.requestFocus();
-            return;
-        }
-        if (!digitCasePatten.matcher(sensitive2).find()) {
-            editTextSensitiveNew.setError("Password must have minimum 1 digit character!");
-            editTextSensitiveNew.requestFocus();
             return;
         }
         if(sensitive2.equals(sensitive1)){
@@ -351,10 +267,22 @@ public class ProfileDetails extends AppCompatActivity {
             editTextSensitiveNew.requestFocus();
             return;
         }
+        passwordCheck = Profile.checkPassword(sensitive2);
+        if(!passwordCheck.equals("No Error")){
+            editTextSensitiveNew.setError(passwordCheck);
+            editTextSensitiveNew.requestFocus();
+            return;
+        }
         if(!(sensitive2.equals(sensitive3))){
             editTextSensitiveNew.setError("New passwords do not match");
             editTextSensitiveConfirm.setError("New passwords do not match");
             editTextSensitiveNew.requestFocus();
+            return;
+        }
+        passwordCheck = Profile.checkPassword(sensitive3);
+        if(!passwordCheck.equals("No Error")){
+            editTextSensitiveConfirm.setError(passwordCheck);
+            editTextSensitiveConfirm.requestFocus();
             return;
         }
 
