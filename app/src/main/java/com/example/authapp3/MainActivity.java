@@ -3,7 +3,6 @@ package com.example.authapp3;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,10 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-// hello world
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText editTextEmail, editTextPassword;
-
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
 
@@ -26,6 +24,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        TextView forgotPassword = findViewById(R.id.forgotPassword);
+        forgotPassword.setOnClickListener(this);
 
         TextView register = findViewById(R.id.register);
         register.setOnClickListener(this);
@@ -39,22 +40,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         progressBar = findViewById(R.id.progressBar);
 
         mAuth = FirebaseAuth.getInstance();
-
-        TextView forgotPassword = findViewById(R.id.forgotPassword);
-        forgotPassword.setOnClickListener(this);
-
-
-
-
-
     }
+
     @Override
     public void onClick(View v){
         switch(v.getId()){
             case R.id.register:
                 startActivity(new Intent(this, RegisterUser.class));
                 break;
-
             case R.id.signIn:
                 userLogin();
                 break;
@@ -95,9 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     user.sendEmailVerification();
                     Toast.makeText(MainActivity.this, "Check your email to verify account", Toast.LENGTH_LONG).show();
                 }
-
-            }
-            else{
+            }else{
                 Toast.makeText(MainActivity.this, "Failed to login, please check credentials!", Toast.LENGTH_LONG).show();
             }
         });
