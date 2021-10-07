@@ -66,19 +66,9 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
         etOrigin = (EditText) findViewById(R.id.etOrigin);
         etDestination = (EditText) findViewById(R.id.etDestination);
 
-        btnFindPath.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendRequest();
-            }
-        });
+        btnFindPath.setOnClickListener(v -> sendRequest());
 
-        btnNearby.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Navigate.this, com.example.authapp3.nearby.nearby.class));
-            }
-        });
+        btnNearby.setOnClickListener(view -> startActivity(new Intent(Navigate.this, com.example.authapp3.nearby.nearby.class)));
 
         /*Transition*/
         Transition exitTrans = new Fade();
@@ -221,8 +211,8 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
 
         for (Route route : routes) {
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(route.startLocation, 16));
-            ((TextView) findViewById(R.id.tvDuration)).setText(route.duration.text);
-            ((TextView) findViewById(R.id.tvDistance)).setText(route.distance.text);
+            ((TextView) findViewById(R.id.tvDuration)).setText(route.duration.getText());
+            ((TextView) findViewById(R.id.tvDistance)).setText(route.distance.getText());
 
             originMarkers.add(mMap.addMarker(new MarkerOptions()
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.start_blue))

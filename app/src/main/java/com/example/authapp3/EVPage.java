@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -46,6 +47,7 @@ public class EVPage extends AppCompatActivity {
 
         TextView evModelTextView = findViewById(R.id.ev_model);
         TextView batteryPercentTextView = findViewById(R.id.battery_percent);
+        ImageView batteryIconImageView = findViewById(R.id.battery_icon);
 
         userReference = FirebaseDatabase.getInstance().getReference("Users");
         DatabaseReference evModelsReference = FirebaseDatabase.getInstance().getReference("EVModels");
@@ -61,13 +63,14 @@ public class EVPage extends AppCompatActivity {
                 EV evProfile = snapshot.getValue(EV.class);
 
                 if(evProfile != null) {
-                    evModel = evProfile.Model;
-                    batteryStatus = evProfile.BatteryStatus;
+                    evModel = evProfile.getModel();
+                    batteryStatus = evProfile.getBatteryStatus();
                     String batteryStatusDisplay = batteryStatus+"%";
-                    chargingStatus = evProfile.ChargeStatus;
+                    chargingStatus = evProfile.getChargeStatus();
                     evModelTextView.setText(evModel);
                     batteryPercentTextView.setText(batteryStatusDisplay);
                     linkEV.setText(R.string.relink_ev);
+                    batteryIconImageView.setImageResource(evProfile.getBatteryImage());
                 }
             }
 

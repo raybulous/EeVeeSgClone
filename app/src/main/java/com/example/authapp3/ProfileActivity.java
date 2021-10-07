@@ -80,7 +80,7 @@ public class ProfileActivity extends AppCompatActivity {
                 User userProfile = snapshot.getValue(User.class);
 
                 if(userProfile != null) {
-                    fullNameTextView.setText(userProfile.Name);
+                    fullNameTextView.setText(userProfile.getName());
                 }
             }
 
@@ -95,9 +95,9 @@ public class ProfileActivity extends AppCompatActivity {
                 EV evProfile = snapshot.getValue(EV.class);
 
                 if(evProfile != null) {
-                    String evModel = evProfile.Model;
-                    String evColour = evProfile.Colour;
-                    String batteryStatus = evProfile.BatteryStatus+"%";
+                    String evModel = evProfile.getModel();
+                    String evColour = evProfile.getColour();
+                    String batteryStatus = evProfile.getBatteryStatus()+"%";
                     evModelTextView.setText(evModel);
                     evColourTextView.setText(evColour);
                     batteryStatusTextView.setText(batteryStatus);
