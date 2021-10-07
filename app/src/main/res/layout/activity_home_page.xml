@@ -49,16 +49,16 @@
 
     <ImageView
         android:id="@+id/carImage"
-        android:layout_width="174dp"
-        android:layout_height="115dp"
+        android:layout_width="164dp"
+        android:layout_height="79dp"
         android:layout_marginTop="117dp"
         android:layout_marginBottom="56dp"
         app:layout_constraintBottom_toBottomOf="@+id/roundBorder1"
         app:layout_constraintEnd_toEndOf="@+id/roundBorder1"
-        app:layout_constraintHorizontal_bias="0.089"
+        app:layout_constraintHorizontal_bias="0.066"
         app:layout_constraintStart_toStartOf="@+id/roundBorder1"
         app:layout_constraintTop_toTopOf="@+id/roundBorder1"
-        app:layout_constraintVertical_bias="0.25"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/car_2" />
 
     <ImageView
@@ -137,9 +137,10 @@
         android:id="@+id/counter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="50dp"
         android:text="0%"
         android:textColor="#F1F0F0"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/BottomNavigationView"
         app:layout_constraintEnd_toStartOf="@+id/buttonIncrease"
         app:layout_constraintHorizontal_bias="0.491"
@@ -159,11 +160,12 @@
 
     <TextView
         android:id="@+id/homePageBatt"
-        android:layout_width="30dp"
+        android:layout_width="40dp"
         android:layout_height="28dp"
         android:text="@string/dash_percent"
         android:textAlignment="center"
         android:textColor="#F6F5F5"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/homePageBattery_icon"
         app:layout_constraintEnd_toEndOf="@+id/roundBorder1"
         app:layout_constraintHorizontal_bias="0.45"
@@ -182,5 +184,20 @@
         app:layout_constraintTop_toTopOf="@+id/roundBorder1"
         app:layout_constraintVertical_bias="0.558"
         app:srcCompat="@drawable/battery_100" />
+
+    <TextView
+        android:id="@+id/chargeStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:text="Not Charging"
+        android:textColor="#FFFCFC"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/logo"
+        app:layout_constraintEnd_toEndOf="@+id/roundBorder1"
+        app:layout_constraintHorizontal_bias="0.163"
+        app:layout_constraintStart_toStartOf="@+id/roundBorder1"
+        app:layout_constraintTop_toTopOf="@+id/roundBorder1"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

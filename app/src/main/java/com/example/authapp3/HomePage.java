@@ -46,6 +46,7 @@ public class HomePage extends AppCompatActivity {
         TextView evModelTextView = findViewById(R.id.carModel);
         TextView batteryStatusTextView = findViewById(R.id.homePageBatt);
         ImageView batteryIconImageView = findViewById(R.id.homePageBattery_icon);
+        TextView chargingStatus = findViewById(R.id.chargeStatus);
 
         reference.child(userID).child("EV").addValueEventListener(new ValueEventListener() {
             @Override
@@ -58,6 +59,7 @@ public class HomePage extends AppCompatActivity {
                     evModelTextView.setText(evModel);
                     batteryStatusTextView.setText(batteryStatus);
                     batteryIconImageView.setImageResource(evProfile.getBatteryImage());
+                    chargingStatus.setText(evProfile.getChargeStatus());
                 }
             }
 
