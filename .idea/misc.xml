@@ -36,6 +36,10 @@
         <entry key="..\:/Users/gabri/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/popup_editprofile.xml" value="0.259375" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/popup_editsensitive.xml" value="0.259375" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/popup_linkev.xml" value="0.259375" />
+        <entry key="app/src/main/res/layout/activity_profile.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/activity_profile_details.xml" value="0.43976449275362317" />
+        <entry key="app/src/main/res/layout/activity_rewards.xml" value="0.3813405797101449" />
+        <entry key="app/src/main/res/layout/activity_vouchers.xml" value="0.44114583333333335" />
       </map>
     </option>
   </component>

@@ -54,4 +54,14 @@
     <string name="title_activity_search_location">SearchLocation</string>
     <string name="unavailable">Unavailable</string>
     <string name="qr_description">Scan to Earn Rewards</string>
+    <string name="voucher_header">Vouchers</string>
+    <string name="points_balance">Points Balance:</string>
+    <string name="view_vouchers">View Vouchers</string>
+    <string name="view_card">View Card</string>
+    <string name="chargingstations">Charging Stations</string>
+    <string name="ev_rentals">EV Car Rentals</string>
+    <string name="discounts">Discounts</string>
+    <string name="fnb">Food &amp; Beverages</string>
+    <string name="retail">Retail</string>
+    <string name="view_discounts">View Discounts</string>
 </resources>
