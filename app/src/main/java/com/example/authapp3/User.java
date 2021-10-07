@@ -1,7 +1,7 @@
 package com.example.authapp3;
 
 public class User {
-    public String Name, Address, Contact;
+    private String Name, Address, Contact;
 
     public User() {
     }
@@ -14,6 +14,18 @@ public class User {
         Name = name;
         Address = address;
         Contact = contact;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public String getAddress() {
+        return Address;
+    }
+
+    public String getContact() {
+        return Contact;
     }
 }
 

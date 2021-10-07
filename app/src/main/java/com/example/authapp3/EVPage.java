@@ -61,10 +61,10 @@ public class EVPage extends AppCompatActivity {
                 EV evProfile = snapshot.getValue(EV.class);
 
                 if(evProfile != null) {
-                    evModel = evProfile.Model;
-                    batteryStatus = evProfile.BatteryStatus;
+                    evModel = evProfile.getModel();
+                    batteryStatus = evProfile.getBatteryStatus();
                     String batteryStatusDisplay = batteryStatus+"%";
-                    chargingStatus = evProfile.ChargeStatus;
+                    chargingStatus = evProfile.getChargeStatus();
                     evModelTextView.setText(evModel);
                     batteryPercentTextView.setText(batteryStatusDisplay);
                     linkEV.setText(R.string.relink_ev);

@@ -66,9 +66,9 @@ public class ProfileDetails extends AppCompatActivity {
                 User userProfile = snapshot.getValue(User.class);
 
                 if(userProfile != null) {
-                    pdName.setText(userProfile.Name);
-                    if(userProfile.Contact != null) pdContact.setText(userProfile.Contact);
-                    if(userProfile.Address != null) pdAddress.setText(userProfile.Address);
+                    pdName.setText(userProfile.getName());
+                    if(userProfile.getContact() != null) pdContact.setText(userProfile.getContact());
+                    if(userProfile.getAddress() != null) pdAddress.setText(userProfile.getAddress());
                 }
             }
 

@@ -51,8 +51,8 @@ public class HomePage extends AppCompatActivity {
                 EV evProfile = snapshot.getValue(EV.class);
 
                 if(evProfile != null) {
-                    String evModel = evProfile.Model;
-                    String batteryStatus = evProfile.BatteryStatus+"%";
+                    String evModel = evProfile.getModel();
+                    String batteryStatus = evProfile.getBatteryStatus()+"%";
                     evModelTextView.setText(evModel);
                     batteryStatusTextView.setText(batteryStatus);
                 }
