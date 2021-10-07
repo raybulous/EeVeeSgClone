@@ -18,7 +18,10 @@
         <entry key="..\:/Users/eric2/AndroidStudioProjects/EeVeeSG/app/src/main/res/drawable/round.xml" value="0.14635416666666667" />
         <entry key="..\:/Users/eric2/AndroidStudioProjects/EeVeeSG/app/src/main/res/drawable/roundstyle.xml" value="0.14635416666666667" />
         <entry key="..\:/Users/eric2/AndroidStudioProjects/EeVeeSG/app/src/main/res/drawable/shape.xml" value="0.2703125" />
+        <entry key="..\:/Users/eric2/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/activity_home_page.xml" value="0.264" />
         <entry key="..\:/Users/eric2/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/eric2/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/activity_profile.xml" value="0.125" />
+        <entry key="..\:/Users/eric2/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/activity_profile_details.xml" value="0.16" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/EeVeeSG/app/src/main/res/drawable/res_black_menuroundfilled_corner.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/EeVeeSG/app/src/main/res/drawable/res_coloured_menutopround_corner.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/EeVeeSG/app/src/main/res/drawable/spinner_background.xml" value="0.2755208333333333" />
@@ -34,7 +37,6 @@
         <entry key="..\:/Users/gabri/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/activity_register_user.xml" value="0.259375" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/activity_rewards.xml" value="0.259375" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/popup_editprofile.xml" value="0.259375" />
-        <entry key="..\:/Users/gabri/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/popup_editsensitive.xml" value="0.259375" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/popup_linkev.xml" value="0.259375" />
       </map>
     </option>
