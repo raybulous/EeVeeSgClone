@@ -126,7 +126,7 @@ public class HomePage extends AppCompatActivity {
 
 
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.BottomNavigationView);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.BottomNavigationView);
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);
@@ -181,6 +181,9 @@ public class HomePage extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (doubleBackToLogoutPressedOnce) {
+            prefConfig.saveLoginEmailInPref(this,"");
+            prefConfig.saveLoginPassInPref(this,"");
+            prefConfig.saveKeepLoginInPref(this,false);
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(HomePage.this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
