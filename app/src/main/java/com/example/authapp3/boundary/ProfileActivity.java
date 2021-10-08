@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.authapp3.R;
+import com.example.authapp3.control.prefConfig;
 import com.example.authapp3.entity.EV;
 import com.example.authapp3.entity.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -63,6 +64,9 @@ public class ProfileActivity extends AppCompatActivity {
             startActivity(intent);
         });
         logout.setOnClickListener(view -> {
+            prefConfig.saveLoginEmailInPref(this,"");
+            prefConfig.saveLoginPassInPref(this,"");
+            prefConfig.saveKeepLoginInPref(this,false);
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,12 +15,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.authapp3.R;
 import com.example.authapp3.control.Profile;
+import com.example.authapp3.control.prefConfig;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText editTextEmail, editTextPassword;
     private FirebaseAuth mAuth;
+    private Switch keepLogIn;
     private ProgressBar progressBar;
 
     @Override
@@ -38,10 +41,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
+        keepLogIn = findViewById(R.id.keepLogInSwitch);
+
+        editTextEmail.setText(prefConfig.loadLoginEmailFromPref(this));
+        editTextPassword.setText(prefConfig.loadLoginPassFromPref(this));
+        keepLogIn.setChecked(prefConfig.loadKeepLoginFromPref(this));
 
         progressBar = findViewById(R.id.progressBar);
 
         mAuth = FirebaseAuth.getInstance();
+
+        if(keepLogIn.isChecked()) {
+            userLogin();
+        }
     }
 
     @Override
@@ -77,6 +89,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             editTextPassword.requestFocus();
             return;
         }
+
+        if(keepLogIn.isChecked()) {
+            prefConfig.saveLoginEmailInPref(this,email);
+            prefConfig.saveLoginPassInPref(this,password);
+        }else{
+            prefConfig.saveLoginEmailInPref(this,"");
+            prefConfig.saveLoginPassInPref(this,"");
+        }
+        prefConfig.saveKeepLoginInPref(this,keepLogIn.isChecked());
 
         progressBar.setVisibility(View.GONE);
 
