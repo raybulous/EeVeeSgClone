@@ -1,17 +1,24 @@
 package com.example.authapp3;
 
+import static android.content.ContentValues.TAG;
+
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Debug;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
@@ -37,11 +44,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class SearchLocation extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
-    private EditText editText;
+    private EditText mSearchText;
     View mapView;
 
     private GoogleMap mMap;
@@ -69,10 +80,50 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
         mapFragment.getMapAsync(this);
         mapView = mapFragment.getView();
 
-        editText = findViewById(R.id.editTextTextPostalAddress);
+        mSearchText = (EditText) findViewById(R.id.editTextTextPostalAddress);
         //editText.setSelection(2);
         //editText.setBackgroundColor(Color.parseColor("#CCFF0000"));
 
+    }
+
+    private void init(){
+        Log.d(TAG, "init: initializing");
+        mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if(actionId == EditorInfo.IME_ACTION_SEARCH
+                    || actionId == EditorInfo.IME_ACTION_DONE
+                    || keyEvent.getAction() == KeyEvent.ACTION_DOWN
+                    || keyEvent.getAction() == KeyEvent.KEYCODE_ENTER){
+
+                    geoLocate();
+                }
+
+                return false;
+            }
+        });
+    }
+    private void geoLocate(){
+        Log.d(TAG,"geoLocate: geolocationg");{
+
+            String searchString = mSearchText.getText().toString();
+
+            Geocoder geocoder = new Geocoder(SearchLocation.this);
+            List<Address> list = new ArrayList<>();
+            try{
+                list = geocoder.getFromLocationName(searchString, 1);
+
+            }catch (IOException e){
+                Log.e(TAG, "geoLocate: IOException: " + e.getMessage());
+            }
+
+            if(list.size() > 0){
+                Address address = list.get(0);
+
+                Log.d(TAG, "geoLocate: found a location: " + address.toString());
+                //Toast.makeText(this, address.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override
@@ -124,8 +175,52 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
         }
+        init();
+
+
+        //mapgoto();
 
     }
+
+    private void mapgotopoint(@NonNull Location location){
+        mLastLocation = location;
+        if (mCurrLocationMarker != null) {
+            mCurrLocationMarker.remove();
+        }
+
+        //Place current location marker
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(latLng);
+        //markerOptions.title("Current Position");
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+        mCurrLocationMarker = mMap.addMarker(markerOptions);
+
+        //move map camera
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+
+        //stop location updates
+        if (mGoogleApiClient != null) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        }
+    }
+
+    private void mapgoto(@NonNull Location location){
+        mLastLocation = location;
+
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+        //move map camera
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+
+        //stop location updates
+        if (mGoogleApiClient != null) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        }
+    }
+
 
 
 
@@ -160,7 +255,7 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-
+/*
         mLastLocation = location;
         if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();
@@ -170,7 +265,7 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
-        markerOptions.title("Current Position");
+        //markerOptions.title("Current Position");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
         mCurrLocationMarker = mMap.addMarker(markerOptions);
 
@@ -181,7 +276,7 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
         //stop location updates
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-        }
+        }*/
 
     }
 
@@ -269,6 +364,10 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
         }
         return true;
     }
+
+    //search function
+
+
 
     private String getUrl(double latitude, double longitude, String nearbyPlace) {
 
