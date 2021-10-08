@@ -181,8 +181,6 @@ public class HomePage extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (doubleBackToLogoutPressedOnce) {
-            prefConfig.saveLoginEmailInPref(this,"");
-            prefConfig.saveLoginPassInPref(this,"");
             prefConfig.saveKeepLoginInPref(this,false);
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(HomePage.this, MainActivity.class);
