@@ -1,4 +1,4 @@
-package com.example.authapp3;
+package com.example.authapp3.boundary;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
@@ -16,6 +16,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.authapp3.Navigate;
+import com.example.authapp3.R;
+import com.example.authapp3.SearchLocation;
+import com.example.authapp3.entity.EV;
+import com.example.authapp3.prefConfig;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -58,7 +63,7 @@ public class HomePage extends AppCompatActivity {
                     String batteryStatus = evProfile.getBatteryStatus()+"%";
                     evModelTextView.setText(evModel);
                     batteryStatusTextView.setText(batteryStatus);
-                    batteryIconImageView.setImageResource(evProfile.getBatteryImage());
+                    batteryIconImageView.setImageResource(evProfile.findBatteryImage());
                     chargingStatus.setText(evProfile.getChargeStatus());
                 }
             }
@@ -135,21 +140,21 @@ public class HomePage extends AppCompatActivity {
                         break;
 
                     case R.id.ic_navigate:
-                        Intent intent = new Intent(HomePage.this,Navigate.class);
+                        Intent intent = new Intent(HomePage.this, Navigate.class);
                         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(HomePage.this,bottomNavigationView ,"BottomBar");
                         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(intent, options.toBundle());
                         break;
 
                     case R.id.ic_ProfileActivity:
-                        Intent intent1 = new Intent(HomePage.this,ProfileActivity.class);
+                        Intent intent1 = new Intent(HomePage.this, ProfileActivity.class);
                         ActivityOptions options1 = ActivityOptions.makeSceneTransitionAnimation(HomePage.this,bottomNavigationView ,"BottomBar");
                         intent1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(intent1, options1.toBundle());
                         break;
 
                     case R.id.ic_Rewards:
-                        Intent intent2 = new Intent(HomePage.this,Rewards.class);
+                        Intent intent2 = new Intent(HomePage.this, Rewards.class);
                         ActivityOptions options2 = ActivityOptions.makeSceneTransitionAnimation(HomePage.this,bottomNavigationView ,"BottomBar");
                         intent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(intent2, options2.toBundle());

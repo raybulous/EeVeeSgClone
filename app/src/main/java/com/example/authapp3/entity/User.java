@@ -1,31 +1,31 @@
-package com.example.authapp3;
+package com.example.authapp3.entity;
 
 public class User {
-    private String Name, Address, Contact;
+    private String name, address, contact;
 
     public User() {
     }
 
     public User(String name){
-        this.Name = name;
+        this.name = name;
     }
 
     public User(String name, String address, String contact) {
-        Name = name;
-        Address = address;
-        Contact = contact;
+        this.name = name;
+        this.address = address;
+        this.contact = contact;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public String getAddress() {
-        return Address;
+        return address;
     }
 
     public String getContact() {
-        return Contact;
+        return contact;
     }
 }
 

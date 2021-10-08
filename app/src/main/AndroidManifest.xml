@@ -22,13 +22,13 @@
             android:name=".nearby.nearby"
             android:exported="true" />
         <activity
-            android:name=".ProfileDetails"
+            android:name=".boundary.ProfileDetails"
             android:exported="true" />
         <activity
-            android:name=".EVPage"
+            android:name=".boundary.EVPage"
             android:exported="true" />
         <activity
-            android:name=".MemberQR"
+            android:name=".boundary.MemberQR"
             android:exported="true" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -50,7 +50,7 @@
             android:name=".NearbyPlaces"
             android:exported="true" />
         <activity
-            android:name=".Rewards"
+            android:name=".boundary.Rewards"
             android:exported="true" />
         <activity
             android:name=".Maps"
@@ -59,19 +59,19 @@
             android:name=".Navigate"
             android:exported="true" />
         <activity
-            android:name=".ForgotPassword"
+            android:name=".boundary.ForgotPassword"
             android:exported="true" />
         <activity
-            android:name=".ProfileActivity"
+            android:name=".boundary.ProfileActivity"
             android:exported="true" />
         <activity
-            android:name=".RegisterUser"
+            android:name=".boundary.RegisterUser"
             android:exported="true" />
         <activity
-            android:name=".HomePage"
+            android:name=".boundary.HomePage"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".boundary.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

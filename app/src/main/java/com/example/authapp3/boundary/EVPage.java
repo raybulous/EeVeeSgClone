@@ -1,4 +1,4 @@
-package com.example.authapp3;
+package com.example.authapp3.boundary;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.authapp3.R;
+import com.example.authapp3.entity.EV;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -70,7 +72,7 @@ public class EVPage extends AppCompatActivity {
                     evModelTextView.setText(evModel);
                     batteryPercentTextView.setText(batteryStatusDisplay);
                     linkEV.setText(R.string.relink_ev);
-                    batteryIconImageView.setImageResource(evProfile.getBatteryImage());
+                    batteryIconImageView.setImageResource(evProfile.findBatteryImage());
                 }
             }
 
