@@ -1,4 +1,4 @@
-package com.example.authapp3;
+package com.example.authapp3.boundary;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.authapp3.R;
+import com.example.authapp3.control.Profile;
+import com.example.authapp3.entity.User;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -169,15 +172,15 @@ public class ProfileDetails extends AppCompatActivity {
         switch (option) {
             case 0:
                 check = Profile.checkName(editedValue, initialValue);
-                update = "Name";
+                update = "name";
                 break;
             case 1:
                 check = Profile.checkContact(editedValue, initialValue);
-                update = "Contact";
+                update = "contact";
                 break;
             case 2:
                 check = Profile.checkAddress(editedValue, initialValue);
-                update = "Address";
+                update = "address";
                 break;
             default:
                 check = "No Error";

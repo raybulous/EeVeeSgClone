@@ -1,4 +1,4 @@
-package com.example.authapp3;
+package com.example.authapp3.boundary;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.authapp3.R;
+import com.example.authapp3.control.Profile;
+import com.example.authapp3.entity.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -87,7 +90,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                                     if(task1.isSuccessful()){
                                         FirebaseDatabase.getInstance().getReference("Users")
                                                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Rewards")
-                                                .child("Points").setValue(0);
+                                                .child("points").setValue(0);
                                         Toast.makeText(RegisterUser.this, "User has been successfully registered", Toast.LENGTH_LONG).show();
                                         progressBar.setVisibility(View.GONE);
                                         RegisterUser.this.finish();
