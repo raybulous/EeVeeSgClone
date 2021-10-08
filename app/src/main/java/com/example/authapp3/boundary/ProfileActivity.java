@@ -14,7 +14,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.authapp3.Navigate;
 import com.example.authapp3.R;
 import com.example.authapp3.entity.EV;
 import com.example.authapp3.entity.User;

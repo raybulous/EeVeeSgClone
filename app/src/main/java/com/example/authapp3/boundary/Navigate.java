@@ -1,4 +1,4 @@
-package com.example.authapp3;
+package com.example.authapp3.boundary;
 
 import android.Manifest;
 import android.app.ActivityOptions;
@@ -20,9 +20,10 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
-import com.example.authapp3.boundary.HomePage;
-import com.example.authapp3.boundary.ProfileActivity;
-import com.example.authapp3.boundary.Rewards;
+import com.example.authapp3.R;
+import com.example.authapp3.entity.Route;
+import com.example.authapp3.control.DirectionFinder;
+import com.example.authapp3.control.DirectionFinderListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -70,7 +71,7 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
 
         btnFindPath.setOnClickListener(v -> sendRequest());
 
-        btnNearby.setOnClickListener(view -> startActivity(new Intent(Navigate.this, com.example.authapp3.nearby.nearby.class)));
+        btnNearby.setOnClickListener(view -> startActivity(new Intent(Navigate.this, nearby.class)));
 
         /*Transition*/
         Transition exitTrans = new Fade();

@@ -1,8 +1,10 @@
-package com.example.authapp3;
+package com.example.authapp3.control;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.authapp3.control.DataParser;
+import com.example.authapp3.control.DownloadUrl;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;

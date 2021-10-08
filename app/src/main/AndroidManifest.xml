@@ -19,7 +19,7 @@
         android:theme="@style/Theme.Authapp3">
 
         <activity
-            android:name=".nearby.nearby"
+            android:name=".boundary.nearby"
             android:exported="true" />
         <activity
             android:name=".boundary.ProfileDetails"
@@ -43,20 +43,20 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".SearchLocation"
+            android:name=".boundary.SearchLocation"
             android:exported="true"
             android:label="@string/title_activity_search_location" />
         <activity
-            android:name=".NearbyPlaces"
+            android:name=".boundary.NearbyPlaces"
             android:exported="true" />
         <activity
             android:name=".boundary.Rewards"
             android:exported="true" />
         <activity
-            android:name=".Maps"
+            android:name=".boundary.Maps"
             android:exported="true" />
         <activity
-            android:name=".Navigate"
+            android:name=".boundary.Navigate"
             android:exported="true" />
         <activity
             android:name=".boundary.ForgotPassword"

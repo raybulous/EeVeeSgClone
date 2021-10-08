@@ -1,5 +1,8 @@
-package com.example.authapp3.nearby;
+package com.example.authapp3.entity;
 
+import com.example.authapp3.entity.Geometry;
+import com.example.authapp3.entity.OpeningHours;
+import com.example.authapp3.entity.Photo;
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.ArrayList;

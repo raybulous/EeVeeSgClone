@@ -1,5 +1,7 @@
-package com.example.authapp3;
+package com.example.authapp3.entity;
 
+import com.example.authapp3.entity.Distance;
+import com.example.authapp3.entity.Duration;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;

@@ -1,8 +1,7 @@
-package com.example.authapp3;
+package com.example.authapp3.control;
 
-import com.google.android.gms.maps.model.LatLng;
+import com.example.authapp3.entity.Route;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface DirectionFinderListener {

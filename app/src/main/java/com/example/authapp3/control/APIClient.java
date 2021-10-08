@@ -1,4 +1,4 @@
-package com.example.authapp3.nearby;
+package com.example.authapp3.control;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;

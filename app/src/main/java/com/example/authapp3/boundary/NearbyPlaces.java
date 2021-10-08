@@ -1,4 +1,4 @@
-package com.example.authapp3;
+package com.example.authapp3.boundary;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -17,6 +17,8 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 
+import com.example.authapp3.R;
+import com.example.authapp3.control.GetNearbyPlacesData;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -99,7 +101,7 @@ public class NearbyPlaces extends FragmentActivity implements OnMapReadyCallback
                 DataTransfer[0] = mMap;
                 DataTransfer[1] = url;
                 Log.d("onClick", url);
-                com.example.authapp3.GetNearbyPlacesData getNearbyPlacesData = new com.example.authapp3.GetNearbyPlacesData();
+                GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
                 getNearbyPlacesData.execute(DataTransfer);
                 Toast.makeText(NearbyPlaces.this,"Nearby Restaurants", Toast.LENGTH_LONG).show();
 //                Toast.makeText(MapsActivity.this,"lat: "+lati+" , long"+longi , Toast.LENGTH_LONG).show();
@@ -118,7 +120,7 @@ public class NearbyPlaces extends FragmentActivity implements OnMapReadyCallback
                 DataTransfer[0] = mMap;
                 DataTransfer[1] = url;
                 Log.d("onClick", url);
-                com.example.authapp3.GetNearbyPlacesData getNearbyPlacesData = new com.example.authapp3.GetNearbyPlacesData();
+                GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
                 getNearbyPlacesData.execute(DataTransfer);
                 Toast.makeText(NearbyPlaces.this,"Nearby Hospitals", Toast.LENGTH_LONG).show();
             }
@@ -139,7 +141,7 @@ public class NearbyPlaces extends FragmentActivity implements OnMapReadyCallback
                 DataTransfer[0] = mMap;
                 DataTransfer[1] = url;
                 Log.d("onClick", url);
-                com.example.authapp3.GetNearbyPlacesData getNearbyPlacesData = new com.example.authapp3.GetNearbyPlacesData();
+                GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
                 getNearbyPlacesData.execute(DataTransfer);
                 Toast.makeText(NearbyPlaces.this,"Nearby Schools", Toast.LENGTH_LONG).show();
             }

@@ -16,11 +16,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.authapp3.Navigate;
 import com.example.authapp3.R;
-import com.example.authapp3.SearchLocation;
 import com.example.authapp3.entity.EV;
-import com.example.authapp3.prefConfig;
+import com.example.authapp3.control.prefConfig;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;

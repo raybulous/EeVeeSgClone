@@ -1,4 +1,4 @@
-package com.example.authapp3.nearby;
+package com.example.authapp3.boundary;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -18,6 +18,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.authapp3.R;
+import com.example.authapp3.control.APIClient;
+import com.example.authapp3.control.GoogleMapAPI;
+import com.example.authapp3.control.PlacesListAdapter;
+import com.example.authapp3.entity.PlacesResults;
+import com.example.authapp3.entity.Result;
 
 import java.util.List;
 

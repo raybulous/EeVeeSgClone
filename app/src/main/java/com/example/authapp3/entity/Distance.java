@@ -1,10 +1,10 @@
-package com.example.authapp3;
+package com.example.authapp3.entity;
 
-public class Duration {
+public class Distance {
     private String text;
     private int value;
 
-    public Duration(String text, int value) {
+    public Distance(String text, int value) {
         this.text = text;
         this.value = value;
     }

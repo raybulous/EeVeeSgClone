@@ -1,5 +1,7 @@
-package com.example.authapp3.nearby;
+package com.example.authapp3.control;
 
+
+import com.example.authapp3.entity.PlacesResults;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

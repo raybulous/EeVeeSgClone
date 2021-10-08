@@ -1,4 +1,4 @@
-package com.example.authapp3;
+package com.example.authapp3.control;
 
 import android.util.Log;
 

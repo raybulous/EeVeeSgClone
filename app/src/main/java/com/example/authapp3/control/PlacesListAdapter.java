@@ -1,4 +1,4 @@
-package com.example.authapp3.nearby;
+package com.example.authapp3.control;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -18,6 +18,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.authapp3.R;
+import com.example.authapp3.entity.Photo;
+import com.example.authapp3.entity.Result;
 
 import java.io.InputStream;
 import java.util.List;

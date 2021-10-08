@@ -1,4 +1,4 @@
-package com.example.authapp3.nearby;
+package com.example.authapp3.entity;
 
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
