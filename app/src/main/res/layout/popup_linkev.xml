@@ -87,6 +87,21 @@
         app:layout_constraintStart_toStartOf="@+id/spinnerEVModel"
         app:layout_constraintTop_toBottomOf="@+id/spinnerEVModel" />
 
+    <EditText
+        android:id="@+id/evBatteryLevel"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:background="@color/white"
+        android:ems="10"
+        android:hint="@string/battery_level"
+        android:importantForAutofill="no"
+        android:inputType="number"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/evColourError"
+        app:layout_constraintStart_toStartOf="@+id/evColourError"
+        app:layout_constraintTop_toBottomOf="@+id/evColourError" />
+
     <Button
         android:id="@+id/link_ev_save"
         android:layout_width="96dp"
@@ -98,8 +113,8 @@
         android:text="@string/save"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/spinnerEVColour"
-        app:layout_constraintTop_toBottomOf="@id/spinnerEVColour" />
+        app:layout_constraintStart_toStartOf="@+id/evBatteryLevel"
+        app:layout_constraintTop_toBottomOf="@+id/evBatteryLevel" />
 
     <Button
         android:id="@+id/link_ev_cancel"
@@ -112,8 +127,8 @@
         android:text="@string/cancel"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/spinnerEVColour"
-        app:layout_constraintTop_toBottomOf="@id/spinnerEVColour" />
+        app:layout_constraintEnd_toEndOf="@+id/evBatteryLevel"
+        app:layout_constraintTop_toBottomOf="@+id/evBatteryLevel" />
 
     <ProgressBar
         android:id="@+id/progressBarEV"
@@ -127,4 +142,5 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

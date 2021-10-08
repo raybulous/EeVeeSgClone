@@ -5,16 +5,18 @@ import com.example.authapp3.R;
 public class EV {
     private String chargeStatus, colour, model;
     private int batteryStatus;
+    private boolean manualInput;
 
     public EV() {
 
     }
 
-    public EV(String chargeStatus, String colour, String model, int batteryStatus) {
+    public EV(String chargeStatus, String colour, String model, int batteryStatus, boolean manualInput) {
         this.chargeStatus = chargeStatus;
         this.colour = colour;
         this.model = model;
         this.batteryStatus = batteryStatus;
+        this.manualInput = true;
     }
 
     public String getChargeStatus() {
@@ -31,6 +33,10 @@ public class EV {
 
     public int getBatteryStatus() {
         return batteryStatus;
+    }
+
+    public boolean isManualInput() {
+        return manualInput;
     }
 
     public int findBatteryImage() {

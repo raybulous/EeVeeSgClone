@@ -33,11 +33,11 @@ public class EVPage extends AppCompatActivity {
     private List<String> evModels, evColours;
     private AlertDialog dialog;
     private ProgressBar progressBarEV;
-    private String userid, selectedEVModel, selectedEVColour, evModel, chargingStatus = "Not Charging";
-    private int batteryStatus = 100;
+    private String userid, selectedEVModel, selectedEVColour, selectedEVBatteryLevelText, evModel, chargingStatus = "Not Charging";
+    private int batteryStatus, selectedEVBatteryLevelInt;
     private DatabaseReference userReference;
     private Spinner spinnerEVModel, spinnerEVColour;
-    private EditText evModelError, evColourError;
+    private EditText evModelError, evColourError, evBatteryLevel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +56,10 @@ public class EVPage extends AppCompatActivity {
         Intent intent = getIntent();
         userid = intent.getStringExtra("userID");
 
-        Button linkEV = findViewById(R.id.link_ev);
+        Button linkEV = findViewById(R.id.link_ev_button);
         linkEV.setOnClickListener(view -> linkEVDialog());
+
+        Button bluetoothConnect = findViewById(R.id.bluetooth_button);
 
         userReference.child(userid).child("EV").addValueEventListener(new ValueEventListener() {
             @Override
@@ -71,7 +73,9 @@ public class EVPage extends AppCompatActivity {
                     chargingStatus = evProfile.getChargeStatus();
                     evModelTextView.setText(evModel);
                     batteryPercentTextView.setText(batteryStatusDisplay);
-                    linkEV.setText(R.string.relink_ev);
+                    if(!evProfile.isManualInput()){
+                        bluetoothConnect.setText(R.string.reconnect);
+                    }
                     batteryIconImageView.setImageResource(evProfile.findBatteryImage());
                 }
             }
@@ -126,6 +130,7 @@ public class EVPage extends AppCompatActivity {
 
         evModelError = evPopupView.findViewById(R.id.evModelError);
         evColourError = evPopupView.findViewById(R.id.evColourError);
+        evBatteryLevel = evPopupView.findViewById(R.id.evBatteryLevel);
         progressBarEV = evPopupView.findViewById(R.id.progressBarEV);
 
         spinnerEVModel = evPopupView.findViewById(R.id.spinnerEVModel);
@@ -147,6 +152,7 @@ public class EVPage extends AppCompatActivity {
         save.setOnClickListener(view -> {
             selectedEVModel = spinnerEVModel.getSelectedItem().toString();
             selectedEVColour = spinnerEVColour.getSelectedItem().toString();
+            selectedEVBatteryLevelText = evBatteryLevel.getText().toString().trim();
             checkAndLink();
         });
 
@@ -166,8 +172,23 @@ public class EVPage extends AppCompatActivity {
             evColourError.requestFocus();
             return;
         }
+        try
+        {
+            selectedEVBatteryLevelInt = Integer.parseInt(selectedEVBatteryLevelText);
+            if(selectedEVBatteryLevelInt < 0 | selectedEVBatteryLevelInt > 100) {
+                evBatteryLevel.setError("Must be an integer between 0 to 100");
+                evBatteryLevel.requestFocus();
+                return;
+            }
+        }
+        catch (NumberFormatException e)
+        {
+            evBatteryLevel.setError("Must be an integer between 0 to 100");
+            evBatteryLevel.requestFocus();
+            return;
+        }
         progressBarEV.setVisibility(View.VISIBLE);
-        EV ev = new EV(chargingStatus, selectedEVColour, selectedEVModel, batteryStatus);
+        EV ev = new EV(chargingStatus, selectedEVColour, selectedEVModel, selectedEVBatteryLevelInt, true);
         userReference.child(userid).child("EV").setValue(ev);
         Toast.makeText(EVPage.this, "EV successfully linked", Toast.LENGTH_LONG).show();
         progressBarEV.setVisibility(View.GONE);
