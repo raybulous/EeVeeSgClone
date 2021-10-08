@@ -64,8 +64,6 @@ public class ProfileActivity extends AppCompatActivity {
             startActivity(intent);
         });
         logout.setOnClickListener(view -> {
-            prefConfig.saveLoginEmailInPref(this,"");
-            prefConfig.saveLoginPassInPref(this,"");
             prefConfig.saveKeepLoginInPref(this,false);
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(ProfileActivity.this, MainActivity.class);

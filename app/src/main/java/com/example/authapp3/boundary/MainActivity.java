@@ -30,6 +30,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mAuth = FirebaseAuth.getInstance();
+
+        keepLogIn = findViewById(R.id.keepLogInSwitch);
+        keepLogIn.setChecked(prefConfig.loadKeepLoginFromPref(this));
+
+        if(mAuth.getCurrentUser() != null){
+            if(keepLogIn.isChecked()){
+                startActivity(new Intent(MainActivity.this, HomePage.class));
+                overridePendingTransition(R.anim.nav_default_enter_anim,R.anim.nav_default_exit_anim);
+            }else{
+                mAuth.signOut();
+            }
+        }
+
         TextView forgotPassword = findViewById(R.id.forgotPassword);
         forgotPassword.setOnClickListener(this);
 
@@ -41,19 +55,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
-        keepLogIn = findViewById(R.id.keepLogInSwitch);
-
-        editTextEmail.setText(prefConfig.loadLoginEmailFromPref(this));
-        editTextPassword.setText(prefConfig.loadLoginPassFromPref(this));
-        keepLogIn.setChecked(prefConfig.loadKeepLoginFromPref(this));
 
         progressBar = findViewById(R.id.progressBar);
-
-        mAuth = FirebaseAuth.getInstance();
-
-        if(keepLogIn.isChecked()) {
-            userLogin();
-        }
     }
 
     @Override
@@ -90,13 +93,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
-        if(keepLogIn.isChecked()) {
-            prefConfig.saveLoginEmailInPref(this,email);
-            prefConfig.saveLoginPassInPref(this,password);
-        }else{
-            prefConfig.saveLoginEmailInPref(this,"");
-            prefConfig.saveLoginPassInPref(this,"");
-        }
         prefConfig.saveKeepLoginInPref(this,keepLogIn.isChecked());
 
         progressBar.setVisibility(View.GONE);
