@@ -36,7 +36,14 @@
         app:layout_constraintVertical_bias="0.048"
 
         android:imeOptions="actionSearch"
-
         />
+
+    <Button
+        android:id="@+id/nearbybtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="More info"
+        tools:layout_editor_absoluteX="280dp"
+        tools:layout_editor_absoluteY="124dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

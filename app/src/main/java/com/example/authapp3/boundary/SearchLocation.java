@@ -3,6 +3,7 @@ package com.example.authapp3.boundary;
 import static android.content.ContentValues.TAG;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -55,7 +57,8 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
     Location mLastLocation;
     Marker mCurrLocationMarker;
     LocationRequest mLocationRequest;
-    private Address address;
+    private static Address address;
+    Button nearbybtn;
 
     private final int PROXIMITY_RADIUS = 500;
 
@@ -63,7 +66,6 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_location);
-
 
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -100,10 +102,9 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
         });
     }
 
-
 //TODO: FOR MC you can use this getAddress to get searched location
 
-    public Address getAddress() {
+    public static Address getAddress() {
         return address;
     }
 
@@ -132,7 +133,6 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
 
-
                 if (mCurrLocationMarker != null) {
                     mCurrLocationMarker.remove();
                 }
@@ -141,6 +141,14 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
 
                 markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                 mCurrLocationMarker = mMap.addMarker(markerOptions);
+
+                /*will be removed DO NOT REMOVE-MC*/
+                nearbybtn = (Button) findViewById(R.id.nearbybtn);
+                nearbybtn.setOnClickListener(view -> {
+                    Intent intent = new Intent(SearchLocation.this, nearbyDestination.class);
+                    startActivity(intent);
+                });
+
             }
         }
     }
@@ -169,7 +177,6 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
         }
     }
 
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
@@ -186,9 +193,6 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
             layoutParams.setMargins(0, 0, 30, 30);
         }
-
-
-
 
 
 
@@ -225,12 +229,6 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
         //mapgoto();
 
     }
-
-
-
-
-
-
 
 
     protected synchronized void buildGoogleApiClient() {

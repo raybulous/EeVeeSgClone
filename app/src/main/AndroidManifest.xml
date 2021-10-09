@@ -17,7 +17,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Authapp3">
-
+        <activity
+            android:name=".boundary.nearbyDestination"
+            android:exported="true" />
         <activity
             android:name=".boundary.nearby"
             android:exported="true" />

@@ -3,6 +3,7 @@ package com.example.authapp3.boundary;
 import android.Manifest;
 import android.content.pm.PackageManager;
 
+import android.location.Address;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -32,8 +33,8 @@ import retrofit2.Response;
 
 public class nearby extends AppCompatActivity {
 
-    private EditText editTextKeyword;
-    private Button buttonSearch;
+    //private EditText editTextKeyword;
+    //private Button buttonSearch;
     private ListView listViewPlaces;
 
     private LocationManager locationManager;
@@ -46,19 +47,6 @@ public class nearby extends AppCompatActivity {
     }
 
     private void initView() {
-        editTextKeyword = findViewById(R.id.editTextKeyword);
-        buttonSearch = findViewById(R.id.buttonSearch);
-        buttonSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                buttonSearch_onClick(view);
-            }
-        });
-
-        listViewPlaces = findViewById(R.id.listViewPlaces);
-    }
-
-    private void buttonSearch_onClick(View view) {
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -72,18 +60,19 @@ public class nearby extends AppCompatActivity {
             }
         }
 
+        listViewPlaces = findViewById(R.id.listViewPlaces);
     }
 
     private LocationListener locationListener = new LocationListener() {
 
         @Override
         public void onLocationChanged(Location location) {
-            String keyword = editTextKeyword.getText().toString();
+
             String key = getText(R.string.google_maps_key).toString();
             String currentLocation = location.getLatitude() + "," + location.getLongitude();
             int radius = 2000;
             GoogleMapAPI googleMapAPI = APIClient.getClient().create(GoogleMapAPI.class);
-            googleMapAPI.getNearBy(currentLocation, radius,  keyword, key).enqueue(new Callback<PlacesResults>() {
+            googleMapAPI.getNearBy(currentLocation, radius,  "restaurant", key).enqueue(new Callback<PlacesResults>() {
                 @Override
                 public void onResponse(Call<PlacesResults> call, Response<PlacesResults> response) {
                     if (response.isSuccessful()) {
@@ -117,6 +106,5 @@ public class nearby extends AppCompatActivity {
 
         }
     };
-
 
 }
