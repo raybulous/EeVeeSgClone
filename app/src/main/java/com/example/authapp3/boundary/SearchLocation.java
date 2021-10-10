@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.authapp3.R;
+import com.example.authapp3.entity.PlaceInfo;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -40,6 +41,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,6 +55,9 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
         LocationListener {
     private EditText mSearchText;
     View mapView;
+    private PlaceInfo mPlace;
+
+
 
     private GoogleMap mMap;
     GoogleApiClient mGoogleApiClient;
@@ -141,7 +148,8 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
 
                 markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                 mCurrLocationMarker = mMap.addMarker(markerOptions);
-
+                Log.d(TAG,"Placeinfo: Place address: "+ Place.Field.ADDRESS);
+                /*Working on bit above - Ray*/
                 /*will be removed DO NOT REMOVE-MC*/
                 nearbybtn = (Button) findViewById(R.id.nearbybtn);
                 nearbybtn.setOnClickListener(view -> {
@@ -150,30 +158,6 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
                 });
 
             }
-        }
-    }
-    private void mapgotopoint(@NonNull Location location){
-
-        mLastLocation = location;
-        if (mCurrLocationMarker != null) {
-            mCurrLocationMarker.remove();
-        }
-
-        //Place current location marker
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latLng);
-        //markerOptions.title("Current Position");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-        mCurrLocationMarker = mMap.addMarker(markerOptions);
-
-        //move map camera
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
-
-        //stop location updates
-        if (mGoogleApiClient != null) {
-            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
     }
 
