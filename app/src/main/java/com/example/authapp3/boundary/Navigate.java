@@ -1,14 +1,19 @@
 package com.example.authapp3.boundary;
 
+import static android.content.ContentValues.TAG;
+
 import android.Manifest;
 import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.transition.Fade;
 import android.transition.Transition;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -36,7 +41,10 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +59,7 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
     private List<Marker> destinationMarkers = new ArrayList<>();
     private List<Polyline> polylinePaths = new ArrayList<>();
     private ProgressDialog progressDialog;
+
 
 
 
@@ -177,7 +186,20 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        mMap.setMyLocationEnabled(true);
+
+        /*Geocoder geocoder = new Geocoder(Navigate.this);
+        List<Address> list = new ArrayList<>();
+        try{
+            list = geocoder.getFromLocationName(searchString, 1);
+
+        }catch (IOException e){
+            Log.e(TAG, "geoLocate: IOException: " + e.getMessage());
+        }
+
+        if(list.size() > 0){
+            Address address = list.get(0);
+
+        mMap.setMyLocationEnabled(true);*/
     }
 
 

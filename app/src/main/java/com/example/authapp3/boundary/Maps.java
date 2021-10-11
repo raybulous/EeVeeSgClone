@@ -1,5 +1,5 @@
 package com.example.authapp3.boundary;
-
+// Probably not important its just a guide.
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 

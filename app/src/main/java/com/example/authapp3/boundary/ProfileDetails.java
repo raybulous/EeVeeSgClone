@@ -28,7 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class ProfileDetails extends AppCompatActivity {
+public class    ProfileDetails extends AppCompatActivity {
 
     private AlertDialog dialog;
     private final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
