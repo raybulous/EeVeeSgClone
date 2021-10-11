@@ -187,7 +187,7 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
             return;
         }
 
-        /*Geocoder geocoder = new Geocoder(Navigate.this);
+        /* Geocoder geocoder = new Geocoder(Navigate.this);
         List<Address> list = new ArrayList<>();
         try{
             list = geocoder.getFromLocationName(searchString, 1);
