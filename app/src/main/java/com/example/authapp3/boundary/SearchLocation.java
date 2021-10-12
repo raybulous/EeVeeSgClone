@@ -81,7 +81,9 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
     Marker mCurrLocationMarker;
     LocationRequest mLocationRequest;
     private static Address address;
-    Button nearbybtn;
+    Button nearbybtn, showEVChargingBtn;
+
+    private Boolean showEVCharging = true;
 
     private final int PROXIMITY_RADIUS = 500;
 
@@ -108,52 +110,43 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
 
         mDatabase = FirebaseDatabase.getInstance().getReference("EVChargingStations");
 
-
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // Iteration method would not clear all the markers - can consider.
-                mMap.clear(); // If value is changed - Remove everything to have real live updates.
+                for (int i = 0; i < evStationMarkerList.size(); i++) {
+                    evStationMarkerList.get(i).remove();
+                }
                 evStationMarkerList.clear();
                 evChargingPriceList.clear();
                 evChargingLocationList.clear();
                 DataSnapshot location = snapshot.child("Location");
                 DataSnapshot price = snapshot.child("Price");
-                for (DataSnapshot postp : price.getChildren())
+                for (DataSnapshot postPrice : price.getChildren())
                 {
-                    EVChargingPrice evChargingPrice = postp.getValue(EVChargingPrice.class);
+                    EVChargingPrice evChargingPrice = postPrice.getValue(EVChargingPrice.class);
                     evChargingPriceList.add(evChargingPrice);
                 }
-
-                for (DataSnapshot post : location.getChildren()) {
-                    EVChargingLocation evChargingLocation = post.getValue(EVChargingLocation.class);
+                for (DataSnapshot postLocation : location.getChildren()) {
+                    EVChargingLocation evChargingLocation = postLocation.getValue(EVChargingLocation.class);
                     evChargingLocationList.add(evChargingLocation);
                 }
-                Geocoder geocoder = new Geocoder(SearchLocation.this);
-
                 for (int y = 0; y < evChargingLocationList.size(); y++) {
                     LatLng temp = new LatLng(evChargingLocationList.get(y).getLatitude(), evChargingLocationList.get(y).getLongitude());
-                    //position.add(temp);
-                    String Cprice = "";
+                    String companyPrice = "";
                     String company = evChargingLocationList.get(y).getCompany();
 
-
-
-                    for (int x = 0; x < evChargingPriceList.size(); x++)
-                    {
+                    for (int x = 0; x < evChargingPriceList.size(); x++) {
                         if (company.equals(evChargingPriceList.get(x).getCompanyName())) {
-                            Cprice = evChargingPriceList.get(x).getPrice();
-
+                            companyPrice = evChargingPriceList.get(x).getPrice();
                         }
-
                     }
-                    String snippet = company + " " + Cprice;
+                    String snippet = company + " " + companyPrice;
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.position(temp).title(evChargingLocationList.get(y).getStationName()).snippet(snippet);
                     markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeBitmap("evstation",100 , 100)));
                     tempMarker = mMap.addMarker(markerOptions);
+                    tempMarker.setVisible(!showEVCharging);
                     evStationMarkerList.add(tempMarker);
-
                 }
             }
 
@@ -161,6 +154,14 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
+        });
+
+        showEVChargingBtn = findViewById(R.id.showEVChargingBtn);
+        showEVChargingBtn.setOnClickListener(view -> {
+            for (int i = 0; i < evStationMarkerList.size(); i++) {
+                evStationMarkerList.get(i).setVisible(showEVCharging);
+            }
+            showEVCharging = !showEVCharging;
         });
 
     }
