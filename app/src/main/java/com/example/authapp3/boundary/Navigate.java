@@ -80,8 +80,8 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
     private List<String> addressList = new ArrayList<>();
     private List<String> stationNameList = new ArrayList<>();
     private List<String> companyList = new ArrayList<>();
-    private List<EVChargingLocation> evChargingLocationList = new ArrayList<>();
     private Address address;
+    private List<EVChargingLocation> evChargingLocationList = new ArrayList<>();
     private List<Marker> evStationMarkerList = new ArrayList<>();
     private Marker tempMarker;
     private List<EVChargingPrice> evChargingPriceList = new ArrayList<>();
@@ -244,7 +244,7 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
 
         /*BOTTOM NAV BAR END*/
     }
-
+/*
     private void geoLocate( String text ){
         Log.d(TAG,"geoLocate: geolocationg");{
 
@@ -266,7 +266,7 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
                 //Toast.makeText(this, address.toString(), Toast.LENGTH_SHORT).show();
                 this.address = address;
 
-                /*LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                *//*LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
 
@@ -285,11 +285,11 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
                     Intent intent = new Intent(SearchLocation.this, nearbyDestination.class);
                     startActivity(intent);
                 });
-                */
+                *//*
 
             }
         }
-    }
+    }*/
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
