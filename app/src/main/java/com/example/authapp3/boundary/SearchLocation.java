@@ -5,6 +5,8 @@ import static android.content.ContentValues.TAG;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -26,6 +28,8 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.authapp3.R;
+import com.example.authapp3.entity.EVChargingLocation;
+import com.example.authapp3.entity.EVChargingPrice;
 import com.example.authapp3.entity.PlaceInfo;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -43,6 +47,12 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 
 
 import java.io.IOException;
@@ -56,6 +66,12 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
     private EditText mSearchText;
     View mapView;
     private PlaceInfo mPlace;
+
+    private List<EVChargingLocation> evChargingLocationList = new ArrayList<>();
+    private List<Marker> evStationMarkerList = new ArrayList<>();
+    private Marker tempMarker;
+    private List<EVChargingPrice> evChargingPriceList = new ArrayList<>();
+    private DatabaseReference mDatabase;
 
 
 
@@ -89,6 +105,68 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
         //editText.setSelection(2);
         //editText.setBackgroundColor(Color.parseColor("#CCFF0000"));
 
+
+        mDatabase = FirebaseDatabase.getInstance().getReference("EVChargingStations");
+
+
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // Iteration method would not clear all the markers - can consider.
+                mMap.clear(); // If value is changed - Remove everything to have real live updates.
+                evStationMarkerList.clear();
+                evChargingPriceList.clear();
+                evChargingLocationList.clear();
+                DataSnapshot location = snapshot.child("Location");
+                DataSnapshot price = snapshot.child("Price");
+                for (DataSnapshot postp : price.getChildren())
+                {
+                    EVChargingPrice evChargingPrice = postp.getValue(EVChargingPrice.class);
+                    evChargingPriceList.add(evChargingPrice);
+                }
+
+                for (DataSnapshot post : location.getChildren()) {
+                    EVChargingLocation evChargingLocation = post.getValue(EVChargingLocation.class);
+                    evChargingLocationList.add(evChargingLocation);
+                }
+                Geocoder geocoder = new Geocoder(SearchLocation.this);
+
+                for (int y = 0; y < evChargingLocationList.size(); y++) {
+                    LatLng temp = new LatLng(evChargingLocationList.get(y).getLatitude(), evChargingLocationList.get(y).getLongitude());
+                    //position.add(temp);
+                    String Cprice = "";
+                    String company = evChargingLocationList.get(y).getCompany();
+
+
+
+                    for (int x = 0; x < evChargingPriceList.size(); x++)
+                    {
+                        if (company.equals(evChargingPriceList.get(x).getCompanyName())) {
+                            Cprice = evChargingPriceList.get(x).getPrice();
+
+                        }
+
+                    }
+                    String snippet = company + " " + Cprice;
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.position(temp).title(evChargingLocationList.get(y).getStationName()).snippet(snippet);
+                    markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeBitmap("evstation",100 , 100)));
+                    tempMarker = mMap.addMarker(markerOptions);
+                    evStationMarkerList.add(tempMarker);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+    public Bitmap resizeBitmap(String drawableName, int width, int height){
+        Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(),getResources().getIdentifier(drawableName, "drawable", getPackageName()));
+        return Bitmap.createScaledBitmap(imageBitmap, width, height, false);
     }
 
     private void init(){
@@ -272,7 +350,7 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        Toast.makeText(this, "Connection Failed.", Toast.LENGTH_LONG).show();
     }
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
