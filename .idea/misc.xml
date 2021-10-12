@@ -3,9 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Ray/EeVeeSG/app/src/main/res/drawable/ev_background.xml" value="0.2234375" />
         <entry key="..\:/Ray/EeVeeSG/app/src/main/res/drawable/ic_home_page.xml" value="0.22135416666666666" />
-        <entry key="..\:/Ray/EeVeeSG/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="..\:/Ray/EeVeeSG/app/src/main/res/drawable/ic_magnifying_glass.xml" value="0.31203703703703706" />
         <entry key="..\:/Ray/EeVeeSG/app/src/main/res/drawable/mapsearchedittextcustom.xml" value="0.22135416666666666" />
         <entry key="..\:/Ray/EeVeeSG/app/src/main/res/drawable/rectangle.xml" value="0.22135416666666666" />
@@ -19,7 +17,6 @@
         <entry key="..\:/Ray/EeVeeSG/app/src/main/res/layout/content_home.xml" value="0.20520833333333333" />
         <entry key="..\:/Ray/EeVeeSG/app/src/main/res/layout/custom_info_window.xml" value="0.30238726790450926" />
         <entry key="..\:/Ray/EeVeeSG/app/src/main/res/layout/fragment_homefrag.xml" value="0.20520833333333333" />
-        <entry key="..\:/Ray/EeVeeSG/app/src/main/res/layout/fragment_maps.xml" value="0.20364583333333333" />
         <entry key="..\:/Ray/EeVeeSG/app/src/main/res/layout/rectangle.xml" value="0.20520833333333333" />
         <entry key="..\:/Ray/EeVeeSG/app/src/main/res/menu/bottom_nav.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/eric2/AndroidStudioProjects/EeVeeSG/app/src/main/res/drawable/round.xml" value="0.14635416666666667" />
@@ -46,13 +43,14 @@
         <entry key="..\:/Users/gabri/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/activity_forgot_password.xml" value="0.259375" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/activity_home_page.xml" value="0.259375" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/activity_link_ev.xml" value="0.259375" />
-        <entry key="..\:/Users/gabri/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/Users/gabri/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/activity_member_qr.xml" value="0.259375" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/activity_popup_link_ev.xml" value="0.259375" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/activity_profile.xml" value="0.264" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/activity_profile_details.xml" value="0.264" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/activity_register_user.xml" value="0.259375" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/activity_rewards.xml" value="0.259375" />
+        <entry key="..\:/Users/gabri/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/activity_search_location.xml" value="0.259375" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/popup_editprofile.xml" value="0.259375" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/popup_editsensitive.xml" value="0.259375" />
         <entry key="..\:/Users/gabri/AndroidStudioProjects/EeVeeSG/app/src/main/res/layout/popup_linkev.xml" value="0.259375" />
