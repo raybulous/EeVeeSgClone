@@ -8,47 +8,35 @@
     tools:context=".boundary.RegisterUser">
 
 
-    <TextView
-        android:id="@+id/banner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-black"
-        android:text="EeveeSG"
-        android:textAlignment="center"
-        android:textColor="#53E88B"
-        android:textSize="60sp"
-        android:textStyle="bold"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <EditText
         android:id="@+id/fullName"
-        android:layout_width="400dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="176dp"
-        android:background="@drawable/border"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:background="@drawable/loginpageedittextcustom"
+        android:drawableStart="@drawable/login_name"
+        android:drawablePadding="5dp"
         android:ems="10"
-        android:hint="Full Name"
+        android:hint="@string/name"
         android:inputType="text"
-        android:padding="30dp"
+        android:padding="6dp"
         android:textSize="24sp"
-        app:layout_constraintHorizontal_bias="0.545"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/banner" />
+        app:layout_constraintTop_toBottomOf="@+id/evLogo" />
 
     <EditText
         android:id="@+id/email"
-        android:layout_width="400dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/border"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/loginpageedittextcustom"
+        android:drawableStart="@drawable/login_mail"
+        android:drawablePadding="5dp"
         android:ems="10"
-        android:hint="Email"
+        android:hint="@string/email"
         android:inputType="textEmailAddress"
-        android:padding="30dp"
+        android:padding="6dp"
         android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -56,14 +44,16 @@
 
     <EditText
         android:id="@+id/password"
-        android:layout_width="400dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/border"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/loginpageedittextcustom"
+        android:drawableStart="@drawable/login_password"
+        android:drawablePadding="5dp"
         android:ems="10"
-        android:hint="Password"
+        android:hint="@string/password"
         android:inputType="textPassword"
-        android:padding="30dp"
+        android:padding="6dp"
         android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -72,14 +62,15 @@
 
     <Button
         android:id="@+id/registerUser"
-        android:layout_width="380dp"
+        android:layout_width="wrap_content"
         android:layout_height="70dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="24dp"
         android:backgroundTint="#0ED689"
-        android:text="Register User"
+        android:text="@string/register"
         android:textColor="#ffffff"
         android:textSize="26sp"
         android:textStyle="bold"
+        app:cornerRadius="12dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password" />
@@ -99,15 +90,15 @@
 
     <ImageView
         android:id="@+id/evLogo"
-        android:layout_width="166dp"
-        android:layout_height="167dp"
-        android:layout_marginTop="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
         app:layout_constraintBottom_toTopOf="@+id/fullName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/banner"
-        app:srcCompat="@drawable/group_796" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

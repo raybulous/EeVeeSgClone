@@ -58,6 +58,7 @@
     <string name="reconnect">Reconnect</string>
     <string name="register">Register</string>
     <string name="relink_ev">Relink EV</string>
+    <string name="reset_password">Reset Password</string>
     <string name="save">Save</string>
     <string name="synchronisation">Synchronisation:</string>
     <string name="title_activity_search_location">SearchLocation</string>

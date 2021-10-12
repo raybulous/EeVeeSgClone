@@ -16,10 +16,10 @@ import com.example.authapp3.entity.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class RegisterUser extends AppCompatActivity implements View.OnClickListener{
+public class RegisterUser extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    private TextView banner, registerUser;
+    private TextView registerUser;
     private EditText editTextFullName, editTextEmail, editTextPassword;
     private ProgressBar progressBar;
 
@@ -29,11 +29,9 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_register_user);
 
         mAuth = FirebaseAuth.getInstance();
-        banner = findViewById(R.id.banner);
-        banner.setOnClickListener(this);
 
         registerUser = findViewById(R.id.registerUser);
-        registerUser.setOnClickListener(this);
+        registerUser.setOnClickListener(view -> registerUser());
 
         editTextFullName = findViewById(R.id.fullName);
         editTextEmail = findViewById(R.id.email);
@@ -41,18 +39,6 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
 
         progressBar = findViewById(R.id.progressBar);
 
-    }
-
-    public void onClick(View v){
-        switch(v.getId()) {
-            case R.id.banner:
-                startActivity(new Intent(this, MainActivity.class));
-                break;
-
-            case R.id.registerUser:
-                registerUser();
-                break;
-        }
     }
 
     private void registerUser(){
