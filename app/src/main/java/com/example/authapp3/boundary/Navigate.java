@@ -7,7 +7,10 @@ import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -26,6 +29,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.authapp3.R;
+import com.example.authapp3.entity.EV;
+import com.example.authapp3.entity.EVChargingLocation;
+import com.example.authapp3.entity.EVChargingPrice;
 import com.example.authapp3.entity.Route;
 import com.example.authapp3.control.DirectionFinder;
 import com.example.authapp3.control.DirectionFinderListener;
@@ -42,6 +48,8 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.shape.MarkerEdgeTreatment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -50,6 +58,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,15 +73,27 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
     private List<Polyline> polylinePaths = new ArrayList<>();
     private ProgressDialog progressDialog;
     private DatabaseReference mDatabase;
+    private FirebaseUser evLocation;
     private List<Address> list;
     private List<LatLng> latlng;
-    private MarkerOptions options = new MarkerOptions();
+    //private MarkerOptions options = new MarkerOptions();
+    private List<String> addressList = new ArrayList<>();
+    private List<String> stationNameList = new ArrayList<>();
+    private List<String> companyList = new ArrayList<>();
+    private List<EVChargingLocation> evChargingLocationList = new ArrayList<>();
+    private Address address;
+    private List<Marker> evStationMarkerList = new ArrayList<>();
+    private Marker tempMarker;
+    private List<EVChargingPrice> evChargingPriceList = new ArrayList<>();
 
+    //BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.evstation);
+   /* private Bitmap b = BitmapFactory.decodeResource(getResources(),R.drawable.evstation);
+    private Bitmap smallMarker = Bitmap.createScaledBitmap(b, 100, 100, false);*/
 
-
-
-
-
+    public Bitmap resizeBitmap(String drawableName,int width, int height){
+        Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(),getResources().getIdentifier(drawableName, "drawable", getPackageName()));
+        return Bitmap.createScaledBitmap(imageBitmap, width, height, false);
+    }
 
 
 
@@ -94,6 +115,80 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
         btnFindPath.setOnClickListener(v -> sendRequest());
 
         btnNearby.setOnClickListener(view -> startActivity(new Intent(Navigate.this, nearby.class)));
+
+        // To Set EV Markers
+        /*DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("EVChargingStations");
+        databaseReference.child("0").child("address").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String address1 = (String)snapshot.getValue();
+                Log.d(TAG,"This is my address" + address1);
+                Log.d(TAG, "THIS IS ADDRESS");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });*/
+
+        mDatabase = FirebaseDatabase.getInstance().getReference("EVChargingStations");
+
+
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // Iteration method would not clear all the markers - can consider.
+                mMap.clear(); // If value is changed - Remove everything to have real live updates.
+                evStationMarkerList.clear();
+                evChargingPriceList.clear();
+                evChargingLocationList.clear();
+                DataSnapshot location = snapshot.child("Location");
+                DataSnapshot price = snapshot.child("Price");
+                for (DataSnapshot postp : price.getChildren())
+                {
+                    EVChargingPrice evChargingPrice = postp.getValue(EVChargingPrice.class);
+                    evChargingPriceList.add(evChargingPrice);
+                }
+
+                for (DataSnapshot post : location.getChildren()) {
+                    EVChargingLocation evChargingLocation = post.getValue(EVChargingLocation.class);
+                    evChargingLocationList.add(evChargingLocation);
+                }
+                Geocoder geocoder = new Geocoder(Navigate.this);
+
+                for (int y = 0; y < evChargingLocationList.size(); y++) {
+                    LatLng temp = new LatLng(evChargingLocationList.get(y).getLatitude(), evChargingLocationList.get(y).getLongitude());
+                    //position.add(temp);
+                    String Cprice = "";
+                    String company = evChargingLocationList.get(y).getCompany();
+
+
+
+                    for (int x = 0; x < evChargingPriceList.size(); x++)
+                    {
+                        if (company.equals(evChargingPriceList.get(x).getCompanyName())) {
+                            Cprice = evChargingPriceList.get(x).getPrice();
+
+                        }
+
+                    }
+                    String snippet = company + " " + Cprice;
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.position(temp).title(evChargingLocationList.get(y).getStationName()).snippet(snippet);
+                    markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeBitmap("evstation",100 , 100)));
+                    tempMarker = mMap.addMarker(markerOptions);
+                    evStationMarkerList.add(tempMarker);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
 
 
@@ -145,11 +240,56 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
             }
         });
 
+
+
         /*BOTTOM NAV BAR END*/
-
-
     }
 
+    private void geoLocate( String text ){
+        Log.d(TAG,"geoLocate: geolocationg");{
+
+            String searchString = text;
+
+            Geocoder geocoder = new Geocoder(Navigate.this);
+            List<Address> list = new ArrayList<>();
+            try{
+                list = geocoder.getFromLocationName(searchString, 1);
+
+            }catch (IOException e){
+                Log.e(TAG, "geoLocate: IOException: " + e.getMessage());
+            }
+
+            if(list.size() > 0){
+                Address address = list.get(0);
+
+                Log.d(TAG, "geoLocate: found a location: " + address.toString());
+                //Toast.makeText(this, address.toString(), Toast.LENGTH_SHORT).show();
+                this.address = address;
+
+                /*LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+
+                if (mCurrLocationMarker != null) {
+                    mCurrLocationMarker.remove();
+                }
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(latLng);
+
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                mCurrLocationMarker = mMap.addMarker(markerOptions);
+                Log.d(TAG,"Placeinfo: Place address: "+ Place.Field.ADDRESS);
+
+                nearbybtn = (Button) findViewById(R.id.nearbybtn);
+                nearbybtn.setOnClickListener(view -> {
+                    Intent intent = new Intent(SearchLocation.this, nearbyDestination.class);
+                    startActivity(intent);
+                });
+                */
+
+            }
+        }
+    }
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -186,61 +326,6 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
     public void onMapReady(@NonNull GoogleMap googleMap) {
 
         mMap = googleMap;
-        // To Set EV Markers
-
-        List<String> addressList = new ArrayList<>();
-        List<String> stationNameList = new ArrayList<>();
-        List<String> companyList = new ArrayList<>();
-
-
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("EVChargingStations");
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                for (DataSnapshot post : snapshot.getChildren()) {
-                    String address = snapshot.child("address").getValue().toString();
-                    String stationName = snapshot.child("stationName").getValue().toString();
-                    String company = snapshot.child("company").getValue().toString();
-                    addressList.add(address);
-                    stationNameList.add(stationName);
-                    companyList.add(company);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        Geocoder geocoder = new Geocoder(this);
-        List<Address> list = new ArrayList<>();
-        List<LatLng> position = new ArrayList<>();
-
-        try {
-            list = geocoder.getFromLocationName(String.valueOf(addressList), 1);
-
-        } catch (IOException e) {
-            Log.e(TAG, "geoLocate: IOException: " + e.getMessage());
-        }
-        System.out.println(list);
-
-        for (int x = 0; x< list.size(); x++) {
-            Address address = list.get(x);
-            String temp1 = stationNameList.get(x);
-            LatLng temp = new LatLng(address.getLatitude(), address.getLongitude());
-            position.add(temp);
-        }
-
-        int index = 0;
-        for( LatLng ind : position)
-        {
-            options.position(ind);
-            options.title(stationNameList.get(index));
-            mMap.addMarker(options);
-            index++;
-        }
 
         LatLng hougangmall = new LatLng(1.3726, 103.8937);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hougangmall, 18));
@@ -258,6 +343,7 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
+
 
     }
 
