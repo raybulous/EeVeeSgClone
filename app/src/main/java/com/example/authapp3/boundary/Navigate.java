@@ -41,8 +41,12 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.android.material.shape.MarkerEdgeTreatment;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -59,6 +63,15 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
     private List<Marker> destinationMarkers = new ArrayList<>();
     private List<Polyline> polylinePaths = new ArrayList<>();
     private ProgressDialog progressDialog;
+    private DatabaseReference mDatabase;
+    private List<Address> list;
+    private List<LatLng> latlng;
+    private MarkerOptions options = new MarkerOptions();
+
+
+
+
+
 
 
 
@@ -81,6 +94,8 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
         btnFindPath.setOnClickListener(v -> sendRequest());
 
         btnNearby.setOnClickListener(view -> startActivity(new Intent(Navigate.this, nearby.class)));
+
+
 
         /*Transition*/
         Transition exitTrans = new Fade();
@@ -169,7 +184,64 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
+
         mMap = googleMap;
+        // To Set EV Markers
+
+        List<String> addressList = new ArrayList<>();
+        List<String> stationNameList = new ArrayList<>();
+        List<String> companyList = new ArrayList<>();
+
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("EVChargingStations");
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for (DataSnapshot post : snapshot.getChildren()) {
+                    String address = snapshot.child("address").getValue().toString();
+                    String stationName = snapshot.child("stationName").getValue().toString();
+                    String company = snapshot.child("company").getValue().toString();
+                    addressList.add(address);
+                    stationNameList.add(stationName);
+                    companyList.add(company);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        Geocoder geocoder = new Geocoder(this);
+        List<Address> list = new ArrayList<>();
+        List<LatLng> position = new ArrayList<>();
+
+        try {
+            list = geocoder.getFromLocationName(String.valueOf(addressList), 1);
+
+        } catch (IOException e) {
+            Log.e(TAG, "geoLocate: IOException: " + e.getMessage());
+        }
+        System.out.println(list);
+
+        for (int x = 0; x< list.size(); x++) {
+            Address address = list.get(x);
+            String temp1 = stationNameList.get(x);
+            LatLng temp = new LatLng(address.getLatitude(), address.getLongitude());
+            position.add(temp);
+        }
+
+        int index = 0;
+        for( LatLng ind : position)
+        {
+            options.position(ind);
+            options.title(stationNameList.get(index));
+            mMap.addMarker(options);
+            index++;
+        }
+
         LatLng hougangmall = new LatLng(1.3726, 103.8937);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hougangmall, 18));
         originMarkers.add(mMap.addMarker(new MarkerOptions()
@@ -187,19 +259,6 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
             return;
         }
 
-        /* Geocoder geocoder = new Geocoder(Navigate.this);
-        List<Address> list = new ArrayList<>();
-        try{
-            list = geocoder.getFromLocationName(searchString, 1);
-
-        }catch (IOException e){
-            Log.e(TAG, "geoLocate: IOException: " + e.getMessage());
-        }
-
-        if(list.size() > 0){
-            Address address = list.get(0);
-
-        mMap.setMyLocationEnabled(true);*/
     }
 
 
