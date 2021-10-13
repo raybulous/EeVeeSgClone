@@ -70,9 +70,9 @@ public class nearby extends AppCompatActivity {
 
             String key = getText(R.string.google_maps_key).toString();
             String currentLocation = location.getLatitude() + "," + location.getLongitude();
-            int radius = 2000;
+            int radius = 3000;
             GoogleMapAPI googleMapAPI = APIClient.getClient().create(GoogleMapAPI.class);
-            googleMapAPI.getNearBy(currentLocation, radius,  "restaurant", key).enqueue(new Callback<PlacesResults>() {
+            googleMapAPI.getNearBy(currentLocation, radius,  "tourist_attraction", key).enqueue(new Callback<PlacesResults>() {
                 @Override
                 public void onResponse(Call<PlacesResults> call, Response<PlacesResults> response) {
                     if (response.isSuccessful()) {

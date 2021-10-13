@@ -71,10 +71,10 @@ public class nearbyEV extends AppCompatActivity {
             double Long = getIntent().getDoubleExtra("markerLong", 0);
             String Long_string = Double.toString(Long);
             String nearbyEVLocation = Lat_string  + "," + Long_string;
-            int radius = 1000;
+            int radius = 3000;
 
             GoogleMapAPI googleMapAPI = APIClient.getClient().create(GoogleMapAPI.class);
-            googleMapAPI.getNearBy(nearbyEVLocation, radius,  "restaurant", key).enqueue(new Callback<PlacesResults>() {
+            googleMapAPI.getNearBy(nearbyEVLocation, radius,  "tourist_attraction", key).enqueue(new Callback<PlacesResults>() {
                 @Override
                 public void onResponse(Call<PlacesResults> call, Response<PlacesResults> response) {
                     if (response.isSuccessful()) {
@@ -91,6 +91,7 @@ public class nearbyEV extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
+
         }
 
         @Override
