@@ -111,9 +111,6 @@ public class HomePage extends AppCompatActivity {
         });
 
 
-
-
-
         /*Transition*/
         Transition exitTrans = new Fade();
         exitTrans.excludeTarget("@+id/BottomNavigationView",true);

@@ -147,6 +147,18 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
                     tempMarker = mMap.addMarker(markerOptions);
                     tempMarker.setVisible(!showEVCharging);
                     evStationMarkerList.add(tempMarker);
+
+                    mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                        @Override
+                        public boolean onMarkerClick(@NonNull Marker marker) {
+                                Intent intent = new Intent(SearchLocation.this, nearbyEV.class);
+                                intent.putExtra("markerLat", ((double) marker.getPosition().latitude));
+                                intent.putExtra("markerLong", ((double) marker.getPosition().longitude));
+                                startActivity(intent);
+
+                            return false;
+                        }
+                    });
                 }
             }
 
@@ -188,7 +200,7 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
         });
     }
 
-//TODO: FOR MC you can use this getAddress to get searched location
+// TODO (Done): FOR MC you can use this getAddress to get searched location
 
     public static Address getAddress() {
         return address;
