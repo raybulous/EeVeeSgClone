@@ -65,7 +65,7 @@ public class PlacesListAdapter extends ArrayAdapter<Result> {
             viewHolder.imageViewPhoto.setImageBitmap(photo);
             return view;
         } catch (Exception e) {
-                return null;
+                return view;
         }
     }
 
