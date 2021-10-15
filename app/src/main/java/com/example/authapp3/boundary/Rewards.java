@@ -7,15 +7,32 @@ import android.transition.Fade;
 import android.transition.Transition;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.authapp3.R;
+import com.example.authapp3.entity.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.FirebaseUserMetadata;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.CollationElementIterator;
 
 public class Rewards extends AppCompatActivity {
+    private FirebaseUser user;
+    private FirebaseDatabase reward;
+    private String userID;
+    private String email;
+    private DatabaseReference points;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +48,29 @@ public class Rewards extends AppCompatActivity {
         reenterTrans.excludeTarget("@+id/BottomNavigationView",true);
         getWindow().setReenterTransition(reenterTrans);
 
+        //To Extract Data from Firebase
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+        email = user.getEmail();
+
+        TextView displayNameTextView = findViewById(R.id.name);
+        TextView emailTextView = findViewById(R.id.email_header);
+        emailTextView.setText(email);
+
+        reference.child(userID).child("Profile").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User userProfile = snapshot.getValue(User.class);
+
+                if(userProfile != null) {
+                    displayNameTextView.setText(userProfile.getName());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
 
         /*BOTTOM NAVIGATION BAR*/
 
