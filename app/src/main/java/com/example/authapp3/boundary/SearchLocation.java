@@ -1,7 +1,7 @@
 package com.example.authapp3.boundary;
 
 import static android.content.ContentValues.TAG;
-
+import android.os.Handler;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -72,7 +72,7 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
     private Marker tempMarker;
     private List<EVChargingPrice> evChargingPriceList = new ArrayList<>();
     private DatabaseReference mDatabase;
-
+    boolean doubleBackToExitPressedOnce = false;
 
 
     private GoogleMap mMap;
@@ -148,7 +148,7 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
                     tempMarker.setVisible(!showEVCharging);
                     evStationMarkerList.add(tempMarker);
 
-                    mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+/*                    mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                         @Override
                         public boolean onMarkerClick(@NonNull Marker marker) {
                                 Intent intent = new Intent(SearchLocation.this, nearbyEV.class);
@@ -158,7 +158,31 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
 
                             return false;
                         }
+                    });*/
+                    mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                        @Override
+                        public boolean onMarkerClick(@NonNull Marker marker) {
+                            if (doubleBackToExitPressedOnce) {
+                            Intent intent = new Intent(SearchLocation.this, nearbyEV.class);
+                            intent.putExtra("markerLat", ((double) marker.getPosition().latitude));
+                            intent.putExtra("markerLong", ((double) marker.getPosition().longitude));
+                            startActivity(intent);
+
+                        } else {
+                            doubleBackToExitPressedOnce = true;
+
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    doubleBackToExitPressedOnce = false;
+                                }
+                            }, 5000);
+                        }
+
+                            return false;
+                        }
                     });
+
                 }
             }
 
