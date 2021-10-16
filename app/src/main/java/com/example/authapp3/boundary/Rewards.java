@@ -52,6 +52,7 @@ public class Rewards extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
         email = user.getEmail();
+        userID = user.getUid();
 
         TextView displayNameTextView = findViewById(R.id.name);
         TextView emailTextView = findViewById(R.id.email_header);

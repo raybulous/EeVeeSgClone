@@ -29,15 +29,15 @@ import java.util.List;
 
 public class EVPage extends AppCompatActivity {
 
-    private String[] evModelsList, evColoursList;
-    private List<String> evModels, evColours;
     private AlertDialog dialog;
-    private ProgressBar progressBarEV;
-    private String userid, selectedEVModel, selectedEVColour, selectedEVBatteryLevelText, evModel, chargingStatus = "Not Charging";
-    private int batteryStatus, selectedEVBatteryLevelInt;
     private DatabaseReference userReference;
-    private Spinner spinnerEVModel, spinnerEVColour;
     private EditText evModelError, evColourError, evBatteryLevel;
+    private int batteryStatus;
+    private List<String> evModels, evColours;
+    private ProgressBar progressBarEV;
+    private Spinner spinnerEVModel, spinnerEVColour;
+    private String userid, selectedEVModel, selectedEVColour, selectedEVBatteryLevelText, evModel, chargingStatus = "Not Charging";
+    private String[] evModelsList, evColoursList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,6 +172,7 @@ public class EVPage extends AppCompatActivity {
             evColourError.requestFocus();
             return;
         }
+        int selectedEVBatteryLevelInt;
         try
         {
             selectedEVBatteryLevelInt = Integer.parseInt(selectedEVBatteryLevelText);

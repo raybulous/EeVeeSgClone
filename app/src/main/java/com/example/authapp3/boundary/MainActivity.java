@@ -20,10 +20,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    private boolean doubleBackToExitPressedOnce = false, showWarningToast = true;
     private EditText editTextEmail, editTextPassword;
     private FirebaseAuth mAuth;
-    private Switch keepLogIn;
     private ProgressBar progressBar;
+    private Switch keepLogIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +114,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    private boolean doubleBackToExitPressedOnce = false, showWarningToast = true;
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
