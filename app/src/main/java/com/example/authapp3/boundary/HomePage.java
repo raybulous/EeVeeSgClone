@@ -31,10 +31,11 @@ import com.google.firebase.database.ValueEventListener;
 
 public class HomePage extends AppCompatActivity {
 
-    private TextView count;
-    private int minteger;
+    private boolean doubleBackToLogoutPressedOnce = false, showWarningToast = true;
     private FirebaseUser user;
+    private int minteger;
     private String userID;
+    private TextView count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,7 +175,6 @@ public class HomePage extends AppCompatActivity {
     }
 
     /*Backbutton Transition Animation*/
-    private boolean doubleBackToLogoutPressedOnce = false, showWarningToast = true;
     @Override
     public void onBackPressed() {
         if (doubleBackToLogoutPressedOnce) {

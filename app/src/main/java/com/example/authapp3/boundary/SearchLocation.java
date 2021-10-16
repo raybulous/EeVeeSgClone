@@ -1,7 +1,7 @@
 package com.example.authapp3.boundary;
 
 import static android.content.ContentValues.TAG;
-import android.os.Handler;
+
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -18,11 +18,13 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -45,7 +47,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -68,11 +69,10 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
     private PlaceInfo mPlace;
 
     private List<EVChargingLocation> evChargingLocationList = new ArrayList<>();
-    private List<Marker> evStationMarkerList = new ArrayList<>();
+    private List<Marker> evStationMarkerList = new ArrayList<>(), evRentalMarkerList = new ArrayList<>();
     private Marker tempMarker;
     private List<EVChargingPrice> evChargingPriceList = new ArrayList<>();
     private DatabaseReference mDatabase;
-    boolean doubleBackToExitPressedOnce = false;
 
 
     private GoogleMap mMap;
@@ -81,9 +81,9 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
     Marker mCurrLocationMarker;
     LocationRequest mLocationRequest;
     private static Address address;
-    Button nearbybtn, showEVChargingBtn;
-
-    private Boolean showEVCharging = true;
+    Button nearbybtn;
+    private ImageButton showEVChargingBtn, showEVRentalBtn;
+    private boolean showEVCharging = true, showEVRental = true, doubleClickMarker = false;
 
     private final int PROXIMITY_RADIUS = 500;
 
@@ -140,50 +140,25 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
                             companyPrice = evChargingPriceList.get(x).getPrice();
                         }
                     }
-                    String snippet = company + " " + companyPrice;
+                    String title = evChargingLocationList.get(y).getStationName();
+                    String snippet = "Company: " + company + "\nPrice: " + companyPrice + "\nClick Me For Nearby Amenities";
                     MarkerOptions markerOptions = new MarkerOptions();
-                    markerOptions.position(temp).title(evChargingLocationList.get(y).getStationName()).snippet(snippet);
+                    markerOptions.position(temp).title(title).snippet(snippet);
                     markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeBitmap("evstation",100 , 100)));
                     tempMarker = mMap.addMarker(markerOptions);
                     tempMarker.setVisible(!showEVCharging);
                     evStationMarkerList.add(tempMarker);
 
-/*                    mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                        @Override
-                        public boolean onMarkerClick(@NonNull Marker marker) {
-                                Intent intent = new Intent(SearchLocation.this, nearbyEV.class);
-                                intent.putExtra("markerLat", ((double) marker.getPosition().latitude));
-                                intent.putExtra("markerLong", ((double) marker.getPosition().longitude));
-                                startActivity(intent);
-
-                            return false;
-                        }
-                    });*/
-                    mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                        @Override
-                        public boolean onMarkerClick(@NonNull Marker marker) {
-                            if (doubleBackToExitPressedOnce) {
-                            Intent intent = new Intent(SearchLocation.this, nearbyEV.class);
-                            intent.putExtra("markerLat", ((double) marker.getPosition().latitude));
-                            intent.putExtra("markerLong", ((double) marker.getPosition().longitude));
-                            startActivity(intent);
-
-                        } else {
-                            doubleBackToExitPressedOnce = true;
-
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    doubleBackToExitPressedOnce = false;
-                                }
-                            }, 5000);
-                        }
-
-                            return false;
-                        }
-                    });
-
+                    if (evChargingLocationList.get(y).isHasRental()) {
+                        snippet = "Company: " + company + "\nClick Me For Nearby Amenities";
+                        markerOptions.snippet(snippet);
+                        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeBitmap("bluecar",100 , 100)));
+                        tempMarker = mMap.addMarker(markerOptions);
+                        tempMarker.setVisible(!showEVRental);
+                        evRentalMarkerList.add(tempMarker);
+                    }
                 }
+
             }
 
             @Override
@@ -200,6 +175,13 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
             showEVCharging = !showEVCharging;
         });
 
+        showEVRentalBtn = findViewById(R.id.showEVRentalBtn);
+        showEVRentalBtn.setOnClickListener(view -> {
+            for (int i = 0; i < evRentalMarkerList.size(); i++) {
+                evRentalMarkerList.get(i).setVisible(showEVRental);
+            }
+            showEVRental = !showEVRental;
+        });
     }
     public Bitmap resizeBitmap(String drawableName, int width, int height){
         Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(),getResources().getIdentifier(drawableName, "drawable", getPackageName()));
@@ -324,6 +306,37 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
         }
         init();
 
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            @Nullable
+            @Override
+            public View getInfoWindow(@NonNull Marker marker) {
+                return null;
+            }
+
+            @Nullable
+            @Override
+            public View getInfoContents(@NonNull Marker marker) {
+                View infoWindow = SearchLocation.this.getLayoutInflater().inflate(R.layout.infowindow_layout, null);
+
+                TextView infoWindowTitle = infoWindow.findViewById(R.id.infoWIndowStationName);
+                TextView infoWindowSnippet = infoWindow.findViewById(R.id.infoWindowSnippet);
+
+                infoWindowTitle.setText(marker.getTitle());
+                infoWindowSnippet.setText(marker.getSnippet());
+
+                return infoWindow;
+            }
+        });
+
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(@NonNull Marker marker) {
+                Intent intent = new Intent(SearchLocation.this, nearbyEV.class);
+                intent.putExtra("markerLat", ((double) marker.getPosition().latitude));
+                intent.putExtra("markerLong", ((double) marker.getPosition().longitude));
+                startActivity(intent);
+            }
+        });
 
         //mapgoto();
 

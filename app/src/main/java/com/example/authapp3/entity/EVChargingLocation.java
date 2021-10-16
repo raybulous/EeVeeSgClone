@@ -6,18 +6,20 @@ public class EVChargingLocation {
     private String company;
     private double longitude;
     private double latitude;
+    private boolean hasRental;
 
     public EVChargingLocation()
     {
 
     }
 
-    public EVChargingLocation(String address, String stationName, String company, double longitude, double latitude) {
+    public EVChargingLocation(String address, String stationName, String company, double longitude, double latitude, boolean hasRental) {
         this.address = address;
         this.stationName = stationName;
         this.company = company;
         this.longitude = longitude;
         this.latitude = latitude;
+        this.hasRental = hasRental;
     }
 
     public String getAddress()
@@ -41,5 +43,9 @@ public class EVChargingLocation {
 
     public double getLatitude() {
         return latitude;
+    }
+
+    public boolean isHasRental() {
+        return hasRental;
     }
 }
