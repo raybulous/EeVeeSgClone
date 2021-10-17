@@ -1,7 +1,11 @@
 package com.example.authapp3.boundary;
 
 import android.app.ActivityOptions;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.transition.Fade;
@@ -15,10 +19,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.example.authapp3.R;
-import com.example.authapp3.entity.EV;
 import com.example.authapp3.control.prefConfig;
+import com.example.authapp3.entity.EV;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,16 +37,20 @@ import com.google.firebase.database.ValueEventListener;
 
 public class HomePage extends AppCompatActivity {
 
-    private boolean doubleBackToLogoutPressedOnce = false, showWarningToast = true;
+    private boolean doubleBackToLogoutPressedOnce = false, showWarningToast = true, alert = true;
     private FirebaseUser user;
-    private int minteger;
-    private String userID;
+    private int minteger, batteryLevel;
+    private String userID, batteryStatus;
     private TextView count;
+    private static final String CHANNEL_ID = "channel1";
+    private NotificationManagerCompat notificationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
+
+        createNotificationChannel();
 
         //To Extract EV from Firebase
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -52,26 +62,7 @@ public class HomePage extends AppCompatActivity {
         ImageView batteryIconImageView = findViewById(R.id.homePageBattery_icon);
         TextView chargingStatus = findViewById(R.id.chargeStatus);
 
-        reference.child(userID).child("EV").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                EV evProfile = snapshot.getValue(EV.class);
-
-                if(evProfile != null) {
-                    String evModel = evProfile.getModel();
-                    String batteryStatus = evProfile.getBatteryStatus()+"%";
-                    evModelTextView.setText(evModel);
-                    batteryStatusTextView.setText(batteryStatus);
-                    batteryIconImageView.setImageResource(evProfile.findBatteryImage());
-                    chargingStatus.setText(evProfile.getChargeStatus());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-
+        notificationManager = NotificationManagerCompat.from(this);
 
         // Save Counter State
         count = findViewById(R.id.counter);
@@ -89,6 +80,7 @@ public class HomePage extends AppCompatActivity {
             prefConfig.saveTotalInPref(getApplicationContext(),minteger);
             String alertThreshold1 = minteger+"%";
             count.setText(alertThreshold1);
+            checkAlert();
         });
 
         buttonDecrease.setOnClickListener(view -> {
@@ -101,7 +93,33 @@ public class HomePage extends AppCompatActivity {
             prefConfig.saveTotalInPref(getApplicationContext(), minteger);
             String alertThreshold12 = minteger+"%";
             count.setText(alertThreshold12);
+            checkAlert();
         });
+
+        reference.child(userID).child("EV").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                EV evProfile = snapshot.getValue(EV.class);
+
+                if(evProfile != null) {
+                    String evModel = evProfile.getModel();
+                    batteryLevel = evProfile.getBatteryStatus();
+                    batteryStatus = batteryLevel+"%";
+                    evModelTextView.setText(evModel);
+                    batteryStatusTextView.setText(batteryStatus);
+                    batteryIconImageView.setImageResource(evProfile.findBatteryImage());
+                    chargingStatus.setText(evProfile.getChargeStatus());
+
+                    checkAlert();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+
 
 
         /*will be removed DO NOT REMOVE-ray*/
@@ -195,29 +213,53 @@ public class HomePage extends AppCompatActivity {
         overridePendingTransition(R.anim.nav_default_enter_anim,R.anim.nav_default_exit_anim);
     }
 
-    // Creating Battery Alert Setting
-    /*public void increaseInteger(View view)
-    {
-        minteger = minteger + 1;
-        display(minteger);
-    }
-
-    public void decreaseInteger(View view)
-    {
-        if (minteger > 0) {
-            minteger = minteger - 1;
-            display(minteger);
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Alert channel";
+            String description = "Alerts when low battery";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
         }
     }
 
-    private void display(int number)
-    {
-        TextView displayInteger = (TextView) findViewById(R.id.counter);
-        displayInteger.setText("" + number + "%");
+    private void sendAlert(String batteryStatus) {
+        Intent intent = new Intent(this, HomePage.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        String message = "Current EV battery is at " + batteryStatus;
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.logo)
+                .setContentTitle("Low Battery")
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+        notificationManager.notify(1, builder.build());
     }
-*/
 
-
-
-
+    private void checkAlert() {
+        int previous = prefConfig.loadAlertFromPref(getApplicationContext());
+        if (batteryLevel < minteger) {
+            if (alert) {
+                alert = false;
+                prefConfig.saveAlertInPref(getApplicationContext(), batteryLevel);
+                sendAlert(batteryStatus);
+            } else if (previous - batteryLevel > 10) {
+                prefConfig.saveAlertInPref(getApplicationContext(), batteryLevel);
+                sendAlert(batteryStatus);
+            }
+        } else {
+            alert = true;
+        }
+    }
 }
