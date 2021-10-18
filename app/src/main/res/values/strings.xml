@@ -9,9 +9,11 @@
     <string name="cancel">Cancel</string>
     <string name="change_email">Change Email</string>
     <string name="change_password">Change Password</string>
+    <string name="claim">Claim</string>
     <string name="connect">Connect</string>
     <string name="confirm_email">Confirm Email</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="confirm_claim_toast">Confirm Claim?</string>
     <string name="contact">Contact</string>
     <string name="dash">-</string>
     <string name="dash_percent">- %</string>
@@ -28,6 +30,7 @@
     <string name="ev_colour">EV Colour</string>
     <string name="ev_model">EV Model</string>
     <string name="exit_toast">Pressing back again will exit the app</string>
+    <string name="fnb">Food &amp; Beverages</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="input_ev">Input EV Details</string>
     <string name="keep_me_logged_in">Keep Me Logged In</string>
@@ -46,6 +49,7 @@
     <string name="no_contact">No Contact</string>
     <string name="no_ev">No EV linked</string>
     <string name="no_search_result">No search results</string>
+    <string name="not_enough_points">Not enough points!</string>
     <string name="obscure">********</string>
     <string name="old_password">Old Password</string>
     <string name="password">Password</string>
@@ -63,19 +67,25 @@
     <string name="reset_password">Reset Password</string>
     <string name="route_to">Route</string>
     <string name="save">Save</string>
+    <string name="scan_voucher">Scan To Claim Vouchers</string>
     <string name="select_other_destination">Please select a nearby EV Charging Station</string>
     <string name="synchronisation">Synchronisation:</string>
     <string name="title_activity_search_location">SearchLocation</string>
     <string name="unavailable">Unavailable</string>
     <string name="qr_description">Scan to Earn Rewards</string>
-    <string name="voucher_header">Vouchers</string>
+    <string name="qr_info">QR ID</string>
     <string name="points_balance">Points Balance:</string>
     <string name="view_vouchers">View Vouchers</string>
     <string name="view_card">View Card</string>
+    <string name="voucher_example">$10 OFF Charging Station</string>
+    <string name="voucher_header">Vouchers</string>
+    <string name="voucher_qr">Voucher QR Code</string>
+    <string name="warning_toast">Once you leave this page the QR code will disappear!</string>
     <string name="chargingstations">Charging Stations</string>
     <string name="ev_rentals">EV Car Rentals</string>
     <string name="discounts">Discounts</string>
-    <string name="fnb">Food &amp; Beverages</string>
     <string name="retail">Retail</string>
     <string name="view_discounts">View Discounts</string>
+    <string name="title_activity_voucher_qr">VoucherQR</string>
+    <string name="points_example">200 Points</string>
 </resources>
