@@ -1,16 +1,13 @@
 package com.example.authapp3.boundary;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 
-import android.location.Address;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,7 +19,7 @@ import com.example.authapp3.control.APIClient;
 import com.example.authapp3.control.GoogleMapAPI;
 import com.example.authapp3.control.PlacesListAdapter;
 import com.example.authapp3.entity.PlacesResults;
-import com.example.authapp3.entity.Result;
+import com.example.authapp3.entity.PlacesResult;
 
 import java.util.List;
 
@@ -78,8 +75,8 @@ public class nearbyEV extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<PlacesResults> call, Response<PlacesResults> response) {
                     if (response.isSuccessful()) {
-                        List<Result> results = response.body().getResults();
-                        PlacesListAdapter placesListAdapter = new PlacesListAdapter(getApplicationContext(), results);
+                        List<PlacesResult> placesResults = response.body().getResults();
+                        PlacesListAdapter placesListAdapter = new PlacesListAdapter(getApplicationContext(), placesResults);
                         listViewPlaces.setAdapter(placesListAdapter);
                     } else {
                         Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_LONG).show();

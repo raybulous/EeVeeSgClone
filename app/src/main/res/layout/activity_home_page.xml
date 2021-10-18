@@ -107,7 +107,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="42dp"
         android:backgroundTint="@color/browser_actions_bg_grey"
-        android:text="-"
+        android:text="@string/dash"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="24sp"
@@ -147,16 +147,6 @@
         app:layout_constraintStart_toEndOf="@+id/buttonDecrease"
         app:layout_constraintTop_toBottomOf="@+id/lowBattAlert"
         app:layout_constraintVertical_bias="0.968" />
-
-    <Button
-        android:id="@+id/tempbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Temp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/logo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/homePageBatt"

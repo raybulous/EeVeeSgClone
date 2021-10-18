@@ -145,6 +145,7 @@ public class ProfileActivity extends AppCompatActivity {
                         Intent intent1 = new Intent(ProfileActivity.this, SearchLocation.class);
                         ActivityOptions options1 = ActivityOptions.makeSceneTransitionAnimation(ProfileActivity.this,bottomNavigationView ,"BottomBar");
                         intent1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        intent1.putExtra("evModel",(String) evModelTextView.getText().toString());
                         startActivity(intent1, options1.toBundle());
                         break;
                     case R.id.ic_ProfileActivity:
@@ -153,6 +154,7 @@ public class ProfileActivity extends AppCompatActivity {
                         Intent intent2 = new Intent(ProfileActivity.this, Rewards.class);
                         ActivityOptions options2 = ActivityOptions.makeSceneTransitionAnimation(ProfileActivity.this,bottomNavigationView ,"BottomBar");
                         intent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        intent2.putExtra("evModel",(String) evModelTextView.getText().toString());
                         startActivity(intent2, options2.toBundle());
                         break;
                 }

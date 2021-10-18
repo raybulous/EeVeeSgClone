@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Result implements Serializable {
+public class PlacesResult implements Serializable {
 
     @SerializedName("geometry")
     private Geometry geometry;
@@ -26,7 +26,7 @@ public class Result implements Serializable {
     private OpeningHours openingHours;
 
     @SerializedName("photos")
-    private List<Photo> photos = new ArrayList<Photo>();
+    private List<Photo> photos = new ArrayList<>();
 
     @SerializedName("place_id")
     private String placeId;
@@ -41,7 +41,7 @@ public class Result implements Serializable {
     private String scope;
 
     @SerializedName("types")
-    private List<String> types = new ArrayList<String>();
+    private List<String> types = new ArrayList<>();
 
     @SerializedName("vicinity")
     private String vicinity;

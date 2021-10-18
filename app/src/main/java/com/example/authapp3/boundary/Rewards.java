@@ -33,11 +33,14 @@ public class Rewards extends AppCompatActivity {
     private String userID;
     private String email;
     private DatabaseReference points;
+    private String evModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rewards);
+
+        evModel = getIntent().getStringExtra("evModel");
 
         /*Transition*/
         Transition exitTrans = new Fade();
@@ -93,6 +96,7 @@ public class Rewards extends AppCompatActivity {
                         Intent intent1 = new Intent(Rewards.this, SearchLocation.class);
                         ActivityOptions options1 = ActivityOptions.makeSceneTransitionAnimation(Rewards.this,bottomNavigationView ,"BottomBar");
                         intent1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        intent1.putExtra("evModel",(String) evModel);
                         startActivity(intent1, options1.toBundle());
                         break;
                     case R.id.ic_ProfileActivity:

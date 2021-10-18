@@ -8,13 +8,13 @@ import java.util.List;
 public class PlacesResults implements Serializable {
 
     @SerializedName("html_attributions")
-    private List<Object> htmlAttributions = new ArrayList<Object>();
+    private List<Object> htmlAttributions = new ArrayList<>();
 
     @SerializedName("next_page_token")
     private String nextPageToken;
 
     @SerializedName("results")
-    private List<Result> results = new ArrayList<Result>();
+    private List<PlacesResult> placesResults = new ArrayList<>();
 
     @SerializedName("status")
     private String status;
@@ -31,11 +31,11 @@ public class PlacesResults implements Serializable {
     public void setNextPageToken(String nextPageToken) {
         this.nextPageToken = nextPageToken;
     }
-    public List<Result> getResults() {
-        return results;
+    public List<PlacesResult> getResults() {
+        return placesResults;
     }
-    public void setResults(List<Result> results) {
-        this.results = results;
+    public void setResults(List<PlacesResult> placesResults) {
+        this.placesResults = placesResults;
     }
 
     public String getStatus() {

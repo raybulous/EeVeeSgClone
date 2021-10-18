@@ -119,18 +119,6 @@ public class HomePage extends AppCompatActivity {
             }
         });
 
-
-
-
-        /*will be removed DO NOT REMOVE-ray*/
-        Button tempbutton = findViewById(R.id.tempbutton);
-        tempbutton.setOnClickListener(view -> {
-            Intent intent = new Intent(HomePage.this, SearchLocation.class);
-            intent.putExtra("evModel",(String) evModelTextView.getText().toString());
-            startActivity(intent);
-        });
-
-
         /*Transition*/
         Transition exitTrans = new Fade();
         exitTrans.excludeTarget("@+id/BottomNavigationView",true);
@@ -158,6 +146,7 @@ public class HomePage extends AppCompatActivity {
                         Intent intent = new Intent(HomePage.this, SearchLocation.class);
                         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(HomePage.this,bottomNavigationView ,"BottomBar");
                         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        intent.putExtra("evModel",(String) evModelTextView.getText().toString());
                         startActivity(intent, options.toBundle());
                         break;
 
@@ -172,19 +161,13 @@ public class HomePage extends AppCompatActivity {
                         Intent intent2 = new Intent(HomePage.this, Rewards.class);
                         ActivityOptions options2 = ActivityOptions.makeSceneTransitionAnimation(HomePage.this,bottomNavigationView ,"BottomBar");
                         intent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        intent2.putExtra("evModel",(String) evModelTextView.getText().toString());
                         startActivity(intent2, options2.toBundle());
                         break;
                 }
-
-
-
                 return false;
             }
         });
-
-/*        NavController navController = Navigation.findNavController(this,  R.id.fragmentContainerView);
-        NavigationUI.setupWithNavController(bottomNavigationView, navController);
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(R.id.home,R.id.navigate,R.id.profileActivity,R.id.rewards).build();*/
     }
 
     @Override

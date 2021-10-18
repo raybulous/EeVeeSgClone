@@ -19,21 +19,21 @@ import androidx.annotation.Nullable;
 
 import com.example.authapp3.R;
 import com.example.authapp3.entity.Photo;
-import com.example.authapp3.entity.Result;
+import com.example.authapp3.entity.PlacesResult;
 
 import java.io.InputStream;
 import java.util.List;
 
-public class PlacesListAdapter extends ArrayAdapter<Result> {
+public class PlacesListAdapter extends ArrayAdapter<PlacesResult> {
 
     private final Context context;
-    private final List<Result> results;
+    private final List<PlacesResult> placesResults;
     Bitmap photo;
 
-    public PlacesListAdapter(Context context, List<Result> results) {
-        super(context, R.layout.place_row_layout, results);
+    public PlacesListAdapter(Context context, List<PlacesResult> placesResults) {
+        super(context, R.layout.place_row_layout, placesResults);
         this.context = context;
-        this.results = results;
+        this.placesResults = placesResults;
     }
 
     @SuppressLint("InflateParams")
@@ -52,15 +52,15 @@ public class PlacesListAdapter extends ArrayAdapter<Result> {
             } else  {
                 viewHolder = (ViewHolder) view.getTag();
             }
-            Result result = results.get(position);
-            viewHolder.textViewName.setText(result.getName());
-            viewHolder.textViewAddress.setText(result.getVicinity());
-            Photo photoarray = result.getPhotos().get(0);
+            PlacesResult placesResult = placesResults.get(position);
+            viewHolder.textViewName.setText(placesResult.getName());
+            viewHolder.textViewAddress.setText(placesResult.getVicinity());
+            Photo photoarray = placesResult.getPhotos().get(0);
             String photourl = "https://maps.googleapis.com/maps/api/place/photo" +"?maxwidth=400" +
                     "&photo_reference="+ photoarray.getPhotoReference() + "&key=" + "AIzaSyB4jNfDzwogpxS5Q3lZKNdVlGzA_ipiOCQ";
             photo = new ImageRequestAsk().execute(photourl).get();
             if(photo == null){
-                photo = new ImageRequestAsk().execute(result.getIcon()).get();
+                photo = new ImageRequestAsk().execute(placesResult.getIcon()).get();
                 }
             viewHolder.imageViewPhoto.setImageBitmap(photo);
             return view;

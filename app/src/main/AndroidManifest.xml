@@ -36,12 +36,6 @@
             android:exported="true" />
 
         <activity
-            android:name=".boundary.nearbyDestination"
-            android:exported="true" />
-        <activity
-            android:name=".boundary.nearby"
-            android:exported="true" />
-        <activity
             android:name=".boundary.ProfileDetails"
             android:exported="true" />
         <activity
@@ -55,16 +49,7 @@
             android:exported="true"
             android:label="@string/title_activity_search_location" />
         <activity
-            android:name=".boundary.NearbyPlaces"
-            android:exported="true" />
-        <activity
             android:name=".boundary.Rewards"
-            android:exported="true" />
-        <activity
-            android:name=".boundary.Maps"
-            android:exported="true" />
-        <activity
-            android:name=".boundary.Navigate"
             android:exported="true" />
         <activity
             android:name=".boundary.ForgotPassword"

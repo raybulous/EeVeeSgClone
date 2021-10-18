@@ -45,14 +45,12 @@ import com.example.authapp3.control.DirectionFinderListener;
 import com.example.authapp3.control.GoogleMapAPI;
 import com.example.authapp3.entity.EVChargingLocation;
 import com.example.authapp3.entity.EVChargingPrice;
-import com.example.authapp3.entity.PlaceInfo;
 import com.example.authapp3.entity.PlaceResult;
 import com.example.authapp3.entity.PlaceResults;
 import com.example.authapp3.entity.Route;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -89,7 +87,6 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
         LocationListener {
     private EditText mSearchText;
     View mapView;
-    private PlaceInfo mPlace;
 
     private List<EVChargingLocation> evChargingLocationList = new ArrayList<>();
     private List<Marker> evStationMarkerList = new ArrayList<>(), evRentalMarkerList = new ArrayList<>();
@@ -111,7 +108,6 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
     private final int PROXIMITY_RADIUS = 500;
     private String evModel;
     private double distancePerCharge;
-    FusedLocationProviderClient fusedLocationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -270,6 +266,7 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
                         Intent intent2 = new Intent(SearchLocation.this, Rewards.class);
                         ActivityOptions options2 = ActivityOptions.makeSceneTransitionAnimation(SearchLocation.this,bottomNavigationView ,"BottomBar");
                         intent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        intent2.putExtra("evModel",(String) evModel);
                         startActivity(intent2, options2.toBundle());
                         break;
                 }
@@ -301,10 +298,6 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
 
 // TODO (Done): FOR MC you can use this getAddress to get searched location
 
-    public static Address getAddress() {
-        return address;
-    }
-
     private void geoLocate(){
         Log.d(TAG,"geoLocate: geolocationg");{
 
@@ -321,7 +314,6 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
 
             if(list.size() > 0){
                 Address address = list.get(0);
-                String test = address.getAddressLine(0);
 
                 Log.d(TAG, "geoLocate: found a location: " + address.toString());
                 //Toast.makeText(this, address.toString(), Toast.LENGTH_SHORT).show();
@@ -391,6 +383,8 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
                     dialog.show();
                 });
 
+            } else {
+                Toast.makeText(this, this.getResources().getString(R.string.no_search_result), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -729,12 +723,11 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
 
     private void setMarkerTitle(String address, Marker marker) {
         String key = getText(R.string.google_maps_key).toString();
-        String input = address;
         String inputtype = "textquery";
         String fields = "geometry,icon,name,photos,formatted_address,place_id";
 
         GoogleMapAPI googleMapAPI = APIClient.getClient().create(GoogleMapAPI.class);
-        googleMapAPI.findPlace(input, inputtype,  fields, key).enqueue(new Callback<PlaceResults>() {
+        googleMapAPI.findPlace(address, inputtype,  fields, key).enqueue(new Callback<PlaceResults>() {
             @Override
             public void onResponse(Call<PlaceResults> call, retrofit2.Response<PlaceResults> response) {
                 if (response.isSuccessful()) {
