@@ -142,7 +142,7 @@ public class ProfileActivity extends AppCompatActivity {
                         startActivity(intent, options.toBundle());
                         break;
                     case R.id.ic_navigate:
-                        Intent intent1 = new Intent(ProfileActivity.this, Navigate.class);
+                        Intent intent1 = new Intent(ProfileActivity.this, SearchLocation.class);
                         ActivityOptions options1 = ActivityOptions.makeSceneTransitionAnimation(ProfileActivity.this,bottomNavigationView ,"BottomBar");
                         intent1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(intent1, options1.toBundle());

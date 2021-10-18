@@ -155,7 +155,7 @@ public class HomePage extends AppCompatActivity {
                         break;
 
                     case R.id.ic_navigate:
-                        Intent intent = new Intent(HomePage.this, Navigate.class);
+                        Intent intent = new Intent(HomePage.this, SearchLocation.class);
                         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(HomePage.this,bottomNavigationView ,"BottomBar");
                         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(intent, options.toBundle());

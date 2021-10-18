@@ -3,22 +3,30 @@ package com.example.authapp3.boundary;
 import static android.content.ContentValues.TAG;
 
 import android.Manifest;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.transition.Fade;
+import android.transition.Transition;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +52,7 @@ import com.example.authapp3.entity.Route;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -56,12 +65,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -86,6 +97,7 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
     private List<EVChargingPrice> evChargingPriceList = new ArrayList<>();
     private DatabaseReference mDatabase;
     private AlertDialog dialog;
+    private int close1, close2;
 
     private GoogleMap mMap;
     GoogleApiClient mGoogleApiClient;
@@ -93,13 +105,13 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
     Marker destinationMarker;
     LocationRequest mLocationRequest;
     private static Address address;
-    Button routeTo;
-    private ImageButton showEVChargingBtn, showEVRentalBtn;
-    private boolean showEVCharging = true, showEVRental = true, doubleClickMarker = false;
+    private FloatingActionButton showEVChargingBtn, showEVRentalBtn, routeTo;
+    private boolean showEVCharging = true, showEVRental = true, doubleClickMarker = false, initialiseMap = true;
 
     private final int PROXIMITY_RADIUS = 500;
     private String evModel;
     private double distancePerCharge;
+    FusedLocationProviderClient fusedLocationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,9 +130,6 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
         mapView = mapFragment.getView();
 
         mSearchText = (EditText) findViewById(R.id.editTextTextPostalAddress);
-        //editText.setSelection(2);
-        //editText.setBackgroundColor(Color.parseColor("#CCFF0000"));
-
 
         mDatabase = FirebaseDatabase.getInstance().getReference("EVChargingStations");
 
@@ -177,7 +186,6 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
 
@@ -186,17 +194,25 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
             for (int i = 0; i < evStationMarkerList.size(); i++) {
                 evStationMarkerList.get(i).setVisible(showEVCharging);
             }
+            if (showEVCharging) {
+                showEVChargingBtn.setImageTintList(ColorStateList.valueOf(Color.parseColor("#00CC00")));
+            } else {
+                showEVChargingBtn.setImageTintList(ColorStateList.valueOf(Color.BLACK));
+            }
             showEVCharging = !showEVCharging;
         });
-
         showEVRentalBtn = findViewById(R.id.showEVRentalBtn);
         showEVRentalBtn.setOnClickListener(view -> {
             for (int i = 0; i < evRentalMarkerList.size(); i++) {
                 evRentalMarkerList.get(i).setVisible(showEVRental);
             }
+            if (showEVRental) {
+                showEVRentalBtn.setImageTintList(ColorStateList.valueOf(Color.BLUE));
+            } else {
+                showEVRentalBtn.setImageTintList(ColorStateList.valueOf(Color.BLACK));
+            }
             showEVRental = !showEVRental;
         });
-
         evModel = getIntent().getStringExtra("evModel");
         DatabaseReference evReference = FirebaseDatabase.getInstance().getReference("EVModels");
         if (evModel != null) {
@@ -214,6 +230,53 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
         } else { distancePerCharge = 1;
         }
 
+        /*Transition*/
+        Transition exitTrans = new Fade();
+        exitTrans.excludeTarget("@+id/BottomNavigationView",true);
+        getWindow().setExitTransition(exitTrans);
+
+        Transition reenterTrans = new Fade();
+        reenterTrans.excludeTarget("@+id/BottomNavigationView",true);
+        getWindow().setReenterTransition(reenterTrans);
+
+
+
+
+        /*BOTTOM NAVIGATION BAR*/
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.BottomNavigationView);
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.getItem(1);
+        menuItem.setChecked(true);
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.ic_home:
+                        Intent intent = new Intent(SearchLocation.this, HomePage.class);
+                        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SearchLocation.this,bottomNavigationView ,"BottomBar");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        startActivity(intent, options.toBundle());
+                        break;
+                    case R.id.ic_navigate:
+                        break;
+                    case R.id.ic_ProfileActivity:
+                        Intent intent1 = new Intent(SearchLocation.this, ProfileActivity.class);
+                        ActivityOptions options1 = ActivityOptions.makeSceneTransitionAnimation(SearchLocation.this,bottomNavigationView ,"BottomBar");
+                        intent1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        startActivity(intent1, options1.toBundle());
+                        break;
+                    case R.id.ic_Rewards:
+                        Intent intent2 = new Intent(SearchLocation.this, Rewards.class);
+                        ActivityOptions options2 = ActivityOptions.makeSceneTransitionAnimation(SearchLocation.this,bottomNavigationView ,"BottomBar");
+                        intent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        startActivity(intent2, options2.toBundle());
+                        break;
+                }
+                return false;
+            }
+        });
+        /*BOTTOM NAV BAR END*/
     }
     public Bitmap resizeBitmap(String drawableName, int width, int height){
         Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(),getResources().getIdentifier(drawableName, "drawable", getPackageName()));
@@ -228,11 +291,9 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
                 if(actionId == EditorInfo.IME_ACTION_SEARCH
                     || actionId == EditorInfo.IME_ACTION_DONE
                     || keyEvent.getAction() == KeyEvent.ACTION_DOWN
-                    || keyEvent.getAction() == KeyEvent.KEYCODE_ENTER){
-
+                    || keyEvent.getAction() == KeyEvent.KEYCODE_ENTER) {
                     geoLocate();
                 }
-
                 return false;
             }
         });
@@ -283,15 +344,19 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
                 setMarkerTitle(searchString, destinationMarker);
                 /*Working on bit above - Ray*/
                 /*will be removed DO NOT REMOVE-MC*/
-                routeTo = (Button) findViewById(R.id.routeTo);
+                routeTo = (FloatingActionButton) findViewById(R.id.routeTo);
+                routeTo.setVisibility(View.VISIBLE);
                 routeTo.setOnClickListener(view -> {
+                    String location = ((TextView) findViewById(R.id.locationInfo)).getText().toString();
+
                     AlertDialog.Builder diaglogBuilder = new AlertDialog.Builder(this);
                     final View dropDownView = getLayoutInflater().inflate(R.layout.popup_scrolldownlayout, null);
 
                     ((TextView) dropDownView.findViewById(R.id.destTitle)).setText(destinationMarker.getTitle());
                     ((TextView) dropDownView.findViewById(R.id.destAddress)).setText(destinationMarker.getSnippet());
-                    sendRequest(mLastLocation, destinationMarker,1,dropDownView);
-                    int close1 = 0, close2 = 0;
+                    sendRequest(location, destinationMarker,1,dropDownView);
+                    close1 = 0;
+                    close2 = 0;
                     double close1dist = Double.POSITIVE_INFINITY, close2dist = Double.POSITIVE_INFINITY;
                     for (int i = 0; i < evChargingLocationList.size(); i++) {
                         double lat_a = destinationMarker.getPosition().latitude;
@@ -311,15 +376,15 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
                     }
                     ((TextView) dropDownView.findViewById(R.id.ev1Title)).setText(evChargingLocationList.get(close1).getStationName());
                     ((TextView) dropDownView.findViewById(R.id.ev1Address)).setText(evChargingLocationList.get(close1).getAddress());
-                    sendRequest(mLastLocation,evStationMarkerList.get(close1),2,dropDownView);
+                    sendRequest(location,evStationMarkerList.get(close1),2,dropDownView);
                     ((TextView) dropDownView.findViewById(R.id.ev2Title)).setText(evChargingLocationList.get(close2).getStationName());
                     ((TextView) dropDownView.findViewById(R.id.ev2Address)).setText(evChargingLocationList.get(close2).getAddress());
-                    sendRequest(mLastLocation,evStationMarkerList.get(close2),3,dropDownView);
+                    sendRequest(location,evStationMarkerList.get(close2),3,dropDownView);
 
-                    Button ev1Button = findViewById(R.id.ev1Button);
-                    // TODO add button functionality
-                    Button ev2Button = findViewById(R.id.ev2Button);
-                    // TODO add button functionality
+                    Button ev1Button = dropDownView.findViewById(R.id.ev1Button);
+                    ev1Button.setOnClickListener(view12 -> startNavigation(close1));
+                    Button ev2Button = dropDownView.findViewById(R.id.ev2Button);
+                    ev2Button.setOnClickListener(view1 -> startNavigation(close2));
 
                     diaglogBuilder.setView(dropDownView);
                     dialog = diaglogBuilder.create();
@@ -345,11 +410,14 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
         return address;
     }
 
-    private String reverseGeoLocate(Location location) {
+    private String reverseGeoLocate(String location) {
+        String[] locations = location.split(",", 2);
+        double lat = Double.parseDouble(locations[0]);
+        double lng = Double.parseDouble(locations[1]);
         Geocoder geocoder = new Geocoder(SearchLocation.this);
         List<Address> list = new ArrayList<>();
         try{
-            list = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            list = geocoder.getFromLocation(lat, lng, 1);
         }catch (IOException e){
             Log.e(TAG, "geoLocate: IOException: " + e.getMessage());
         }
@@ -381,7 +449,6 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
 
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
 //        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 //        mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
 //        mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
@@ -430,18 +497,12 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
             }
         });
 
-        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-            @Override
-            public void onInfoWindowClick(@NonNull Marker marker) {
-                Intent intent = new Intent(SearchLocation.this, nearbyEV.class);
-                intent.putExtra("markerLat", ((double) marker.getPosition().latitude));
-                intent.putExtra("markerLong", ((double) marker.getPosition().longitude));
-                startActivity(intent);
-            }
+        mMap.setOnInfoWindowClickListener(marker -> {
+            Intent intent = new Intent(SearchLocation.this, nearbyEV.class);
+            intent.putExtra("markerLat", ((double) marker.getPosition().latitude));
+            intent.putExtra("markerLong", ((double) marker.getPosition().longitude));
+            startActivity(intent);
         });
-
-        //mapgoto();
-
     }
 
 
@@ -456,11 +517,11 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
 
     @Override
     public void onConnected(Bundle bundle) {
-
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(1000);
-        mLocationRequest.setFastestInterval(1000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        mLocationRequest = LocationRequest.create()
+                .setInterval(100)
+                .setFastestInterval(2000)
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setMaxWaitTime(100);
         if (ContextCompat.checkSelfPermission(this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -477,27 +538,29 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
     public void onLocationChanged(@NonNull Location location) {
 
         mLastLocation = location;
-        if (destinationMarker != null) {
-            destinationMarker.remove();
-        }
 
         //Place current location marker
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        //MarkerOptions markerOptions = new MarkerOptions();
-        //markerOptions.position(latLng);
-        //markerOptions.title("Current Position");
-        //markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-        //mCurrLocationMarker = mMap.addMarker(markerOptions);
 
-        //move map camera
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
+        Double lat = location.getLatitude();
+        Double lng = location.getLongitude();
+        ((TextView) findViewById(R.id.locationInfo)).setText(lat + "," + lng);
 
+        if (initialiseMap) {
+            //move map camera
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+            new Handler().postDelayed(() -> {
+                initialiseMap = false;
+            }, 4000);
+        }
+
+        /*
         //stop location updates
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
-
+        */
     }
 
     @Override
@@ -599,7 +662,7 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
         return (googlePlacesUrl.toString());
     }
 
-    private void sendRequest(Location currentMarker, Marker destinationMarker, int option, View view) {
+    private void sendRequest(String currentMarker, Marker destinationMarker, int option, View view) {
         String origin = reverseGeoLocate(currentMarker);
         String destination = reverseGeoLocate(destinationMarker);
         try {
@@ -651,8 +714,7 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
         return estimatedChargeTruncated.toString() + "%";
     }
 
-    public double getDistance (double lat_a, double lng_a, double lat_b, double lng_b )
-    {
+    public double getDistance (double lat_a, double lng_a, double lat_b, double lng_b ) {
         double earthRadius = 3958.75;
         double latDiff = Math.toRadians(lat_b-lat_a);
         double lngDiff = Math.toRadians(lng_b-lng_a);
@@ -661,9 +723,7 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
                         Math.sin(lngDiff /2) * Math.sin(lngDiff /2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         double distance = earthRadius * c;
-
         int meterConversion = 1609;
-
         return distance * meterConversion;
     }
 
@@ -690,6 +750,24 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void startNavigation(int x) {
+        Double lat = evChargingLocationList.get(x).getLatitude();
+        Double lng = evChargingLocationList.get(x).getLongitude();
+        String coordinates = lat.toString() + "," + lng.toString();
+        Intent intent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("google.navigation:q="+coordinates+"&mode=d"));
+        intent.setPackage("com.google.android.apps.maps");
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        overridePendingTransition(R.anim.nav_default_enter_anim,R.anim.nav_default_exit_anim);
     }
 }
 

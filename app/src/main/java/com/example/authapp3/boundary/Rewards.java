@@ -90,7 +90,7 @@ public class Rewards extends AppCompatActivity {
                         startActivity(intent, options.toBundle());
                         break;
                     case R.id.ic_navigate:
-                        Intent intent1 = new Intent(Rewards.this, Navigate.class);
+                        Intent intent1 = new Intent(Rewards.this, SearchLocation.class);
                         ActivityOptions options1 = ActivityOptions.makeSceneTransitionAnimation(Rewards.this,bottomNavigationView ,"BottomBar");
                         intent1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(intent1, options1.toBundle());
