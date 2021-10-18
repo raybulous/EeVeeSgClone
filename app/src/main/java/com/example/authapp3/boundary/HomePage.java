@@ -126,6 +126,7 @@ public class HomePage extends AppCompatActivity {
         Button tempbutton = findViewById(R.id.tempbutton);
         tempbutton.setOnClickListener(view -> {
             Intent intent = new Intent(HomePage.this, SearchLocation.class);
+            intent.putExtra("evModel",(String) evModelTextView.getText().toString());
             startActivity(intent);
         });
 

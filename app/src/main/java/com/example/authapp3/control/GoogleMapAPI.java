@@ -1,6 +1,7 @@
 package com.example.authapp3.control;
 
 
+import com.example.authapp3.entity.PlaceResults;
 import com.example.authapp3.entity.PlacesResults;
 
 import retrofit2.Call;
@@ -15,6 +16,14 @@ public interface GoogleMapAPI {
             @Query("radius") int radius,
             @Query("type") String type,
             //@Query("keyword") String keyword,
+            @Query("key") String key
+    );
+
+    @GET("place/findplacefromtext/json")
+    Call<PlaceResults> findPlace(
+            @Query("input") String input,
+            @Query("inputtype") String inputtype,
+            @Query("fields") String fields,
             @Query("key") String key
     );
 

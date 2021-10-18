@@ -62,7 +62,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Navigate extends FragmentActivity implements OnMapReadyCallback, DirectionFinderListener {
+public class Navigate extends FragmentActivity implements OnMapReadyCallback/*, DirectionFinderListener*/ {
 
     private GoogleMap mMap;
     private Button btnFindPath, btnNearby;
@@ -111,9 +111,9 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
         btnFindPath = (Button) findViewById(R.id.btnFindPath);
         etOrigin = (EditText) findViewById(R.id.etOrigin);
         etDestination = (EditText) findViewById(R.id.etDestination);
-
+/*
         btnFindPath.setOnClickListener(v -> sendRequest());
-
+*/
         btnNearby.setOnClickListener(view -> startActivity(new Intent(Navigate.this, nearby.class)));
 
         // To Set EV Markers
@@ -302,7 +302,7 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
         super.onBackPressed();
         overridePendingTransition(R.anim.nav_default_enter_anim,R.anim.nav_default_exit_anim);
     }
-
+/*
     private void sendRequest() {
         String origin = etOrigin.getText().toString();
         String destination = etDestination.getText().toString();
@@ -321,7 +321,7 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
             e.printStackTrace();
         }
     }
-
+*/
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
 
@@ -347,7 +347,7 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
 
     }
 
-
+/*
     @Override
     public void onDirectionFinderStart() {
         progressDialog = ProgressDialog.show(this, "Please wait.",
@@ -404,4 +404,6 @@ public class Navigate extends FragmentActivity implements OnMapReadyCallback, Di
             polylinePaths.add(mMap.addPolyline(polylineOptions));
         }
     }
+
+ */
 }

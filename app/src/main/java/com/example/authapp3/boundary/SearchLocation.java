@@ -25,14 +25,22 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.authapp3.R;
+import com.example.authapp3.control.APIClient;
+import com.example.authapp3.control.DirectionFinder;
+import com.example.authapp3.control.DirectionFinderListener;
+import com.example.authapp3.control.GoogleMapAPI;
 import com.example.authapp3.entity.EVChargingLocation;
 import com.example.authapp3.entity.EVChargingPrice;
 import com.example.authapp3.entity.PlaceInfo;
+import com.example.authapp3.entity.PlaceResult;
+import com.example.authapp3.entity.PlaceResults;
+import com.example.authapp3.entity.Route;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -55,12 +63,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 
-
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchLocation extends FragmentActivity implements OnMapReadyCallback,
+import retrofit2.Call;
+import retrofit2.Callback;
+
+public class SearchLocation extends FragmentActivity implements OnMapReadyCallback, DirectionFinderListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
@@ -73,19 +85,21 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
     private Marker tempMarker;
     private List<EVChargingPrice> evChargingPriceList = new ArrayList<>();
     private DatabaseReference mDatabase;
-
+    private AlertDialog dialog;
 
     private GoogleMap mMap;
     GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
-    Marker mCurrLocationMarker;
+    Marker destinationMarker;
     LocationRequest mLocationRequest;
     private static Address address;
-    Button nearbybtn;
+    Button routeTo;
     private ImageButton showEVChargingBtn, showEVRentalBtn;
     private boolean showEVCharging = true, showEVRental = true, doubleClickMarker = false;
 
     private final int PROXIMITY_RADIUS = 500;
+    private String evModel;
+    private double distancePerCharge;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,6 +196,24 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
             }
             showEVRental = !showEVRental;
         });
+
+        evModel = getIntent().getStringExtra("evModel");
+        DatabaseReference evReference = FirebaseDatabase.getInstance().getReference("EVModels");
+        if (evModel != null) {
+            evReference.child("DistancePerCharge").child(evModel).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    distancePerCharge = snapshot.getValue(Double.class);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        } else { distancePerCharge = 1;
+        }
+
     }
     public Bitmap resizeBitmap(String drawableName, int width, int height){
         Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(),getResources().getIdentifier(drawableName, "drawable", getPackageName()));
@@ -228,6 +260,7 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
 
             if(list.size() > 0){
                 Address address = list.get(0);
+                String test = address.getAddressLine(0);
 
                 Log.d(TAG, "geoLocate: found a location: " + address.toString());
                 //Toast.makeText(this, address.toString(), Toast.LENGTH_SHORT).show();
@@ -237,25 +270,94 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
 
-                if (mCurrLocationMarker != null) {
-                    mCurrLocationMarker.remove();
+                if (destinationMarker != null) {
+                    destinationMarker.remove();
                 }
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(latLng);
+                markerOptions.snippet(address.getAddressLine(0));
 
                 markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                mCurrLocationMarker = mMap.addMarker(markerOptions);
+                destinationMarker = mMap.addMarker(markerOptions);
                 Log.d(TAG,"Placeinfo: Place address: "+ Place.Field.ADDRESS);
+                setMarkerTitle(searchString, destinationMarker);
                 /*Working on bit above - Ray*/
                 /*will be removed DO NOT REMOVE-MC*/
-                nearbybtn = (Button) findViewById(R.id.nearbybtn);
-                nearbybtn.setOnClickListener(view -> {
-                    Intent intent = new Intent(SearchLocation.this, nearbyDestination.class);
-                    startActivity(intent);
+                routeTo = (Button) findViewById(R.id.routeTo);
+                routeTo.setOnClickListener(view -> {
+                    AlertDialog.Builder diaglogBuilder = new AlertDialog.Builder(this);
+                    final View dropDownView = getLayoutInflater().inflate(R.layout.popup_scrolldownlayout, null);
+
+                    ((TextView) dropDownView.findViewById(R.id.destTitle)).setText(destinationMarker.getTitle());
+                    ((TextView) dropDownView.findViewById(R.id.destAddress)).setText(destinationMarker.getSnippet());
+                    sendRequest(mLastLocation, destinationMarker,1,dropDownView);
+                    int close1 = 0, close2 = 0;
+                    double close1dist = Double.POSITIVE_INFINITY, close2dist = Double.POSITIVE_INFINITY;
+                    for (int i = 0; i < evChargingLocationList.size(); i++) {
+                        double lat_a = destinationMarker.getPosition().latitude;
+                        double lng_a = destinationMarker.getPosition().longitude;
+                        double lat_b = evChargingLocationList.get(i).getLatitude();
+                        double lng_b = evChargingLocationList.get(i).getLongitude();
+                        double distance = getDistance(lat_a,lng_a,lat_b,lng_b);
+                        if (distance < close1dist) {
+                            close2 = close1;
+                            close1 = i;
+                            close2dist = close1dist;
+                            close1dist = distance;
+                        } else if (distance < close2dist) {
+                            close2 = i;
+                            close2dist = distance;
+                        }
+                    }
+                    ((TextView) dropDownView.findViewById(R.id.ev1Title)).setText(evChargingLocationList.get(close1).getStationName());
+                    ((TextView) dropDownView.findViewById(R.id.ev1Address)).setText(evChargingLocationList.get(close1).getAddress());
+                    sendRequest(mLastLocation,evStationMarkerList.get(close1),2,dropDownView);
+                    ((TextView) dropDownView.findViewById(R.id.ev2Title)).setText(evChargingLocationList.get(close2).getStationName());
+                    ((TextView) dropDownView.findViewById(R.id.ev2Address)).setText(evChargingLocationList.get(close2).getAddress());
+                    sendRequest(mLastLocation,evStationMarkerList.get(close2),3,dropDownView);
+
+                    Button ev1Button = findViewById(R.id.ev1Button);
+                    // TODO add button functionality
+                    Button ev2Button = findViewById(R.id.ev2Button);
+                    // TODO add button functionality
+
+                    diaglogBuilder.setView(dropDownView);
+                    dialog = diaglogBuilder.create();
+                    dialog.show();
                 });
 
             }
         }
+    }
+
+    private String reverseGeoLocate(Marker marker){
+        Geocoder geocoder = new Geocoder(SearchLocation.this);
+        List<Address> list = new ArrayList<>();
+        try{
+            list = geocoder.getFromLocation(marker.getPosition().latitude, marker.getPosition().longitude, 1);
+        }catch (IOException e){
+            Log.e(TAG, "geoLocate: IOException: " + e.getMessage());
+        }
+        String address = "";
+        if(list.size() > 0){
+            address = list.get(0).getAddressLine(0);
+        }
+        return address;
+    }
+
+    private String reverseGeoLocate(Location location) {
+        Geocoder geocoder = new Geocoder(SearchLocation.this);
+        List<Address> list = new ArrayList<>();
+        try{
+            list = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+        }catch (IOException e){
+            Log.e(TAG, "geoLocate: IOException: " + e.getMessage());
+        }
+        String address = "";
+        if(list.size() > 0){
+            address = list.get(0).getAddressLine(0);
+        }
+        return address;
     }
 
     @Override
@@ -375,8 +477,8 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
     public void onLocationChanged(@NonNull Location location) {
 
         mLastLocation = location;
-        if (mCurrLocationMarker != null) {
-            mCurrLocationMarker.remove();
+        if (destinationMarker != null) {
+            destinationMarker.remove();
         }
 
         //Place current location marker
@@ -485,8 +587,6 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
 
     //search function
 
-
-
     private String getUrl(double latitude, double longitude, String nearbyPlace) {
 
         StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
@@ -497,6 +597,99 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
         googlePlacesUrl.append("&key=" + "AIzaSyB4jNfDzwogpxS5Q3lZKNdVlGzA_ipiOCQ");
         Log.d("getUrl", googlePlacesUrl.toString());
         return (googlePlacesUrl.toString());
+    }
+
+    private void sendRequest(Location currentMarker, Marker destinationMarker, int option, View view) {
+        String origin = reverseGeoLocate(currentMarker);
+        String destination = reverseGeoLocate(destinationMarker);
+        try {
+            new DirectionFinder(this, origin, destination, option, view).execute();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onDirectionFinderStart() {
+    }
+
+    @Override
+    public void onDirectionFinderSuccess(List<Route> routes, int option, View view) {
+        for (Route route : routes) {
+            switch (option) {
+                case 1:
+                    ((TextView) view.findViewById(R.id.destDistance)).setText(route.distance.getText());
+                    ((TextView) view.findViewById(R.id.destCharge)).setText(getEstimateChargeString(route.distance.getText()));
+                    ((TextView) view.findViewById(R.id.destTime)).setText(route.duration.getText());
+                    break;
+                case 2:
+                    ((TextView) view.findViewById(R.id.ev1Distance)).setText(route.distance.getText());
+                    ((TextView) view.findViewById(R.id.ev1Charge)).setText(getEstimateChargeString(route.distance.getText()));
+                    ((TextView) view.findViewById(R.id.ev1Time)).setText(route.duration.getText());
+                    break;
+                case 3:
+                    ((TextView) view.findViewById(R.id.ev2Distance)).setText(route.distance.getText());
+                    ((TextView) view.findViewById(R.id.ev2Charge)).setText(getEstimateChargeString(route.distance.getText()));
+                    ((TextView) view.findViewById(R.id.ev2Time)).setText(route.duration.getText());
+                    break;
+            }
+        }
+    }
+
+    private String getEstimateChargeString(String distanceString) {
+        Double distance, estimatedCharge;
+        String[] distanceSplit;
+
+        distanceSplit = distanceString.split(" ", 2);
+        distance = Double.parseDouble(distanceSplit[0]);
+        if (distanceSplit[1].equals("km")) {
+            estimatedCharge = distance / distancePerCharge;
+        } else {
+            estimatedCharge = (distance / 1000) / distancePerCharge;
+        }
+        BigDecimal estimatedChargeTruncated = new BigDecimal(String.valueOf(estimatedCharge)).setScale(2, BigDecimal.ROUND_FLOOR);
+        return estimatedChargeTruncated.toString() + "%";
+    }
+
+    public double getDistance (double lat_a, double lng_a, double lat_b, double lng_b )
+    {
+        double earthRadius = 3958.75;
+        double latDiff = Math.toRadians(lat_b-lat_a);
+        double lngDiff = Math.toRadians(lng_b-lng_a);
+        double a = Math.sin(latDiff /2) * Math.sin(latDiff /2) +
+                Math.cos(Math.toRadians(lat_a)) * Math.cos(Math.toRadians(lat_b)) *
+                        Math.sin(lngDiff /2) * Math.sin(lngDiff /2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        double distance = earthRadius * c;
+
+        int meterConversion = 1609;
+
+        return distance * meterConversion;
+    }
+
+    private void setMarkerTitle(String address, Marker marker) {
+        String key = getText(R.string.google_maps_key).toString();
+        String input = address;
+        String inputtype = "textquery";
+        String fields = "geometry,icon,name,photos,formatted_address,place_id";
+
+        GoogleMapAPI googleMapAPI = APIClient.getClient().create(GoogleMapAPI.class);
+        googleMapAPI.findPlace(input, inputtype,  fields, key).enqueue(new Callback<PlaceResults>() {
+            @Override
+            public void onResponse(Call<PlaceResults> call, retrofit2.Response<PlaceResults> response) {
+                if (response.isSuccessful()) {
+                    List<PlaceResult> results = response.body().getResults();
+                    marker.setTitle(results.get(0).getName());
+                } else {
+                    Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PlaceResults> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
 

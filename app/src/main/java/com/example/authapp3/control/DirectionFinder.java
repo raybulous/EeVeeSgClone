@@ -2,6 +2,7 @@ package com.example.authapp3.control;
 
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
+import android.view.View;
 
 import com.example.authapp3.entity.Distance;
 import com.example.authapp3.entity.Duration;
@@ -29,11 +30,15 @@ public class DirectionFinder {
     private DirectionFinderListener listener;
     private String origin;
     private String destination;
+    private int option;
+    private View view;
 
-    public DirectionFinder(DirectionFinderListener listener, String origin, String destination) {
+    public DirectionFinder(DirectionFinderListener listener, String origin, String destination, int option, View view) {
         this.listener = listener;
         this.origin = origin;
         this.destination = destination;
+        this.option = option;
+        this.view = view;
     }
 
     public void execute() throws UnsupportedEncodingException {
@@ -89,7 +94,7 @@ public class DirectionFinder {
         if (data == null)
             return;
 
-        List<Route> routes = new ArrayList<Route>();
+        List<Route> routes = new ArrayList<>();
         JSONObject jsonData = new JSONObject(data);
         JSONArray jsonRoutes = jsonData.getJSONArray("routes");
         for (int i = 0; i < jsonRoutes.length(); i++) {
@@ -115,13 +120,13 @@ public class DirectionFinder {
             routes.add(route);
         }
 
-        listener.onDirectionFinderSuccess(routes);
+        listener.onDirectionFinderSuccess(routes, option, view);
     }
 
     private List<LatLng> decodePolyLine(final String poly) {
         int len = poly.length();
         int index = 0;
-        List<LatLng> decoded = new ArrayList<LatLng>();
+        List<LatLng> decoded = new ArrayList<>();
         int lat = 0;
         int lng = 0;
 

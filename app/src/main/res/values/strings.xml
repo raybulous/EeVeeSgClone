@@ -23,6 +23,7 @@
     <string name="email">Email</string>
     <string name="email_example">email@email.com</string>
     <string name="electric_vehicle">Electric Vehicle</string>
+    <string name="estimated_charge">Estimated Charge: </string>
     <string name="ev_car">EV Car</string>
     <string name="ev_colour">EV Colour</string>
     <string name="ev_model">EV Model</string>
@@ -59,7 +60,9 @@
     <string name="register">Register</string>
     <string name="relink_ev">Relink EV</string>
     <string name="reset_password">Reset Password</string>
+    <string name="route_to">Route</string>
     <string name="save">Save</string>
+    <string name="select_other_destination">Please select a nearby EV Charging Station</string>
     <string name="synchronisation">Synchronisation:</string>
     <string name="title_activity_search_location">SearchLocation</string>
     <string name="unavailable">Unavailable</string>
