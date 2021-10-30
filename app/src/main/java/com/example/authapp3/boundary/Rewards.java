@@ -44,11 +44,9 @@ import java.util.Date;
 
 public class Rewards extends AppCompatActivity {
     private FirebaseUser user;
-    private FirebaseDatabase reward;
     private String userID;
     private String email;
     private Integer points;
-    private ArrayList<Voucher> voucher_array;
     private String evModel;
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
