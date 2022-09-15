@@ -88,4 +88,13 @@
     <string name="view_discounts">View Discounts</string>
     <string name="title_activity_voucher_qr">VoucherQR</string>
     <string name="points_example">200 Points</string>
+    <string name="form_name">LEXO</string>
+    <string name="title">Service Form</string>
+    <string name="map_region">Map Region Dropdown</string>
+    <string-array name="maparea">
+        <item>North</item>
+        <item>South</item>
+        <item>East</item>
+        <item>West</item>
+    </string-array>
 </resources>

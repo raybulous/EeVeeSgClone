@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
+        android:text="@string/title"
+        android:textColor="#D500F9"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.117"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/servicetitle"
+        android:layout_width="338dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="116dp"
+        android:ems="10"
+        android:hint="Service Title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/price"
+        android:layout_width="217dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="196dp"
+        android:ems="10"
+        android:hint="Offer Price"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.142"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="131dp"
+        android:layout_height="73dp"
+        android:layout_marginTop="500dp"
+        android:backgroundTint="#D500F9"
+        android:onClick="submitbuttonHandler"
+        android:text="SUBMIT"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.129"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/spinner_languages"
+        style="@style/Widget.AppCompat.Spinner.DropDown"
+        android:layout_width="352dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="504dp"
+        android:scrollbarStyle="outsideInset"
+        android:spinnerMode="dropdown"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.609"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/EditText02"
+        android:layout_width="349dp"
+        android:layout_height="106dp"
+        android:background="@color/teal_700"
+        android:backgroundTint="#D0D3D2"
+        android:gravity="top|left"
+        android:hint="Description of Service"
+        android:inputType="textMultiLine"
+        android:lines="5"
+        android:scrollHorizontally="false"
+        tools:layout_editor_absoluteX="25dp"
+        tools:layout_editor_absoluteY="345dp"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
