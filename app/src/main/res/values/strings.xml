@@ -97,4 +97,22 @@
         <item>East</item>
         <item>West</item>
     </string-array>
+
+    <string-array name="serviceitemname">
+        <item>BabySitter</item>
+        <item>Chef</item>
+        <item>Painter</item>
+        <item>Busker</item>
+    </string-array>
+
+    <string-array name="svcarea">
+        <item>West</item>
+        <item>North</item>
+        <item>North</item>
+        <item>East</item>
+    </string-array>
+
+
+
+
 </resources>
