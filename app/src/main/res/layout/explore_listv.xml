@@ -8,13 +8,31 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mRecycleView"
-        android:layout_width="409dp"
-        android:layout_height="889dp"
+        android:layout_width="412dp"
+        android:layout_height="800dp"
         android:layout_marginStart="1dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="1dp"
-        android:layout_marginBottom="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.22" />
+
+    <TextView
+        android:id="@+id/exploreText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="891dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Explore"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/mRecycleView"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

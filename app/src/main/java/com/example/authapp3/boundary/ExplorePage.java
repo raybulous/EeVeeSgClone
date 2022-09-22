@@ -54,9 +54,10 @@ public class ExplorePage extends AppCompatActivity implements View.OnClickListen
     private void setupServiceItem() {
         String[] serviceItemNames = getResources().getStringArray(R.array.serviceitemname);
         String[] serviceItemArea = getResources().getStringArray(R.array.svcarea);
+        String[] serviceProvider = getResources().getStringArray(R.array.svcprovider);
 
         for (int i = 0; i < serviceItemNames.length; i++) {
-            serviceItem.add(new ServiceItem(serviceItemNames[i], serviceItemArea[i]));
+            serviceItem.add(new ServiceItem(serviceItemNames[i], serviceItemArea[i], serviceProvider[i]));
         }
     }
 

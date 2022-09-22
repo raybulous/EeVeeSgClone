@@ -112,6 +112,26 @@
         <item>East</item>
     </string-array>
 
+    <string-array name="svcrating">
+        <item>3</item>
+        <item>4</item>
+        <item>2</item>
+        <item>5</item>
+    </string-array>
+
+    <string-array name="svcdatetime">
+        <item>050522 1927</item>
+        <item>040722 1800</item>
+        <item>010822 1700</item>
+        <item>090922 1700</item>
+    </string-array>
+
+    <string-array name="svcprovider">
+        <item>Armand</item>
+        <item>Harvey</item>
+        <item>Ray</item>
+        <item>Carrot</item>
+    </string-array>
 
 
 

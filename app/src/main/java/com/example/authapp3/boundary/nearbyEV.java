@@ -17,7 +17,6 @@ import androidx.core.content.ContextCompat;
 import com.example.authapp3.R;
 import com.example.authapp3.control.APIClient;
 import com.example.authapp3.control.GoogleMapAPI;
-import com.example.authapp3.control.PlacesListAdapter;
 import com.example.authapp3.entity.PlacesResults;
 import com.example.authapp3.entity.PlacesResult;
 

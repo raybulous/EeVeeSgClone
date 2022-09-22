@@ -49,9 +49,6 @@
             android:exported="true"
             android:label="@string/title_activity_search_location" />
         <activity
-            android:name=".boundary.Rewards"
-            android:exported="true" />
-        <activity
             android:name=".boundary.ForgotPassword"
             android:exported="true" />
         <activity
